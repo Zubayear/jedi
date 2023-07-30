@@ -1,4 +1,5 @@
-import com.zubayear.customds.linkedlist.SinglyLinkedList;
+package com.zubayear.customds.linkedlist;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,9 +8,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class SinglyLinkedListTest {
+class SinglyLinkedListTest {
 
     SinglyLinkedList<Character> singlyLinkedList;
 
@@ -57,5 +58,33 @@ public class SinglyLinkedListTest {
         List<Character> actual = singlyLinkedList.getList();
         List<Character> expected = new LinkedList<>(Arrays.asList('A', 'B', 'D', 'E'));
         Assertions.assertIterableEquals(actual, expected);
+    }
+
+    @Test
+    void reverse() {
+        SinglyLinkedList<Integer> linkedList = new SinglyLinkedList<>();
+        linkedList.insertAtTail(1);
+        linkedList.insertAtTail(2);
+        linkedList.insertAtTail(3);
+        linkedList.insertAtTail(4);
+        linkedList.insertAtTail(5);
+        linkedList.printList();
+        System.out.println("\nafter reverse");
+        linkedList.reverse();
+        linkedList.printList();
+    }
+
+    @Test
+    void recursiveReverse() {
+        SinglyLinkedList<Integer> linkedList = new SinglyLinkedList<>();
+        linkedList.insertAtTail(1);
+        linkedList.insertAtTail(2);
+        linkedList.insertAtTail(3);
+        linkedList.insertAtTail(4);
+        linkedList.insertAtTail(5);
+        linkedList.printList();
+        System.out.println("\nafter reverse");
+        linkedList.recursiveReverse();
+        linkedList.printList();
     }
 }

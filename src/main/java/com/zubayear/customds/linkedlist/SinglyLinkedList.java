@@ -73,4 +73,36 @@ public class SinglyLinkedList<T> {
         }
         return false;
     }
+
+    public void reverse() {
+        // 1 -> 2 -> 3 -> 4 -> 5 -> null
+        // take 3 pointers and slide them and reverse
+        ListNode<T> p = head, q = null, r = null;
+        while (p != null) {
+            // slide 3 pointers
+            r = q;
+            q = p;
+            p = p.next;
+            q.next = r;
+        }
+        head = q;
+    }
+
+    public void recursiveReverse() {
+        recursiveReverseHelper(null, head);
+    }
+
+    public void recursiveReverseHelper(ListNode<T> q, ListNode<T> p) {
+        if (p != null) {
+            // moving forward
+            recursiveReverseHelper(p, p.next);
+            // at return time just join the link from p to q
+            p.next = q;
+        } else {
+            // shift head to q
+            // 1 -> 2 -> 3 -> 4 -> 5 -> null
+            //                     q    p
+            head = q;
+        }
+    }
 }

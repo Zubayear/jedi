@@ -33,6 +33,10 @@ public class BinaryTreeTest {
         List<Character> actual = binaryTree.dfs(binaryTree.root);
         List<Character> expected = new ArrayList<>(List.of('A', 'B', 'D', 'E', 'C', 'F'));
         Assertions.assertIterableEquals(actual, expected);
+    }
 
+    @Test
+    public void shouldDoIterativePreorderTraversal() {
+        binaryTree.preorderIter(binaryTree.root);
     }
 }

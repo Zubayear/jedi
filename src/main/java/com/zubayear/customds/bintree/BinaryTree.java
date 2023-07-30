@@ -62,4 +62,22 @@ public class BinaryTree<T> {
         dfsHelper(root.left, result);
         dfsHelper(root.right, result);
     }
+
+    public void preorderIter(TreeNode<T> node) {
+        Deque<TreeNode<T>> stack = new ArrayDeque<>();
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
+                // print
+                // push not to stack
+                // go to left
+                System.out.println(node.val);
+                stack.offerFirst(node);
+                node = node.left;
+            } else {
+                // pop and go to right
+                node = stack.pollFirst();
+                node = node.right;
+            }
+        }
+    }
 }
