@@ -87,4 +87,22 @@ class RecursionSolutionTest {
         List<List<Integer>> result = rs.combinationSum(candidates, target);
         System.out.println(result);
     }
+
+    @Test
+    void subsets() {
+        List<List<Integer>> subsets = rs.subsets(new int[]{1, 2, 3});
+        System.out.println(subsets);
+    }
+
+    @Test
+    void subsetsWithDup() {
+        List<List<Integer>> subsets = rs.subsetsWithDup(new int[]{1, 2, 2});
+        System.out.println(subsets);
+    }
+
+    @Test
+    void permute() {
+        List<List<Integer>> permute = rs.permute(new int[]{1, 2, 3});
+        System.out.println(permute);
+    }
 }

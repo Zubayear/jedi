@@ -22,7 +22,7 @@ public class DPSolution {
         return uniquePathsHelper(m, n, dp);
         */
         /*tabulation*/
-        long[][] dp = new long[m + 1][n + 1];
+        long[][] dp = new long[m][n];
 //        for (long[] row : dp) Arrays.fill(row, -1);
         return uniquePathsTabulation(m, n, dp);
     }
@@ -36,14 +36,30 @@ public class DPSolution {
     }
 
     private long uniquePathsTabulation(int m, int n, long[][] dp) {
-        dp[1][1] = 1;
+        /*dp[1][1] = 1;
         for (int i = 0; i <= m; i++) {
             for (int j = 0; j <= n; j++) {
                 if (i + 1 <= m) dp[i + 1][j] += dp[i][j];
                 if (j + 1 <= n) dp[i][j + 1] += dp[i][j];
             }
         }
-        return dp[m][n];
+        return dp[m][n];*/
+        int[] prev = new int[n]; // col
+        for (int i = 0; i < m; i++) {
+            int[] tmp = new int[n];
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) {
+                    tmp[j] = 1;
+                    continue;
+                }
+                int up = 0, left = 0;
+                if (i > 0) up = prev[j];
+                if (j > 0) left = tmp[j - 1];
+                tmp[j] = up + left;
+            }
+            prev = tmp;
+        }
+        return prev[n - 1];
     }
 
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
@@ -188,9 +204,11 @@ public class DPSolution {
         if (i < 0 || j < 0) return 0;
         if (dp[i][j] != -1) return dp[i][j];
         // char matched so we take it and reduce by 1
-        if (text1.charAt(i) == text2.charAt(j)) return dp[i][j] = 1 + longestCommonSubsequenceHelper(text1, text2, i - 1, j - 1, dp);
+        if (text1.charAt(i) == text2.charAt(j))
+            return dp[i][j] = 1 + longestCommonSubsequenceHelper(text1, text2, i - 1, j - 1, dp);
             // we go to both branch
-        else return dp[i][j] = Math.max(longestCommonSubsequenceHelper(text1, text2, i, j - 1, dp), longestCommonSubsequenceHelper(text1, text2, i - 1, j, dp));
+        else
+            return dp[i][j] = Math.max(longestCommonSubsequenceHelper(text1, text2, i, j - 1, dp), longestCommonSubsequenceHelper(text1, text2, i - 1, j, dp));
     }
 
     private int lscTabulation(String s1, String s2) {
@@ -202,16 +220,16 @@ public class DPSolution {
         for (int i = 0; i <= n; ++i) dp[i][0] = 0;
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
-                if (s1.charAt(i-1) == s2.charAt(j-1)) dp[i][j] = 1 + dp[i-1][j-1]; // diag
-                else dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j]);
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) dp[i][j] = 1 + dp[i - 1][j - 1]; // diag
+                else dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
             }
         }
         return dp[n][m];
     }
 
     public int findMinimumNotes(int[] notes, int amount, Map<Integer, Integer> notesUsed) {
-        int[] dp = new int[amount+1];
-        int[] lastNote = new int[amount+1];
+        int[] dp = new int[amount + 1];
+        int[] lastNote = new int[amount + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
         for (int note : notes) {
@@ -234,4 +252,57 @@ public class DPSolution {
         else return -1;
     }
 
+    public int ninjaTraining(int[][] points) {
+        int m = points.length;
+        // 1 2 3
+        // 4 5 6
+        // 7 8 9
+        int[][] dp = new int[m + 1][4];
+        for (int[] row : dp) Arrays.fill(row, -1);
+        return ninjaTraining(points, m - 1, m, dp);
+    }
+
+    private int ninjaTraining(int[][] points, int day, int last, int[][] dp) {
+        if (dp[day][last] != -1) return dp[day][last];
+
+        if (day == 0) {
+            // run a loop in 1, 2, 3
+            int max = 0;
+            for (int i = 0; i < points[0].length; ++i) {
+                if (i != last) max = Math.max(max, points[0][i]);
+            }
+            return dp[day][last] = max;
+        }
+
+        int max = -1;
+        for (int i = 0; i < points[0].length; ++i) {
+            if (i != last) {
+                int point = points[day][i] + ninjaTraining(points, day - 1, i, dp);
+                max = Math.max(point, max);
+            }
+        }
+        return dp[day][last] = max;
+    }
+
+    private int ninjaTrainingTab(int[][] points) {
+        int[][] dp = new int[points.length][4];
+        // (day, last)
+        // (0,0) (0,1) (0,2) (0,3)
+        // (0,0) -> we take max(points[0][1], points[0][2]
+        // (0,1) -> max(points[0][0], points[0][2])
+        dp[0][0] = Math.max(points[0][1], points[0][2]);
+        dp[0][1] = Math.max(points[0][0], points[0][2]);
+        dp[0][2] = Math.max(points[0][0], points[0][1]);
+        dp[0][3] = Math.max(Math.max(points[0][0], points[0][1]), points[0][2]); // if one row
+
+        for (int day = 1; day < points.length; ++day) { // first row filled
+            for (int last = 0; last < 4; ++last) {
+                dp[day][last] = 0;
+                for (int task = 0; task < 2; ++task) {
+                    if (task != last) dp[day][last] = Math.max(points[day][task] + dp[day - 1][task], dp[day][last]);
+                }
+            }
+        }
+        return dp[points.length - 1][3];
+    }
 }
