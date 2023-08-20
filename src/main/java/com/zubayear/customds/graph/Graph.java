@@ -245,4 +245,25 @@ public class Graph<T> {
         surroundedRegions(board, xr, yc - 1);
         surroundedRegions(board, xr, yc + 1);
     }
+
+    public boolean isBipartite(int[][] graph) {
+        int[] color = new int[graph.length];
+        Arrays.fill(color, -1);
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        color[0] = 0;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int n : graph[cur]) {
+                if (color[n] == -1) {
+                    // if the adj node not colored yet
+                    color[n] = color[cur] == 0 ? 1 : 0;
+                    q.offer(n);
+                } else if (color[n] == color[cur]) { // if adj node have the same color
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

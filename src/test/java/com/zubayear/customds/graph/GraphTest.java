@@ -26,7 +26,7 @@ class GraphTest {
 //                if (isConnected[i-1][j-1] == 1) graph.addEdge(i, j);
 //            }
 //        }
-        graph.printGraph();
+//        graph.printGraph();
         graph.addEdge(1, 2);
         graph.addEdge(1, 3);
         graph.addEdge(2, 5);
@@ -76,5 +76,12 @@ class GraphTest {
         char[][] x = {{'X','O','X'},{'O','X','O'},{'X','O','X'}};
         graph.surroundedRegions(x);
         System.out.println(Arrays.deepToString(x));
+    }
+
+    @Test
+    void isBipartite() {
+        int[][] g = {{1,2,3},{0,2},{0,1,3},{0,2}};
+        boolean bipartite = graph.isBipartite(g);
+        System.out.println(bipartite);
     }
 }
