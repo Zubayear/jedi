@@ -1,7 +1,6 @@
 package com.zubayear.customds.trie;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Trie {
     public TrieNode root;
@@ -79,5 +78,37 @@ public class Trie {
             if (current == null) return null;
         }
         return current; // this will return TireNode of p of app
+    }
+
+    public String reorganizeString(String s) {
+        // aabbcaabcd
+        int[] charFreq = new int[26];
+        for (char c : s.toCharArray()) {
+            charFreq[c - 'a'] += 1;
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> Integer.compare(y[1], x[1]));
+        for (int i = 0; i < 26; ++i) {
+            if (charFreq[i] > 0) pq.offer(new int[]{i + 'a', charFreq[i]});
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            if (sb.length() == 0 || cur[0] != sb.charAt(sb.length() - 1)) {
+                // either empty sb or the previous value is not equal
+                // first we've added 'a' then if we don't get another 'a' we'll add
+                sb.append((char) cur[0]);
+                if (--cur[1] > 0) pq.offer(cur); // a will be a -> 3
+            } else {
+                if (pq.isEmpty()) return ""; // for aaab, after adding last a i.e. abaa at this instance pq will be empty
+                // first char is same as last char
+                // a -> 3, b -> 3, ...
+                // in this case we'll get 'a' again but we want 'b'
+                int[] next = pq.poll();
+                sb.append((char) next[0]);
+                if (--next[1] > 0) pq.offer(next);
+                pq.offer(cur); // push the cur i.e. we have polled (a,3) but we might need it next
+            }
+        }
+        return sb.toString();
     }
 }

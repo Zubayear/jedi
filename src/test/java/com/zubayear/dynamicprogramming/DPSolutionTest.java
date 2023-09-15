@@ -107,4 +107,20 @@ class DPSolutionTest {
         int i = dp.ninjaTraining(nums);
         System.out.println(i);
     }
+
+    @Test
+    void coinChangeTab() {
+        int[] coins = {1,2,5};
+        int amount = 11;
+        int i = dp.coinChangeTab(coins, amount);
+        System.out.println(i);
+    }
+
+    @Test
+    void combinationSum4() {
+        int[] nums= {1,2,3};
+        int t = 4;
+        int i = dp.combinationSum4(nums, t);
+        System.out.println(i);
+    }
 }

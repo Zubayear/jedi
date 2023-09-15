@@ -1,9 +1,6 @@
 package com.zubayear.dynamicprogramming;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DPSolution {
     public long uniquePaths(int m, int n) {
@@ -144,35 +141,48 @@ public class DPSolution {
     }
 
     int coinChange(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount + 1];
+        int[][] dp = new int[coins.length][amount+1];
         for (int[] row : dp) Arrays.fill(row, -1);
         int result = coinChangeHelper(coins, coins.length - 1, amount, dp);
-        return result == (int) Math.pow(10, 9) ? -1 : result;
+        return result == 1e9 ? -1 : result;
     }
 
     private int coinChangeHelper(int[] coins, int i, int amount, int[][] dp) {
         if (i == 0) {
             if (amount % coins[i] == 0) return amount / coins[i];
-            else return (int) Math.pow(10, 9);
+            else return (int) 1e9;
         }
+        // we'll just check before calling the function
         if (dp[i][amount] != -1) return dp[i][amount];
         int notTake = coinChangeHelper(coins, i - 1, amount, dp);
         int take = Integer.MAX_VALUE;
-        if (coins[i] <= amount) { // if we can make up the amount with coins
-            take = 1 + coinChangeHelper(coins, i, amount - coins[i], dp);
-        }
+        // if we can make up the amount with coins
+        if (coins[i] <= amount) take = 1 + coinChangeHelper(coins, i, amount - coins[i], dp);
         dp[i][amount] = Math.min(take, notTake);
         return dp[i][amount];
     }
 
-//    private int coinChangeTabulation(int[] coins, int amount) {
-//        int[][] dp = new int[coins.length][amount+1];
-//        for (int i = 0; i <= amount; i++) {
-//            if (amount % coins[0] == 0) dp[0][i] = amount/coins[0];
-//            else dp[0][i] = (int)Math.pow(10,9);
-//        }
-//    }
+    public int coinChangeTab(int[] coins, int amount) {
+        int[][] dp = new int[coins.length][amount+1];
+        for (int i = 0; i < amount+1; ++i) {
+            if (i % coins[0] == 0) dp[0][i] = i / coins[0];
+            else dp[0][i] = (int) 1e9;
+        }
+        for (int i = 1; i < coins.length; ++i) {
+            for (int j = 0; j <= amount; ++j) {
+                // not taking
+                int nt = dp[i - 1][j];
 
+                // taking
+                int t = Integer.MAX_VALUE;
+                if (coins[i] <= j) t = 1 + dp[i][j-coins[i]];
+                dp[i][j] = Math.min(t, nt);
+            }
+        }
+        int res = dp[coins.length-1][amount];
+        if (res == 1e9) return -1;
+        return res;
+    }
     public void x() {
 //        int[] notes = new int[]{2000, 500, 200, 100, 50, 20, 10, 5, 1};
         int[] notes = new int[]{1, 2, 5, 10, 20, 50, 100, 200};
@@ -190,6 +200,25 @@ public class DPSolution {
                 System.out.printf("Note = %d, Count = %d\n", notes[i], noteCounter[i]);
             }
         }
+    }
+
+    public int combinationSum4(int[] nums, int target) {
+        // this is coin change ii
+        int n = nums.length;
+        int[][] dp = new int[n][target+1];
+        for (int i = 0; i <= target; ++i) {
+            if (i % nums[0] == 0) dp[0][i] = 1;
+        }
+        for (int j = 1; j <= target; ++j) {
+            for (int i = 0; i < n; ++i) {
+                int nt = dp[j-1][i];
+                int t = 0;
+                if (nums[i] <= j) t = dp[j][i-nums[j]];
+                dp[j][i] = nt + t;
+            }
+        }
+        System.out.println(Arrays.deepToString(dp));
+        return dp[n-1][target];
     }
 
     int longestCommonSubsequence(String text1, String text2) {

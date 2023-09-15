@@ -82,8 +82,8 @@ class RecursionSolutionTest {
 
     @Test
     void combinationSum() {
-        int[] candidates = new int[]{10,1,2,7,6,1,5};
-        int target = 8;
+        int[] candidates = new int[]{1,2,3};
+        int target = 4;
         List<List<Integer>> result = rs.combinationSum(candidates, target);
         System.out.println(result);
     }
