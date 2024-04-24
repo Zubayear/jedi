@@ -123,4 +123,20 @@ class DPSolutionTest {
         int i = dp.combinationSum4(nums, t);
         System.out.println(i);
     }
+
+    @Test
+    void lengthOfLIS() {
+        int[] nums = {10,9,2,5,3,7,101,18};
+        var ans = dp.lengthOfLIS(nums);
+        System.out.println(ans);
+    }
+
+    @Test
+    void longestStrChain() {
+//        var words = new String[]{"xbc", "pcxbcf", "xb", "cxbc", "pcxbc"};
+//        var words = new String[]{"a","b","ba","bca","bda","bdca"};
+        var words = new String[]{"a","ab","ac","bd","abc","abd","abdd"};
+        int i = dp.longestStrChain(words);
+        System.out.println(i);
+    }
 }

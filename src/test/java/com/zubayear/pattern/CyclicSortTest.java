@@ -31,7 +31,7 @@ class CyclicSortTest {
 
     @Test
     void missingNumber() {
-        int[] nums = {3,0,1};
+        int[] nums = {2,3,1,5};
         System.out.println(cs.missingNumber(nums));
     }
 }

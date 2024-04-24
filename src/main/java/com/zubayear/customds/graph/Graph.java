@@ -266,4 +266,51 @@ public class Graph<T> {
         }
         return true;
     }
+
+    public int minCostConnectPoints(int[][] points) {
+        // pre-processing
+        // [[0,0],[2,2],[3,10],[5,2],[7,0]]
+        int N = points.length;
+        // 0 -> [cost, node]
+        // 1 -> []
+        // ...
+        List<int[]>[] adj = new ArrayList[N];
+
+        for (int i = 0; i < N; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < N; i++) {
+            int x1 = points[i][0], y1 = points[i][1]; // 0, 0
+            for (int j = i+1; j < N; j++) {
+                int x2 = points[j][0], y2 = points[j][1]; // 2, 2
+                int dist = Math.abs(x1-x2) + Math.abs(y1-y2);
+                adj[i].add(new int[]{dist, j});
+                adj[j].add(new int[]{dist, i});
+            }
+        }
+
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0])); // {wt,n}
+        Set<Integer> visited = new HashSet<>();
+        int sum = 0;
+        minHeap.add(new int[]{0, 0});
+
+        while (visited.size() < N) {
+            int[] val = minHeap.poll();
+            int wt = val[0], node = val[1];
+
+            if (visited.contains(node)) continue;
+            sum += wt;
+            visited.add(node);
+
+            for (int[] n : adj[node]) {
+                if (!visited.contains(n[1])) {
+                    minHeap.add(new int[]{n[0], n[1]});
+                }
+            }
+        }
+        return sum;
+
+    }
+
 }

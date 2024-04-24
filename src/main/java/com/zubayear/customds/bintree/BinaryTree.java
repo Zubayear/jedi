@@ -1,7 +1,5 @@
 package com.zubayear.customds.bintree;
 
-import com.sun.source.tree.Tree;
-
 import java.util.*;
 
 public class BinaryTree<T> {
@@ -38,7 +36,7 @@ public class BinaryTree<T> {
 
     private TreeNode<T> createBinaryTreeHelper(Integer[] array, int index) {
         if (index >= array.length || array[index] == null) return null;
-        TreeNode<T> root = new TreeNode<T>((T) array[index]);
+        TreeNode<T> root = new TreeNode<>((T) array[index]);
         root.left = createBinaryTreeHelper(array, 2*index+1);
         root.right = createBinaryTreeHelper(array, 2*index+2);
         return root;

@@ -1,5 +1,6 @@
 package com.zubayear.customds.stack;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -7,22 +8,33 @@ public class MyStackWith1Q {
     private Deque<Integer> q;
 
     public MyStackWith1Q() {
-        q = new LinkedList<>();
+        q = new ArrayDeque<>();
     }
 
     public void push(int x) {
         // push x
         // loop through qSize-1 and push all values again
         q.offer(x);
-        for (int i = 0; i < q.size(); ++i) q.offer(q.poll());
+        int size = q.size();
+        for (int i = 0; i < size - 1; ++i) {
+            q.offer(q.poll());
+        }
     }
 
     public int pop() {
-        return q.poll();
+        Integer value = q.poll();
+        if (value == null) {
+            value = -1;
+        }
+        return value;
     }
 
     public int top() {
-        return q.peek();
+        Integer value = q.peek();
+        if (value == null) {
+            value = -1;
+        }
+        return value;
     }
 
     public boolean empty() {

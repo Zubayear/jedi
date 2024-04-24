@@ -141,7 +141,7 @@ public class DPSolution {
     }
 
     int coinChange(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount+1];
+        int[][] dp = new int[coins.length][amount + 1];
         for (int[] row : dp) Arrays.fill(row, -1);
         int result = coinChangeHelper(coins, coins.length - 1, amount, dp);
         return result == 1e9 ? -1 : result;
@@ -163,8 +163,8 @@ public class DPSolution {
     }
 
     public int coinChangeTab(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount+1];
-        for (int i = 0; i < amount+1; ++i) {
+        int[][] dp = new int[coins.length][amount + 1];
+        for (int i = 0; i < amount + 1; ++i) {
             if (i % coins[0] == 0) dp[0][i] = i / coins[0];
             else dp[0][i] = (int) 1e9;
         }
@@ -175,14 +175,15 @@ public class DPSolution {
 
                 // taking
                 int t = Integer.MAX_VALUE;
-                if (coins[i] <= j) t = 1 + dp[i][j-coins[i]];
+                if (coins[i] <= j) t = 1 + dp[i][j - coins[i]];
                 dp[i][j] = Math.min(t, nt);
             }
         }
-        int res = dp[coins.length-1][amount];
+        int res = dp[coins.length - 1][amount];
         if (res == 1e9) return -1;
         return res;
     }
+
     public void x() {
 //        int[] notes = new int[]{2000, 500, 200, 100, 50, 20, 10, 5, 1};
         int[] notes = new int[]{1, 2, 5, 10, 20, 50, 100, 200};
@@ -205,20 +206,20 @@ public class DPSolution {
     public int combinationSum4(int[] nums, int target) {
         // this is coin change ii
         int n = nums.length;
-        int[][] dp = new int[n][target+1];
+        int[][] dp = new int[n][target + 1];
         for (int i = 0; i <= target; ++i) {
             if (i % nums[0] == 0) dp[0][i] = 1;
         }
         for (int j = 1; j <= target; ++j) {
             for (int i = 0; i < n; ++i) {
-                int nt = dp[j-1][i];
+                int nt = dp[j - 1][i];
                 int t = 0;
-                if (nums[i] <= j) t = dp[j][i-nums[j]];
+                if (nums[i] <= j) t = dp[j][i - nums[j]];
                 dp[j][i] = nt + t;
             }
         }
         System.out.println(Arrays.deepToString(dp));
-        return dp[n-1][target];
+        return dp[n - 1][target];
     }
 
     int longestCommonSubsequence(String text1, String text2) {
@@ -333,5 +334,50 @@ public class DPSolution {
             }
         }
         return dp[points.length - 1][3];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        List<Integer> list = new ArrayList<>(nums.length);
+        list.add(nums[0]);
+        int ans = 1;
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] > list.get(list.size() - 1)) {
+                // if the next value is greater than the one we pushed previously to list
+                list.add(nums[i]);
+                ans++;
+            } else {
+                // need to find the right place to insert
+                int idx = Collections.binarySearch(list, nums[i]);
+                if (idx < 0) idx = -(idx + 1);
+                list.set(idx, nums[i]);
+            }
+        }
+        return ans;
+    }
+
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        int N = words.length;
+        int[] dp = new int[N];
+        Arrays.fill(dp, 1);
+        int ans = 1;
+        for (int i = 0; i < N; ++i) {
+//            dp[i] = 1;
+            for (int j = 0; j < i; ++j) {
+                if (compare(words[j], words[i]) && 1 + dp[j] > dp[i]) dp[i] = 1 + dp[j];
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        return ans;
+    }
+
+    private boolean compare(String s1, String s2) {
+        if (s1.length() + 1 != s2.length()) return false;
+        int i = 0, j = 0;
+        while (i < s1.length() && j < s2.length()) {
+            if (s1.charAt(i) == s1.charAt(j)) i++;
+            j++;
+        }
+        return i == s1.length();
     }
 }

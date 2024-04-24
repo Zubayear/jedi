@@ -84,4 +84,11 @@ class GraphTest {
         boolean bipartite = graph.isBipartite(g);
         System.out.println(bipartite);
     }
+
+    @Test
+    void minCostConnectPoints() {
+        int[][] x = {{0,0},{2,2},{3,10},{5,2},{7,0}};
+        int i = graph.minCostConnectPoints(x);
+        System.out.println(i);
+    }
 }
