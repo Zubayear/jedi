@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.List;
 
 public class BinarySearchTree<T extends Comparable<T>> {
+
     public TreeNode<T> sortedArrayToBST(List<T> numbers) {
         if (numbers == null || numbers.isEmpty()) {
             return null;
@@ -53,6 +54,110 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return newNode;
     }
 
+    public TreeNode<T> insertRecursive(TreeNode<T> root, T val) {
+        if (root == null) {
+            return new TreeNode<>(val);
+        }
+        if (val.compareTo(root.val) < 0) {
+            root.left = insertRecursive(root.left, val);
+        } else {
+            root.right = insertRecursive(root.right, val);
+        }
+        return root;
+    }
+
+    public TreeNode<T> deleteNode(TreeNode<T> root, T key) {
+        if (root == null) {
+            return null;
+        }
+        if (key.compareTo(root.val) < 0) {
+            root.left = deleteNode(root.left, key);
+        } else if (key.compareTo(root.val) > 0) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            }
+            if (root.right == null) {
+                return root.left;
+            }
+            TreeNode<T> successor = successor(root.right);
+            root.val = successor.val;
+            root.right = deleteNode(root.right, root.val);
+        }
+        return root;
+    }
+
+    public TreeNode<T> preorderToBST(T[] numbers) {
+        if (numbers == null || numbers.length == 0) {
+            return null;
+        }
+        int n = numbers.length;
+        int i = 0;
+        TreeNode<T> root = new TreeNode<>(numbers[i++]);
+        TreeNode<T> p = root;
+        Deque<TreeNode<T>> stack = new ArrayDeque<>();
+
+        while (i < n) {
+            // if the p.val is less than then go to left
+            if (numbers[i].compareTo(p.val) < 0) {
+                TreeNode<T> newNode = new TreeNode<>(numbers[i++]);
+                p.left = newNode;
+                stack.offerFirst(p);
+                p = newNode;
+            } else {
+                // in this case check if the value is between p.val and node at the top of the stack
+                var top = stack.peekFirst() == null ? Integer.MAX_VALUE : (Integer) stack.peekFirst().val;
+                if (numbers[i].compareTo(p.val) > 0 && (Integer) numbers[i] < top) {
+                    TreeNode<T> newNode = new TreeNode<>(numbers[i++]);
+                    p.right = newNode;
+                    p = newNode;
+                } else {
+                    p = stack.pollFirst();
+                }
+            }
+        }
+        return root;
+    }
+
+    public boolean isValidBST(TreeNode<T> root, T left, T right) {
+        if (root == null) {
+            return true;
+        }
+        return isValidBSTHelper(root, left, right);
+    }
+
+    private boolean isValidBSTHelper(TreeNode<T> node, T left, T right) {
+        // For large test cases we need to use long for the boundary value
+        if (node == null) {
+            return true;
+        }
+        // -inf < val < right
+        if (left.compareTo(node.val) > 0 || right.compareTo(node.val) < 0) {
+            return false;
+        }
+        var leftSubtree = isValidBSTHelper(node.left, left, node.val);
+        var rightSubtree = isValidBSTHelper(node.right, node.val, right);
+        return leftSubtree && rightSubtree;
+    }
+
+    public TreeNode<T> searchInBST(TreeNode<T> root, T key) {
+        if (root == null) {
+            return null;
+        }
+        if (key.compareTo(root.val) < 0) {
+            return searchInBST(root.left, key);
+        } else {
+            return searchInBST(root.right, key);
+        }
+    }
+
+    private TreeNode<T> successor(TreeNode<T> node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
 
     public String preorder(TreeNode<T> root) {
         /*
@@ -161,5 +266,4 @@ public class BinarySearchTree<T extends Comparable<T>> {
         sb.append("]");
         return sb.toString();
     }
-
 }

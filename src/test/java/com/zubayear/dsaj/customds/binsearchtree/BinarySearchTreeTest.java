@@ -25,17 +25,11 @@ class BinarySearchTreeTest {
 
     @Test
     void insertIntoBST() {
-        TreeNode<Integer> root = new TreeNode<>(30);
-        binarySearchTree.insertIntoBST(root, 20);
-        binarySearchTree.insertIntoBST(root, 40);
-        binarySearchTree.insertIntoBST(root, 10);
-        binarySearchTree.insertIntoBST(root, 25);
-        binarySearchTree.insertIntoBST(root, 35);
-        binarySearchTree.insertIntoBST(root, 50);
+        List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
+        var root = binarySearchTree.sortedArrayToBST(list);
         binarySearchTree.insertIntoBST(root, 38);
 
-        String preorder = binarySearchTree.preorder(root);
-        System.out.println(preorder);
+        Assertions.assertNull(binarySearchTree.searchInBST(root, 69));
     }
 
     @Test
@@ -49,5 +43,36 @@ class BinarySearchTreeTest {
         binarySearchTree.insertIntoBST(root, 78);
         String s = binarySearchTree.leverOrder(root);
         Assertions.assertEquals("[[30],[10,50],[20,40,60],[38,78]]", s);
+    }
+
+    @Test
+    void insertRecursive() {
+        TreeNode<Integer> root = binarySearchTree.insertRecursive(null, 30);
+        binarySearchTree.insertRecursive(root, 10);
+        binarySearchTree.insertRecursive(root, 20);
+        binarySearchTree.insertRecursive(root, 40);
+        binarySearchTree.insertRecursive(root, 50);
+        binarySearchTree.insertRecursive(root, 60);
+        binarySearchTree.insertRecursive(root, 38);
+        String result = binarySearchTree.inorder(root);
+        Assertions.assertEquals("[10,20,30,38,40,50,60]", result);
+
+    }
+
+    @Test
+    void isValidBST() {
+        List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
+        var root = binarySearchTree.sortedArrayToBST(list);
+        binarySearchTree.insertIntoBST(root, 38);
+        Assertions.assertTrue(binarySearchTree.isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+    }
+
+    @Test
+    void deleteNode() {
+        Integer[] numbers = new Integer[]{30, 20, 10, 15, 25, 40, 50, 45};
+        var root = binarySearchTree.preorderToBST(numbers);
+        var result = binarySearchTree.deleteNode(root, 30);
+        String inorder = binarySearchTree.inorder(result);
+        Assertions.assertEquals("[10,15,20,25,40,45,50]", inorder);
     }
 }
