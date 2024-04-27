@@ -159,6 +159,25 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return node;
     }
 
+    public TreeNode<T> inorderPredecessor(TreeNode<T> root, TreeNode<T> node) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode<T> predecessor = null;
+        TreeNode<T> traveler = root;
+        while (traveler != null) {
+            if (node.val.compareTo(traveler.val) < 0) {
+                traveler = traveler.left;
+            } else if (node.val.compareTo(traveler.val) > 0) {
+                predecessor = traveler;
+                traveler = traveler.right;
+            } else {
+                break;
+            }
+        }
+        return predecessor;
+    }
+
     public String preorder(TreeNode<T> root) {
         /*
          * when t is not null print and push it to stack then go to left

@@ -40,7 +40,7 @@ class BinarySearchTreeTest {
         String result = binarySearchTree.inorder(root);
         Assertions.assertEquals("[10,20,30,38,40,50,60]", result);
 
-        binarySearchTree.insertIntoBST(root, 78);
+        binarySearchTree.insertRecursive(root, 78);
         String s = binarySearchTree.leverOrder(root);
         Assertions.assertEquals("[[30],[10,50],[20,40,60],[38,78]]", s);
     }
@@ -74,5 +74,15 @@ class BinarySearchTreeTest {
         var result = binarySearchTree.deleteNode(root, 30);
         String inorder = binarySearchTree.inorder(result);
         Assertions.assertEquals("[10,15,20,25,40,45,50]", inorder);
+    }
+
+    @Test
+    void inorderPredecessor() {
+        List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
+        var root = binarySearchTree.sortedArrayToBST(list);
+
+
+        var result = binarySearchTree.inorderPredecessor(root, new TreeNode<>(40));
+        System.out.println(result.val);
     }
 }
