@@ -1,9 +1,6 @@
 package com.zubayear.dsaj.pattern;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 public class SlidingWindow {
     public int[] maxSlidingWindow(int[] nums, int k) {
@@ -33,30 +30,58 @@ public class SlidingWindow {
         return result;
     }
 
-    public int[] firstNeg(int[] nums, int k) {
-        int ws = 0, we = 0, size = nums.length;
-        int[] result = new int[size - k + 1];
-        Deque<Integer> q = new ArrayDeque<>();
-        // -8 2 3 -6 10
-        while (we < size) {
+    public int[] firstNegative(int[] nums, int k) {
+        int traveler = 0, left = 0, n = nums.length;
+        int[] result = new int[n - k + 1];
+        Deque<Integer> queue = new ArrayDeque<>();
+        while (traveler < n) {
             // calculation
-            if (nums[we] < 0) q.offer(nums[we]); // -8, 2
-            if (we - ws + 1 < k) we++;
-            else if (we - ws + 1 == k) {
-                // ans <- calculation
-                // slide
-                if (q.isEmpty()) result[ws] = 0;
-                else {
-                    int val = q.peek();
-                    result[ws] = val;
-                    if (val == nums[ws]) q.poll();
-                }
-                ws++;
-                we++;
+            if (nums[traveler] < 0) {
+                queue.offer(nums[traveler]);
             }
+            if (traveler - left + 1 < k) {
+                traveler++;
+            } else if (traveler - left + 1 == k) {
+                // get answer from calculation
+                Integer val = Objects.requireNonNullElse(queue.peek(), 0);
+                result[left] = val;
+                if (nums[left] == val) {
+                    queue.poll();
+                }
+                // slide window
+                left++;
+                traveler++;
+            }
+
         }
         return result;
     }
 
+    public int longestSubstringKDistinct(String s, int k) {
+        int result = -1, traveler = 0, left = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        while (traveler < s.length()) {
+            map.put(s.charAt(traveler), map.getOrDefault(s.charAt(traveler), 0) + 1);
+            if (map.size() < k) {
+                traveler++;
+            } else if (map.size() == k) {
+                result = Math.max(result, (traveler - left + 1));
+                traveler++;
+            } else {
+                while (map.size() != k) {
+                    char ch = s.charAt(left);
+                    if (map.containsKey(ch)) {
+                        map.put(ch, map.get(ch) - 1);
+                        if (map.get(ch) == 0) {
+                            map.remove(ch);
+                        }
+                        left++;
+                    }
+                }
+                traveler++;
+            }
+        }
+        return result;
+    }
 }
 

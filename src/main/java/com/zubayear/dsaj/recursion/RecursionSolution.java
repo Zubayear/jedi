@@ -1,6 +1,8 @@
 package com.zubayear.dsaj.recursion;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RecursionSolution {
     void printName(int i, int n) {
@@ -151,6 +153,23 @@ public class RecursionSolution {
         combinationSum(idx + 1, candidates, target, aux, result); // didn't take it so we need to move forward
     }
 
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<>();
+        combinationSum2(candidates, target, 0, result, new ArrayList<Integer>());
+        return result;
+    }
+
+    private void combinationSum2(int[] candidates, int target, int idx, List<List<Integer>> result, List<Integer> auxList) {
+        if (target == 0) {
+            result.add(new ArrayList<>(auxList));
+            return;
+        }
+        for (int i = idx; i < candidates.length; i++) {
+
+        }
+    }
+
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         subsets(nums, 0, new ArrayList<>(), result);
@@ -193,7 +212,7 @@ public class RecursionSolution {
 
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        boolean freq[] = new boolean[nums.length];
+        boolean[] freq = new boolean[nums.length];
         permute(nums, new ArrayList<>(), freq, result);
         return result;
     }

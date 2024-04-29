@@ -78,14 +78,14 @@ public class Graph<T> {
     }
 
     private void dfsRecur(T node, Set<T> visited, List<T> result) {
-        if (node == null) return;
+        if (visited.contains(node)) {
+            return;
+        }
         visited.add(node);
         result.add(node);
         List<T> neighbors = graph.get(node);
         for (T n : neighbors) {
-            if (!visited.contains(n)) {
-                dfsRecur(n, visited, result);
-            }
+            dfsRecur(n, visited, result);
         }
     }
 
@@ -215,11 +215,11 @@ public class Graph<T> {
         // first row
         for (int i = 0; i < n; ++i) if (board[0][i] == 'O') surroundedRegions(board, 0, i);
         // last row
-        for (int i = 0; i < n; ++i) if (board[m-1][i] == 'O') surroundedRegions(board, m-1, i);
+        for (int i = 0; i < n; ++i) if (board[m - 1][i] == 'O') surroundedRegions(board, m - 1, i);
         // first col
         for (int i = 0; i < m; ++i) if (board[i][0] == 'O') surroundedRegions(board, i, 0);
         // last col
-        for (int i = 0; i < m; ++i) if (board[i][n-1] == 'O') surroundedRegions(board, i, n-1);
+        for (int i = 0; i < m; ++i) if (board[i][n - 1] == 'O') surroundedRegions(board, i, n - 1);
 
         // we've made 'O' to 'D' in all the corners
         // now make the rest of the 'O' in the middle to 'X'
@@ -282,9 +282,9 @@ public class Graph<T> {
 
         for (int i = 0; i < N; i++) {
             int x1 = points[i][0], y1 = points[i][1]; // 0, 0
-            for (int j = i+1; j < N; j++) {
+            for (int j = i + 1; j < N; j++) {
                 int x2 = points[j][0], y2 = points[j][1]; // 2, 2
-                int dist = Math.abs(x1-x2) + Math.abs(y1-y2);
+                int dist = Math.abs(x1 - x2) + Math.abs(y1 - y2);
                 adj[i].add(new int[]{dist, j});
                 adj[j].add(new int[]{dist, i});
             }
