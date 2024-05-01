@@ -26,7 +26,7 @@ class TrieTest {
     }
 
     @Test
-    void insert() {
+    void testOperations() {
         List<String> words = Arrays.asList("football", "life", "storm", "polar bear", "polar");
         words.forEach(w -> trie.insert(w));
         // test1
@@ -41,7 +41,7 @@ class TrieTest {
 
         // test4
         List<String> actualDfsResult = trie.dfs();
-        assertThat("List equality without order", actualDfsResult, containsInAnyOrder(words.toArray()));
+        assertThat("DFS Test", actualDfsResult, containsInAnyOrder(words.toArray()));
 
     }
 }
