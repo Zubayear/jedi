@@ -1,10 +1,10 @@
-package com.zubayear.dsaj.recursion;
+package com.zubayear.dsaj.problems;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecursionSolution {
+public class RecursionProblems {
     void printName(int i, int n) {
         if (i > n - 1) return;
         System.out.println("Name");
