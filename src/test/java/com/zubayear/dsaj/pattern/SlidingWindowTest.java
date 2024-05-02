@@ -1,5 +1,6 @@
 package com.zubayear.dsaj.pattern;
 
+import com.zubayear.dsaj.problems.SlidingWindow;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
