@@ -6,19 +6,16 @@ import java.util.List;
 public class GenericStack<T> {
     private final List<T> data;
     private int top = -1;
-    private final int size;
 
-    public GenericStack(int size) {
-        this.size = size;
-        data = new ArrayList<>(size);
+    public GenericStack() {
+        data = new ArrayList<>();
     }
 
-    public boolean push(T val) {
-        if (isFull()) {
-            throw new RuntimeException("Stack is full");
+    public void push(T val) {
+        if (val == null) {
+            throw new IllegalArgumentException("Invalid value");
         }
         data.add(++top, val);
-        return true;
     }
 
     public T peek() {
@@ -29,27 +26,40 @@ public class GenericStack<T> {
     }
 
     public T peek(int pos) {
+        if (pos < 0) {
+            throw new IllegalArgumentException("Invalid position");
+        }
         if (isEmpty()) {
             throw new RuntimeException("Stack is empty");
         }
-        if (top - pos + 1 < 0) {
-            throw new RuntimeException("Invalid position");
-        }
-        return data.get(top - pos + 1);
+        return data.get(pos - 1);
     }
 
     public T pop() {
         if (isEmpty()) {
             throw new RuntimeException("Stack is empty");
         }
-        return data.get(top--);
+        T val = data.get(top);
+        data.remove(top);
+        top--;
+        return val;
     }
 
-    private boolean isFull() {
-        return top == size - 1;
-    }
-
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return top == -1;
+    }
+
+    public int size() {
+        return data.size();
+    }
+
+    public void clear() {
+        top = -1;
+        data.clear();
+    }
+
+    @Override
+    public String toString() {
+        return data.toString();
     }
 }

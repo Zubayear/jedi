@@ -29,8 +29,8 @@ class BinaryHeapTest {
         for (int i : minHeap) {
             binaryHeap.add(i);
         }
-        Assertions.assertEquals(binaryHeap.poll(), 5);
-        Assertions.assertEquals(binaryHeap.peek(), 15);
+        Assertions.assertEquals(5, binaryHeap.poll());
+        Assertions.assertEquals(15, binaryHeap.peek());
         Assertions.assertFalse(binaryHeap.contains(90));
         binaryHeap.clear();
         Assertions.assertTrue(binaryHeap.isEmpty());
@@ -39,7 +39,7 @@ class BinaryHeapTest {
         for (int i : minHeap) {
             binaryHeap.add(-i);
         }
-        Assertions.assertEquals(-binaryHeap.poll(), 40);
-        Assertions.assertEquals(-binaryHeap.peek(), 35);
+        Assertions.assertEquals(40, -binaryHeap.poll());
+        Assertions.assertEquals(35, -binaryHeap.peek());
     }
 }
