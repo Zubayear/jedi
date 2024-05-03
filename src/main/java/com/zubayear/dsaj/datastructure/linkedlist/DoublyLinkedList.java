@@ -12,9 +12,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     }
 
     public void clear() {
-        if (isEmpty()) {
-            throw new RuntimeException("Empty list");
-        }
+        throwExceptionWhenEmpty();
 
         ListNode<T> traveler = head;
         while (traveler != null) {
