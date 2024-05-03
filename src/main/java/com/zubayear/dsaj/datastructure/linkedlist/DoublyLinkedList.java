@@ -1,84 +1,249 @@
 package com.zubayear.dsaj.datastructure.linkedlist;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Iterator;
 
-public class DoublyLinkedList<T> {
-    protected ListNode<T> head;
-    protected ListNode<T> tail;
+public class DoublyLinkedList<T> implements Iterable<T> {
+    private ListNode<T> head;
+    private ListNode<T> tail;
+    private int size = 0;
 
-    public DoublyLinkedList(T val) {
-        head = new ListNode<>(val);
-        tail = new ListNode<>(val);
-        head.next = tail;
-        tail.prev = head;
+    public int size() {
+        return size;
     }
 
-    public void insertAtHead(T val) {
-        ListNode<T> node = new ListNode<>(val);
-        node.next = head.next;
-        head.next.prev = node;
-        node.prev = head;
-        head.next = node;
-    }
-
-    public void insertAtTail(T val) {
-        ListNode<T> node = new ListNode<>(val);
-        node.next = tail;
-        node.prev = tail.prev;
-        tail.prev.next = node;
-        tail.prev = node;
-    }
-
-    public void printList() {
-        ListNode<T> currentNode = head.next;
-        while (currentNode.next != null) {
-            System.out.print(currentNode.val + " -> ");
-            currentNode = currentNode.next;
+    public void clear() {
+        if (isEmpty()) {
+            throw new RuntimeException("Empty list");
         }
-        System.out.print("null");
+
+        ListNode<T> traveler = head;
+        while (traveler != null) {
+            ListNode<T> next = traveler.next;
+            traveler.next = traveler.prev = null;
+            traveler.val = null;
+            traveler = next;
+        }
+        head = tail = null;
+        size = 0;
     }
 
-    public List<T> getList(boolean forward) {
-        List<T> result = new LinkedList<>();
-        ListNode<T> currentNode;
-        if (forward) {
-            currentNode = head.next;
-            while (currentNode.next != null) {
-                result.add(currentNode.val);
-                currentNode = currentNode.next;
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    public void add(T elem) {
+        addLast(elem);
+    }
+
+    private void throwExceptionWhenEmpty() {
+        if (isEmpty()) {
+            throw new RuntimeException("Empty list");
+        }
+    }
+
+    // add at tail - O(1)
+    public void addLast(T elem) {
+        if (isEmpty()) {
+            addAtEmptyList(elem);
+            return;
+        }
+        ListNode<T> node = new ListNode<>(elem);
+        node.prev = tail;
+        tail.next = node;
+        tail = node;
+
+        size++;
+    }
+
+    // add at head - O(1)
+    public void addFirst(T elem) {
+        if (isEmpty()) {
+            addAtEmptyList(elem);
+            return;
+        }
+        ListNode<T> node = new ListNode<>(elem);
+        node.next = head;
+        node.prev = head.prev;
+        head = node;
+        size++;
+    }
+
+    // O(1)
+    private void addAtEmptyList(T elem) {
+        ListNode<T> node = new ListNode<>(elem);
+        head = tail = node;
+        size++;
+    }
+
+    // O(n)
+    public void addAt(int idx, T elem) {
+        if (idx < 0 || idx > size) {
+            throw new IllegalArgumentException("Invalid index");
+        }
+        if (idx == 0) {
+            addFirst(elem);
+            return;
+        }
+        if (idx == size) {
+            addLast(elem);
+            return;
+        }
+        ListNode<T> traveler = head;
+        int prevIdx = 0;
+        while (traveler != null) {
+            if (prevIdx == idx - 2) {
+                ListNode<T> node = new ListNode<>(elem);
+                node.next = traveler.next;
+                node.prev = traveler;
+                traveler.next.prev = node;
+                traveler.next = node;
             }
+            prevIdx++;
+            traveler = traveler.next;
+        }
+        size++;
+    }
+
+    // O(1)
+    public T peekFirst() {
+        throwExceptionWhenEmpty();
+        return head.val;
+    }
+
+    // O(1)
+    public T peekLast() {
+        throwExceptionWhenEmpty();
+        return tail.val;
+    }
+
+    // O(1)
+    public T removeFirst() {
+        throwExceptionWhenEmpty();
+
+        T val = head.val;
+        head = head.next;
+        --size;
+
+        if (isEmpty()) {
+            tail = null;
         } else {
-            currentNode = tail.prev;
-            while (currentNode.prev != null) {
-                result.add(currentNode.val);
-                currentNode = currentNode.prev;
-            }
+            head.prev = null;
         }
-        return result;
+
+        return val;
     }
 
-    public void reversePrint() {
-        ListNode<T> currentNode = tail.prev;
-        while (currentNode.prev != null) {
-            System.out.print(currentNode.val + " -> ");
-            currentNode = currentNode.prev;
+    // O(1)
+    public T removeLast() {
+        throwExceptionWhenEmpty();
+
+        T val = tail.val;
+        tail = tail.prev;
+        --size;
+
+        if (isEmpty()) {
+            head = null; // if empty then tail is already null so make head null too
+        } else {
+            tail.next = null;
         }
-        System.out.print("null");
+        return val;
     }
 
-    public boolean delete(T val) {
-        ListNode<T> currentNode = head.next;
-        while (currentNode.next != null) {
-            if (currentNode.val == val) {
-                ListNode<T> prevNode = currentNode.prev;
-                ListNode<T> nextNode = currentNode.next;
-                prevNode.next = nextNode;
-                nextNode.prev = prevNode;
-                return true;
-            }
-            currentNode = currentNode.next;
+    // O(n)
+    public T removeAt(int idx) {
+        if (idx < 0 || idx > size) {
+            throw new IllegalArgumentException("Invalid index");
         }
-        return false;
+        if (idx == 1) {
+            return removeFirst();
+        }
+        if (idx == size) {
+            return removeLast();
+        }
+        int prevIdx = 0;
+        ListNode<T> traveler = head;
+        while (traveler != null) {
+            if (prevIdx == idx - 2) {
+                ListNode<T> nodeToRemove = traveler.next;
+                T val = nodeToRemove.val;
+                traveler.next = nodeToRemove.next;
+                nodeToRemove.next.prev = traveler;
+                nodeToRemove.next = null;
+                nodeToRemove.prev = null;
+                --size;
+                return val;
+            }
+            prevIdx++;
+            traveler = traveler.next;
+        }
+        return null;
+    }
+
+    public boolean remove(T elem) {
+        int idx = indexOf(elem);
+        if (idx == -1) {
+            return false;
+        } else {
+            return removeAt(idx) != null;
+        }
+    }
+
+    public int indexOf(T elem) {
+        int idx = 1;
+        ListNode<T> traveler = head;
+        while (traveler != null) {
+            if (traveler.val == elem) {
+                return idx;
+            }
+            idx++;
+            traveler = traveler.next;
+        }
+        return -1;
+    }
+
+    public boolean contains(T elem) {
+        return indexOf(elem) != -1;
+    }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return "[]";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        ListNode<T> traveler = head;
+        while (traveler != null) {
+            sb.append(traveler.val).append(",");
+            traveler = traveler.next;
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            ListNode<T> traveler = head;
+
+            @Override
+            public boolean hasNext() {
+                return traveler != null;
+            }
+
+            @Override
+            public T next() {
+                T val = traveler.val;
+                traveler = traveler.next;
+                return val;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 }
