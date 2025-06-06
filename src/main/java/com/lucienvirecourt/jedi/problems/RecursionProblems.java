@@ -51,7 +51,7 @@ public class RecursionProblems {
   }
 
   boolean palindrome(String str) {
-    if (str.length() == 0 || str.length() == 1) return true;
+    if (str.isEmpty() || str.length() == 1) return true;
     return palindrome(str.toCharArray(), 0);
   }
 

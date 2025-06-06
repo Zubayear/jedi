@@ -106,7 +106,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         stack.offerFirst(p);
         p = newNode;
       } else {
-        // in this case check if the value is between p.val and node at the top of the stack
+        // in this case, check if the value is between p.val and node at the top of the stack
         var top = stack.peekFirst() == null ? Integer.MAX_VALUE : (Integer) stack.peekFirst().val;
         if (numbers[i].compareTo(p.val) > 0 && (Integer) numbers[i] < top) {
           TreeNode<T> newNode = new TreeNode<>(numbers[i++]);
@@ -128,7 +128,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
   }
 
   private boolean isValidBSTHelper(TreeNode<T> node, T left, T right) {
-    // For large test cases we need to use long for the boundary value
+    // For large test cases, we need to use long for the boundary value
     if (node == null) {
       return true;
     }
@@ -180,7 +180,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
   public String preorder(TreeNode<T> root) {
     /*
-     * when t is not null print and push it to stack then go to left
+     * when t is not null, print and push it to stack then go to left
      * otherwise pop from stack and go to right
      */
     if (root == null) {
