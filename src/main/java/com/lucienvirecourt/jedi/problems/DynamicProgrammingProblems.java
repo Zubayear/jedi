@@ -1,6 +1,7 @@
 package com.lucienvirecourt.jedi.problems;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class DynamicProgrammingProblems {
   public static int climbStairs(int n) {
@@ -75,7 +76,102 @@ public class DynamicProgrammingProblems {
     return t2;
   }
 
-  public static int houseRobber(int n) {
-    return -1;
+  public static int houseRobber(int[] nums) {
+    // optimal
+    if (nums.length == 2) return Math.max(nums[0], nums[1]);
+    int current, prev = nums[0], prev2 = 0;
+    int n = nums.length;
+    for (int i = 1; i < n; ++i) {
+      int take = nums[i];
+      if (i > 1) take += prev2;
+      int ignore = prev;
+      current = Math.max(take, ignore);
+      prev2 = prev;
+      prev = current;
+    }
+    return prev;
+//    return houseRobber(nums.length - 1, nums);
   }
+
+  private static int houseRobber(int idx, int[] nums) {
+    if (idx == 0) return nums[0]; // means we have not picked adjacent 1
+    if (idx < 0) return 0;
+    int take = nums[idx] + houseRobber(idx - 2, nums);
+    int ignore = houseRobber(idx - 1, nums);
+    return Math.max(take, ignore);
+  }
+
+  public static int houseRobberII(int[] nums) {
+    int n = nums.length;
+    int[] nums1 = new int[n - 1];
+    int[] nums2 = new int[n - 1];
+    for (int i = 0; i < n; ++i) {
+      // 1 2 3 1
+      if (i != 0) nums1[i - 1] = nums[i];
+      if (i != n - 1) nums2[i] = nums[i];
+    }
+    return Math.max(houseRobber(nums1), houseRobber(nums2));
+  }
+
+  public static int minimumPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dp = new int[m + 1][n + 1];
+    for (int[] d : dp) {
+      Arrays.fill(d, -1);
+    }
+    return minimumPathSum(m - 1, n - 1, grid, dp);
+  }
+
+  private static int minimumPathSum(int i, int j, int[][] grid, int[][] dp) {
+    if (i == 0 && j == 0) return grid[i][j];
+    if (i < 0 || j < 0) return (int) 1e9;
+    if (dp[i][j] != -1) return dp[i][j];
+    int up = grid[i][j] + minimumPathSum(i - 1, j, grid, dp);
+    int left = grid[i][j] + minimumPathSum(i, j - 1, grid, dp);
+    return dp[i][j] = Math.min(up, left);
+  }
+
+  public static int minimumFallingPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int ans = (int) 1e9;
+//    for (int j = 0; j < n; ++j) {
+//      ans = Math.min(ans, minimumFallingPathSum(m - 1, j, grid));
+//    }
+    // optimal
+    for (int j = 0; j < n; ++j) {
+      ans = Math.min(ans, minimumFallingPathSumOptimal(grid, m - 1, j));
+    }
+    return ans;
+  }
+
+  private static int minimumFallingPathSum(int i, int j, int[][] grid) {
+    if (j < 0 || j >= grid[0].length) return (int) 1e9;
+    if (i == 0) return grid[i][j];
+    int up = grid[i][j] + minimumFallingPathSum(i - 1, j, grid);
+    int ld = grid[i][j] + minimumFallingPathSum(i - 1, j - 1, grid);
+    int rd = grid[i][j] + minimumFallingPathSum(i - 1, j + 1, grid);
+    return Math.min(up, Math.min(ld, rd));
+  }
+
+  private static int minimumFallingPathSumOptimal(int[][] grid, int a, int b) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dp = new int[m][n];
+//    for (int j = 0; j < n; ++j) dp[0][j] = grid[0][j];
+    System.arraycopy(grid[0], 0, dp[0], 0, n);
+    for (int i = 1; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        int up = grid[i][j] + dp[i - 1][j];
+        int ld = grid[i][j];
+        if (j >= 1) ld += dp[i - 1][j - 1];
+        else ld += (int) 1e9; // do we need it?
+        int rd = grid[i][j];
+        if (j < m - 1) rd += dp[i - 1][j + 1];
+        else rd += (int) 1e9;
+        dp[i][j] = Math.min(up, Math.min(ld, rd));
+      }
+    }
+    System.out.println("dp " + Arrays.deepToString(dp));
+    return dp[a][b];
+  }
+
 }
