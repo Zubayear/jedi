@@ -3,7 +3,8 @@ package com.lucienvirecourt.jedi.problems;
 import org.junit.jupiter.api.Test;
 
 import static com.lucienvirecourt.jedi.problems.DynamicProgrammingProblems.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.lucienvirecourt.jedi.problems.DynamicProgrammingProblems.partitionCount;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DynamicProgrammingProblemsTest {
 
@@ -61,5 +62,33 @@ class DynamicProgrammingProblemsTest {
       {-19, 57},
       {-40, -5},
     }));
+  }
+
+  @Test
+  void canPartitionTest() {
+    assertTrue(canPartition(new int[]{4,3,2,3,5,2,1}));
+    assertFalse(canPartition(new int[]{1, 2, 3, 5}));
+  }
+
+  @Test
+  void minimumDifferenceTest() {
+    assertEquals(1, canPartitionOptimal(new int[]{2,7,4,1,8,1}));
+    assertEquals(5, canPartitionOptimal(new int[]{31,26,33,21,40}));
+  }
+
+  @Test
+  void partitionCountTest() {
+    assertEquals(1, partitionCount(new int[]{2,2,2,2,3,4,5}, 9));
+    // {4,1},{3,2},{2,3},{5},{3,2},{2,3},{1,4}
+  }
+
+  @Test
+  void coinChangeTest() {
+    assertEquals(3, coinChange(new int[]{1,2,5}, 11));
+  }
+
+  @Test
+  void partitionCountWithGivenDiffTest() {
+    assertEquals(5, findTargetSumWays(new int[]{1,1,1,1,1}, 3));
   }
 }

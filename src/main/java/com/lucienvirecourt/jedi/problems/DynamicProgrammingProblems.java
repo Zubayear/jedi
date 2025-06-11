@@ -1,9 +1,10 @@
 package com.lucienvirecourt.jedi.problems;
 
 import java.util.Arrays;
-import java.util.Map;
 
 public class DynamicProgrammingProblems {
+  static int mod = (int) (1e9 + 7);
+
   public static int climbStairs(int n) {
     // memoization
     /*int[] cache = new int[n + 1];
@@ -172,6 +173,139 @@ public class DynamicProgrammingProblems {
     }
     System.out.println("dp " + Arrays.deepToString(dp));
     return dp[a][b];
+  }
+
+  public static boolean canPartition(int[] nums) {
+    int sum = 0;
+    for (int n : nums) {
+      sum += n;
+    }
+    if (sum % 2 != 0) return false;
+    return tryPartition(nums.length - 1, sum / 2, nums);
+  }
+
+  private static boolean tryPartition(int idx, int target, int[] nums) {
+    if (target == 0) return true;
+    if (idx == 0) return nums[0] == target;
+    boolean skip = tryPartition(idx - 1, target, nums);
+    boolean include = false;
+    if (nums[idx] <= target) include = tryPartition(idx - 1, target - nums[idx], nums);
+    return skip || include;
+  }
+
+  public static int canPartitionOptimal(int[] nums) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if (sum % 2 != 0) return 0;
+    int n = nums.length, target = sum / 2;
+    boolean[][] dp = new boolean[n][target + 1];
+    for (int i = 0; i < n; ++i) dp[i][0] = true;
+    dp[0][nums[0]] = true;
+    for (int i = 1; i < n; ++i) {
+      for (int j = 0; j < target; ++j) {
+        boolean skip = dp[i - 1][j];
+        boolean include = false;
+        if (nums[i] <= j) include = dp[i - 1][j - nums[i]];
+        dp[i][j] = skip || include;
+      }
+    }
+    boolean[] lastRow = dp[n - 1];
+    int result = (int) 1e9;
+    for (int i = 0; i < lastRow.length; ++i) {
+      if (lastRow[i]) {
+        int absDiff = Math.abs(target - i);
+        result = Math.min(result, absDiff);
+      }
+    }
+    return result * 2;
+  }
+
+  /*
+   * Partition count (p17)
+   * */
+  public static int partitionCount(int[] nums, int k) {
+    int[][] dp = new int[nums.length][k];
+    for (int[] d : dp) Arrays.fill(d, -1);
+    return partitionCount(nums.length - 1, k, nums, dp);
+  }
+
+  private static int partitionCount(int idx, int target, int[] nums, int[][] dp) {
+    if (idx == 0) {
+      if (target == 0 && nums[0] == 0) return 2;
+      if (target == 0 || target == nums[0]) return 1;
+      return 0;
+    }
+    if (dp[idx][target] != -1) return dp[idx][target];
+    int skip = partitionCount(idx - 1, target, nums, dp);
+    int include = 0;
+    if (nums[idx] <= target) include = 1 + partitionCount(idx - 1, target - nums[idx], nums, dp);
+    return dp[idx][target] = skip + include;
+  }
+
+  /*
+   * Count partitions with the given difference (p18)
+   * */
+  public static int findTargetSumWays(int[] nums, int target) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if (sum - target < 0 || (sum - target) % 2 != 0) return 0;
+    int[][] dp = new int[nums.length][target+1];
+    for (int[] d : dp) Arrays.fill(d, -1);
+    return findTargetSumWays(nums.length - 1, (sum - target) / 2, nums, dp);
+  }
+
+  private static int findTargetSumWays(int idx, int target, int[] nums, int[][] dp) {
+    if (idx == 0) {
+      if (target == 0 && nums[0] == 0) return 2;
+      if (target == 0 || target == nums[0]) return 1;
+      return 0;
+    }
+    if (dp[idx][target] != -1) return dp[idx][target];
+    int skip = findTargetSumWays(idx - 1, target, nums, dp);
+    int include = 0;
+    if (nums[idx] <= target) include = findTargetSumWays(idx - 1, target - nums[idx], nums, dp);
+    return dp[idx][target] = (skip + include);
+  }
+
+  public static int coinChange(int[] coins, int amount) {
+    int m = coins.length, n = amount + 1;
+    int[][] dp = new int[m][n];
+    for (int i = 0; i < n; ++i) {
+      if (i % coins[0] == 0) dp[0][i] = i / coins[0];
+      else dp[0][i] = (int) 1e9;
+    }
+    for (int i = 1; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        int skip = dp[i - 1][j];
+        int include = (int) 1e9;
+        if (coins[i] <= j) include = 1 + dp[i][j - coins[i]];
+        dp[i][j] = Math.min(skip, include);
+      }
+    }
+    int result = dp[m - 1][amount];
+    if (result == (int) 1e9) return -1;
+    return result;
+  }
+
+  public static int coinChangeOptimal(int[] coins, int amount) {
+    int m = coins.length, n = amount + 1;
+    int[] prev = new int[n], cur = new int[n];
+    for (int i = 0; i < n; ++i) {
+      if (i % coins[0] == 0) prev[i] = i / coins[0];
+      else prev[i] = (int) 1e9;
+    }
+    for (int i = 1; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        int skip = prev[j];
+        int include = (int) 1e9;
+        if (coins[i] <= j) include = 1 + cur[j - coins[i]];
+        cur[j] = Math.min(skip, include);
+      }
+      prev = cur;
+    }
+    int result = prev[amount];
+    if (result == (int) 1e9) return -1;
+    return result;
   }
 
 }

@@ -8,7 +8,7 @@ public class CyclicSort {
     int i = 0;
     while (i < numbers.length) {
       // 5,4,1,3,2
-      // 5 should be be at index 4
+      // 5 should be at index 4
       int shouldBeAt = numbers[i] - 1;
       // if 5 is not at index 4
       if (numbers[shouldBeAt] != numbers[i]) {
