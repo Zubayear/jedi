@@ -249,7 +249,7 @@ public class DynamicProgrammingProblems {
     int sum = 0;
     for (int n : nums) sum += n;
     if (sum - target < 0 || (sum - target) % 2 != 0) return 0;
-    int[][] dp = new int[nums.length][target+1];
+    int[][] dp = new int[nums.length][target + 1];
     for (int[] d : dp) Arrays.fill(d, -1);
     return findTargetSumWays(nums.length - 1, (sum - target) / 2, nums, dp);
   }
@@ -307,5 +307,133 @@ public class DynamicProgrammingProblems {
     if (result == (int) 1e9) return -1;
     return result;
   }
+
+  /*
+   * lcs
+   * */
+  public static String longestCommonSubsequence(String text1, String text2) {
+    if (text1.equals(text2)) return text1;
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int j = 0; j < n; ++j) dp[0][j] = 0;
+    for (int i = 0; i < m; ++i) dp[i][0] = 0;
+
+    // [[0, 0, 0, 0],
+    // [0, 1, 1, 1],
+    // [0, 1, 1, 1],
+    // [0, 1, 2, 2],
+    // [0, 1, 2, 2],
+    // [0, 1, 2, 3]]
+
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+          dp[i][j] = 1 + dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    int i = m, j = n;
+    StringBuilder result = new StringBuilder();
+    while (i > 0 && j > 0) {
+      if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+        result.append(text1.charAt(i - 1));
+        i = i - 1;
+        j = j - 1;
+      } else if (dp[i - 1][j] > dp[i][j - 1]) {
+        i = i - 1;
+      } else {
+        j = j - 1;
+      }
+    }
+    return result.reverse().toString();
+  }
+
+  public static String longestCommonSubstring(String text1, String text2) {
+    if (text1.equals(text2)) return text1;
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int j = 0; j < n; ++j) dp[0][j] = 0;
+    for (int i = 0; i < m; ++i) dp[i][0] = 0;
+
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+          dp[i][j] = 1 + dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = 0;
+        }
+      }
+    }
+    StringBuilder result = new StringBuilder();
+    int len = -(int) 1e9;
+    int maxIdx = 0;
+    for (int i = 1; i < m; ++i) {
+      for (int j = 1; j < n; ++j) {
+        if (len < dp[i][j]) {
+          len = dp[i][j];
+          maxIdx = i;
+        }
+      }
+    }
+    if (len > 0) result.append(text1.charAt(maxIdx - 1));
+    return result.reverse().toString();
+  }
+
+  public static String shortestCommonSupersequence(String str1, String str2) {
+    int m = str1.length(), n = str2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int j = 0; j < n; ++j) dp[0][j] = 0;
+    for (int i = 0; i < m; ++i) dp[i][0] = 0;
+
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+          dp[i][j] = 1 + dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    //        c  a  b
+    //   [[0, 0, 0, 0],
+    // a [0, 0, 1, 1],
+    // b [0, 0, 1, 2],
+    // a [0, 0, 1, 2],
+    // c [0, 1, 1, 2]]
+
+
+    int i = m, j = n;
+    StringBuilder result = new StringBuilder();
+    while (i > 0 && j > 0) {
+      if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+        result.append(str1.charAt(i - 1));
+        i = i - 1;
+        j = j - 1;
+      } else if (dp[i - 1][j] > dp[i][j - 1]) {
+        result.append(str1.charAt(i - 1));
+        i = i - 1;
+      } else {
+        result.append(str2.charAt(j - 1));
+        j = j - 1;
+      }
+    }
+    while (i > 0) {
+      result.append(str1.charAt(i - 1));
+      i--;
+    }
+    while (j > 0) {
+      result.append(str2.charAt(j - 1));
+      j--;
+    }
+    return result.reverse().toString();
+  }
+
 
 }

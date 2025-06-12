@@ -91,4 +91,25 @@ class DynamicProgrammingProblemsTest {
   void partitionCountWithGivenDiffTest() {
     assertEquals(5, findTargetSumWays(new int[]{1,1,1,1,1}, 3));
   }
+
+  @Test
+  void longestCommonSubsequenceTest() {
+    assertEquals("ace", longestCommonSubsequence("abcde", "ace"));
+    assertEquals("abc", longestCommonSubsequence("abc", "abc"));
+    assertEquals("", longestCommonSubsequence("abc", "def"));
+  }
+
+  @Test
+  void longestCommonSubstringTest() {
+    assertEquals("a", longestCommonSubstring("abcde", "ace"));
+    assertEquals("abc", longestCommonSubstring("abc", "abc"));
+    assertEquals("", longestCommonSubstring("abc", "def"));
+  }
+
+  @Test
+  void shortestCommonSupersequenceTest() {
+    assertEquals("cabac", shortestCommonSupersequence("abac", "cab"));
+    assertEquals("aaaaaaaa", shortestCommonSupersequence("aaaaaaaa", "aaaaaaaa"));
+    assertEquals("bbcccabacabab", shortestCommonSupersequence("bbabacaa", "cccababab"));
+  }
 }
