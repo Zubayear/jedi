@@ -45,4 +45,27 @@ class BinarySearchProblemsTest {
     assertTrue(searchInRotatedSortedArrayWithDuplicates(new int[]{2, 5, 6, 0, 0, 1, 2}, 0));
     assertFalse(searchInRotatedSortedArrayWithDuplicates(new int[]{2, 5, 6, 0, 0, 1, 2}, 3));
   }
+
+  @Test
+  void findMinInRotatedSortedArrayTest() {
+    assertEquals(1, findMinInRotatedSortedArray(new int[]{3, 4, 5, 1, 2}));
+    assertEquals(0, findMinInRotatedSortedArray(new int[]{4, 5, 6, 7, 0, 1, 2}));
+    assertEquals(11, findMinInRotatedSortedArray(new int[]{11, 13, 15, 17}));
+  }
+
+  @Test
+  void findRotationTimeTest() {
+    assertEquals(3, findRotationTime(new int[]{3, 4, 5, 1, 2}));
+    assertEquals(4, findRotationTime(new int[]{4, 5, 6, 7, 0, 1, 2}));
+    assertEquals(0, findRotationTime(new int[]{11, 13, 15, 17}));
+  }
+
+  @Test
+  void searchMatrixTest() {
+    assertTrue(searchMatrix(new int[][]{
+      {1,3,5,7},
+      {10,11,16,20},
+      {23,30,34,60}
+    }, 3));
+  }
 }

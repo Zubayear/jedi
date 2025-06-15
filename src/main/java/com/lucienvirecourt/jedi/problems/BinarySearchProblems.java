@@ -72,35 +72,6 @@ public class BinarySearchProblems {
     return new int[]{lb, up - 1};
   }
 
-  public int rotationTime(int[] nums) {
-    // find the index of min value
-    // find sorted section and get min and then remove sorted section
-    int left = 0, right = nums.length - 1, minVal = Integer.MAX_VALUE, result = 0;
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      // [4,5,6,7,0,1,2] if mid is at 0 then we can see that left and right both sorted
-      // i.e. [0,1] & [1,2] so we have the entire array sorted, just pick the lowest
-      if (nums[left] <= nums[right]) {
-//                minVal = Math.min(minVal, nums[left]);
-        if (minVal <= nums[left]) result = right;
-        else result = left;
-        break;
-      }
-      if (nums[left] <= nums[mid]) { // sorted section
-        if (minVal <= nums[left]) result = mid;
-        else result = left;
-//                minVal = Math.min(minVal, nums[left]);
-        left = mid + 1;
-      } else {
-//                minVal = Math.min(minVal, nums[mid]);
-        if (minVal <= nums[mid]) result = mid;
-        else result = mid;
-        right = mid - 1;
-      }
-    }
-    return result;
-  }
-
   public static int searchInRotatedSortedArray(int[] nums, int target) {
     // find middle
     // find sorted section
@@ -130,7 +101,7 @@ public class BinarySearchProblems {
 
   public static boolean searchInRotatedSortedArrayWithDuplicates(int[] nums, int target) {
     int n = nums.length;
-    int left = 0, right = n-1;
+    int left = 0, right = n - 1;
     while (left <= right) {
       int mid = left + (right - left) / 2;
       if (nums[mid] == target) return true;
@@ -160,6 +131,61 @@ public class BinarySearchProblems {
     return false;
   }
 
+  public static int findMinInRotatedSortedArray(int[] nums) {
+    // 4,5,6,7,0,1,2
+    // sorted section might or might not have the min
+    // so, pick the min from the sorted section and eliminate that half since we got the min of that half
+    int n = nums.length, left = 0, right = n - 1, ans = (int) 1e9;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      // when you cross the point of the rotation, the entire half of the array is sorted,
+      // so if the entire half is sorted, then just take the left value since that will the min
+      if (nums[left] <= nums[right]) {
+        ans = Math.min(ans, nums[left]);
+        break;
+      }
+      // find the sorted section
+      if (nums[left] <= nums[mid]) {
+        ans = Math.min(ans, nums[left]);
+        left = mid + 1;
+      } else {
+        ans = Math.min(ans, nums[mid]);
+        right = mid - 1;
+      }
+    }
+    return ans;
+  }
+
+  public static int findRotationTime(int[] nums) {
+    int n = nums.length, left = 0, right = n - 1, idx = 0, ans = (int) 1e9;
+    // 4,5,6,7,0,1,2
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (nums[left] <= nums[right]) {
+        idx = left;
+        break;
+      }
+      if (nums[left] <= nums[mid]) {
+        if (ans > nums[left]) {
+          idx = left;
+          left = mid + 1;
+        } else {
+          idx = mid;
+          right = mid - 1;
+        }
+      } else {
+        if (ans > nums[mid]) {
+          idx = mid;
+          right = mid - 1;
+        } else {
+          idx = right;
+          left = mid + 1;
+        }
+      }
+    }
+    return idx;
+  }
+
   public int singleNonDuplicate(int[] nums) {
     if (nums.length == 1) return nums[0];
     // for ignoring edge cases, we'll start at 1 and n-2
@@ -186,5 +212,17 @@ public class BinarySearchProblems {
       else right = mid - 1;
     }
     return -1;
+  }
+
+  public static boolean searchMatrix(int[][] matrix, int target) {
+    int m = matrix.length, n = matrix[0].length, left = 0, right = m * n - 1;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      int x = mid / n, y = mid % n;
+      if (matrix[x][y] == target) return true;
+      else if (matrix[x][y] < target) left = mid + 1;
+      else right = mid - 1;
+    }
+    return false;
   }
 }
