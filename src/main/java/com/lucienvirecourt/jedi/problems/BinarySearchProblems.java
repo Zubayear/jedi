@@ -186,6 +186,31 @@ public class BinarySearchProblems {
     return idx;
   }
 
+  public static int minEatingSpeed(int[] piles, int h) {
+    int max = -(int)1e9;
+    for (int p : piles) max = Math.max(max, p);
+    int left = 1, right = max, ans = (int)1e9;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      int e = eat(piles, mid);
+      if (e <= h) {
+        ans = mid;
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return ans;
+  }
+
+  private static int eat(int[] piles, int speed) {
+    int sum = 0;
+    for (int p : piles) {
+      sum += (int) Math.ceil((double) p/speed);
+    }
+    return sum;
+  }
+
   public int singleNonDuplicate(int[] nums) {
     if (nums.length == 1) return nums[0];
     // for ignoring edge cases, we'll start at 1 and n-2

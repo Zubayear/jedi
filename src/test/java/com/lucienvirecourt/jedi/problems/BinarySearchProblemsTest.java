@@ -68,4 +68,11 @@ class BinarySearchProblemsTest {
       {23,30,34,60}
     }, 3));
   }
+
+  @Test
+  void minEatingSpeedTest() {
+    assertEquals(4, minEatingSpeed(new int[]{3,6,7,11}, 8));
+    assertEquals(30, minEatingSpeed(new int[]{30,11,23,4,20}, 5));
+    assertEquals(23, minEatingSpeed(new int[]{30,11,23,4,20}, 6));
+  }
 }
