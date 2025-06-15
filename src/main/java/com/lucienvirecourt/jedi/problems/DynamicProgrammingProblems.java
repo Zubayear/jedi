@@ -171,7 +171,6 @@ public class DynamicProgrammingProblems {
         dp[i][j] = Math.min(up, Math.min(ld, rd));
       }
     }
-    System.out.println("dp " + Arrays.deepToString(dp));
     return dp[a][b];
   }
 
