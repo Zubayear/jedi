@@ -105,4 +105,31 @@ public class ArrayProblems {
     }
     return result;
   }
+
+  public int secondMax(int[] nums) {
+    int largest = nums[0], secondMax = -1;
+    int n = nums.length;
+    for (int i = 1; i < n; ++i) {
+      if (nums[i] > largest) {
+        secondMax = largest; // 4
+        largest = nums[i]; // 7
+      } else if (nums[i] < largest && nums[i] > secondMax) {
+        secondMax = nums[i];
+      }
+    }
+    return secondMax;
+  }
+
+  public int removeDuplicates(int[] nums) {
+    int pt1 = 0, pt2 = 1, n = nums.length, ans = 1;
+    while (pt2 < n) {
+      if (nums[pt1] != nums[pt2]) {
+        nums[++pt1] = nums[pt2++];
+        ans++;
+      } else {
+        pt2++;
+      }
+    }
+    return ans;
+  }
 }
