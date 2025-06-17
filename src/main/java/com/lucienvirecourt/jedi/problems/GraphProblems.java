@@ -144,4 +144,47 @@ public class GraphProblems {
     numEnclaves(grid, i + 1, j, m, n);
     numEnclaves(grid, i, j + 1, m, n);
   }
+
+  public static int numberOfDistinctIslands(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    List<int[]> list = new ArrayList<>();
+    Set<List<int[]>> set = new HashSet<>();
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (grid[i][j] == 1) {
+          numberOfDistinctIslands(grid, i, j, list, m, n);
+          set.add(new ArrayList<>(list));
+          list.clear();
+        }
+      }
+    }
+    int ans = 0;
+    Set<String> strSet = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
+    for (List<int[]> ints : set) {
+      int[] first = ints.getFirst();
+      for (int[] i : ints) {
+        int a = first[0] - i[0], b = first[1] - i[1];
+        sb.append(a).append(b);
+        // (0,0), (0,1)
+        // (0,0), (0,1)
+      }
+
+      if (strSet.add(sb.toString())) {
+        ans++;
+      }
+      sb.delete(0, sb.length());
+    }
+    return ans;
+  }
+
+  private static void numberOfDistinctIslands(int[][] grid, int i, int j, List<int[]> aux, int m, int n) {
+    if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == 0) return;
+    grid[i][j] = 0;
+    aux.add(new int[]{i, j});
+    numberOfDistinctIslands(grid, i - 1, j, aux, m, n);
+    numberOfDistinctIslands(grid, i, j - 1, aux, m, n);
+    numberOfDistinctIslands(grid, i + 1, j, aux, m, n);
+    numberOfDistinctIslands(grid, i, j + 1, aux, m, n);
+  }
 }

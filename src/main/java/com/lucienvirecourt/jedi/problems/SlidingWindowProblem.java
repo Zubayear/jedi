@@ -2,7 +2,7 @@ package com.lucienvirecourt.jedi.problems;
 
 import java.util.*;
 
-public class SlidingWindow {
+public class SlidingWindowProblem {
   public int[] maxSlidingWindow(int[] nums, int k) {
     int ws = 0, we = 0, size = nums.length;
     if (k > size) return new int[]{Arrays.stream(nums).max().getAsInt()};
@@ -82,6 +82,25 @@ public class SlidingWindow {
       }
     }
     return result;
+  }
+
+  public static int lengthOfLongestSubstring(String s) {
+    // cadbzabcd
+    int maxLen = 0, n = s.length(), left = 0, right = 0, windowLen;
+    Map<Character, Integer> map = new HashMap<>();
+    while (right < n) {
+      char ch = s.charAt(right);
+      if (map.containsKey(ch)) {
+        if (map.get(ch) >= left) {
+          left = map.get(ch) + 1;
+        }
+      }
+      windowLen = right - left + 1;
+      maxLen = Math.max(maxLen, windowLen);
+      map.put(ch, right);
+      right++;
+    }
+    return maxLen;
   }
 }
 
