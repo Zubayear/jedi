@@ -23,9 +23,9 @@ public class BinaryTree<T> {
       }
     }
     root.left = buildTree(preorder, inorder, preStart + 1, inStart, inIndex - 1);
-    // (inIndex - inStart) is size of roots left subtree
+    // (inIndex - inStart) is a size of roots left subtree
     // 7,6,9,3 root 5,8,2,1
-    // to get to right portion we do preStart + inIndex - inStart + 1
+    // to get to the right portion we do preStart + inIndex - inStart + 1
     root.right = buildTree(preorder, inorder, preStart + inIndex - inStart + 1, inIndex + 1, inEnd);
     return root;
   }
@@ -33,7 +33,7 @@ public class BinaryTree<T> {
   List<T> iterativePreorder(TreeNode<T> root) {
     List<T> result = new ArrayList<>();
     if (root == null) return result;
-    // push root
+    // push root,
     // get the top of stack
     // push right then left
     Deque<TreeNode<T>> stack = new ArrayDeque<>();
@@ -124,6 +124,20 @@ public class BinaryTree<T> {
       tempList.clear();
     }
     return result;
+  }
+
+  public boolean isBalance(TreeNode<T> root) {
+    if (root == null) return true;
+    return height(root) != -1;
+  }
+
+  private int height(TreeNode<T> root) {
+    if (root == null) return 0;
+    int lh = height(root.left);
+    int rh = height(root.right);
+    if (lh == -1 || rh == -1) return -1;
+    if (Math.abs(lh - rh) > 1) return -1;
+    return 1 + Math.min(lh, rh);
   }
 }
 

@@ -13,35 +13,35 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 
 class TrieTest {
 
-    Trie trie;
+  Trie trie;
 
-    @BeforeEach
-    void setUp() {
-        trie = new Trie();
-    }
+  @BeforeEach
+  void setUp() {
+    trie = new Trie();
+  }
 
-    @AfterEach
-    void tearDown() {
-        trie = null;
-    }
+  @AfterEach
+  void tearDown() {
+    trie = null;
+  }
 
-    @Test
-    void testOperations() {
-        List<String> words = Arrays.asList("football", "life", "storm", "polar bear", "polar");
-        words.forEach(w -> trie.insert(w));
-        // test1
-        Assertions.assertTrue(trie.exists("football"));
-        // test2
-        Assertions.assertTrue(trie.startsWith("foot"));
+  @Test
+  void testOperations() {
+    List<String> words = Arrays.asList("football", "life", "storm", "polar bear", "polar");
+    words.forEach(w -> trie.insert(w));
+    // test1
+    Assertions.assertTrue(trie.exists("football"));
+    // test2
+    Assertions.assertTrue(trie.startsWith("foot"));
 
-        // test3
-        List<String> actualPrefix = trie.getWordsWithPrefix("polar");
-        List<String> expectedPrefix = Arrays.asList("polar bear", "polar");
-        assertThat("List equality without order", actualPrefix, containsInAnyOrder(expectedPrefix.toArray()));
+    // test3
+    List<String> actualPrefix = trie.getWordsWithPrefix("polar");
+    List<String> expectedPrefix = Arrays.asList("polar bear", "polar");
+    assertThat("List equality without order", actualPrefix, containsInAnyOrder(expectedPrefix.toArray()));
 
-        // test4
-        List<String> actualDfsResult = trie.dfs();
-        assertThat("DFS Test", actualDfsResult, containsInAnyOrder(words.toArray()));
+    // test4
+    List<String> actualDfsResult = trie.dfs();
+    assertThat("DFS Test", actualDfsResult, containsInAnyOrder(words.toArray()));
 
-    }
+  }
 }

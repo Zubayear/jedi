@@ -13,39 +13,39 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 
 class BinaryTreeTest {
 
-    BinaryTree<Integer> binaryTree;
+  BinaryTree<Integer> binaryTree;
 
-    @BeforeEach
-    void setUp() {
-        binaryTree = new BinaryTree<>();
-    }
+  @BeforeEach
+  void setUp() {
+    binaryTree = new BinaryTree<>();
+  }
 
-    @AfterEach
-    void tearDown() {
-        binaryTree = null;
-    }
+  @AfterEach
+  void tearDown() {
+    binaryTree = null;
+  }
 
-    @Test
-    void testBinaryTreeCreationAndTraversals() {
-        Integer[] preorder = new Integer[]{3, 9, 20, 15, 7};
-        Integer[] inorder = new Integer[]{9, 3, 15, 20, 7};
-        TreeNode<Integer> root = binaryTree.buildTree(preorder, inorder);
+  @Test
+  void testBinaryTreeCreationAndTraversals() {
+    Integer[] preorder = new Integer[]{3, 9, 20, 15, 7};
+    Integer[] inorder = new Integer[]{9, 3, 15, 20, 7};
+    TreeNode<Integer> root = binaryTree.buildTree(preorder, inorder);
 
-        var actualLevelOrderTraversal = binaryTree.levelOrderTraversal(root);
-        var expectedLevelOrderTraversal = List.of(List.of(3), Arrays.asList(9, 20), Arrays.asList(15, 7));
-        assertThat("Level order traversal",
-                actualLevelOrderTraversal,
-                containsInAnyOrder(expectedLevelOrderTraversal.toArray()));
+    var actualLevelOrderTraversal = binaryTree.levelOrderTraversal(root);
+    var expectedLevelOrderTraversal = List.of(List.of(3), Arrays.asList(9, 20), Arrays.asList(15, 7));
+    assertThat("Level order traversal",
+      actualLevelOrderTraversal,
+      containsInAnyOrder(expectedLevelOrderTraversal.toArray()));
 
-        var actualPreorderTraversal = binaryTree.iterativePreorder(root);
-        assertThat("Preorder traversal", actualPreorderTraversal.toArray(), is(preorder));
+    var actualPreorderTraversal = binaryTree.iterativePreorder(root);
+    assertThat("Preorder traversal", actualPreorderTraversal.toArray(), is(preorder));
 
-        var actualInorderTraversal = binaryTree.iterativeInorder(root);
-        assertThat("Inorder traversal", actualInorderTraversal.toArray(), is(inorder));
+    var actualInorderTraversal = binaryTree.iterativeInorder(root);
+    assertThat("Inorder traversal", actualInorderTraversal.toArray(), is(inorder));
 
-        var actualPostOrderTraversal = binaryTree.iterativePostorder(root);
-        Integer[] postorder = new Integer[]{9, 15, 7, 20, 3};
-        assertThat("Postorder traversal", actualPostOrderTraversal.toArray(), is(postorder));
+    var actualPostOrderTraversal = binaryTree.iterativePostorder(root);
+    Integer[] postorder = new Integer[]{9, 15, 7, 20, 3};
+    assertThat("Postorder traversal", actualPostOrderTraversal.toArray(), is(postorder));
 
-    }
+  }
 }
