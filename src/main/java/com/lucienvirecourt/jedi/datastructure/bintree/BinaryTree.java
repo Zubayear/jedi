@@ -2,31 +2,55 @@ package com.lucienvirecourt.jedi.datastructure.bintree;
 
 import java.util.*;
 
-public class BinaryTree<T> {
+public class BinaryTree<T extends Comparable<T>> {
   public TreeNode<T> root;
 
-  public TreeNode<T> buildTree(T[] preorder, T[] inorder) {
-    return buildTree(preorder, inorder, 0, 0, inorder.length - 1);
-  }
-
-  private TreeNode<T> buildTree(T[] preorder, T[] inorder, int preStart, int inStart, int inEnd) {
-    if (inStart > inEnd || preStart > preorder.length - 1) {
+  public TreeNode<T> buildTree(T[] nodes) {
+    if (nodes == null || nodes.length == 0 || nodes[0] == null) {
+      root = null;
       return null;
     }
+    root = new TreeNode<>(nodes[0]);
+    Deque<TreeNode<T>> queue = new LinkedList<>();
+    queue.offer(root);
+
+    int i = 1;
+    while (!queue.isEmpty() && i < nodes.length) {
+      TreeNode<T> current = queue.poll();
+      if (nodes[i] != null) {
+        current.left = new TreeNode<>(nodes[i]);
+        queue.offer(current.left);
+      }
+      i++;
+      if (i < nodes.length && nodes[i] != null) {
+        current.right = new TreeNode<>(nodes[i]);
+        queue.offer(current.right);
+      }
+      i++;
+    }
+    return root;
+  }
+
+  public TreeNode<T> buildTree(T[] preorder, T[] inorder) {
+    Map<T, Integer> map = new HashMap<>();
+    for (int i = 0; i < inorder.length; ++i) {
+      map.put(inorder[i], i); // 9 -> 0, 3 -> 1
+    }
+    return buildTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, map);
+  }
+
+  private TreeNode<T> buildTree(T[] preorder, int preStart, int preEnd, T[] inorder, int inStart, int inEnd, Map<T, Integer> inMap) {
+    if (preStart > preEnd || inStart > inEnd) {
+      return null;
+    }
+    // inorder [9,3,15,20,7], preorder [3,9,20,15,7]
     // preorder's first node is root
     TreeNode<T> root = new TreeNode<>(preorder[preStart]);
-    int inIndex = 0;
-    for (int i = inStart; i <= inEnd; ++i) {
-      if (inorder[i] == root.val) {
-        inIndex = i;
-        break;
-      }
-    }
-    root.left = buildTree(preorder, inorder, preStart + 1, inStart, inIndex - 1);
-    // (inIndex - inStart) is a size of roots left subtree
-    // 7,6,9,3 root 5,8,2,1
-    // to get to the right portion we do preStart + inIndex - inStart + 1
-    root.right = buildTree(preorder, inorder, preStart + inIndex - inStart + 1, inIndex + 1, inEnd);
+    int inRoot = inMap.get(root.val); // 1
+    int numsOnLeft = inRoot - inStart; // 1 - 0, we found this inorder to distribute the left subtree and right subtree
+
+    root.left = buildTree(preorder, preStart + 1, preStart + numsOnLeft, inorder, inStart, inRoot - 1, inMap);
+    root.right = buildTree(preorder, preStart + numsOnLeft + 1, preEnd, inorder, inRoot + 1, inEnd, inMap);
     return root;
   }
 
@@ -124,20 +148,6 @@ public class BinaryTree<T> {
       tempList.clear();
     }
     return result;
-  }
-
-  public boolean isBalance(TreeNode<T> root) {
-    if (root == null) return true;
-    return height(root) != -1;
-  }
-
-  private int height(TreeNode<T> root) {
-    if (root == null) return 0;
-    int lh = height(root.left);
-    int rh = height(root.right);
-    if (lh == -1 || rh == -1) return -1;
-    if (Math.abs(lh - rh) > 1) return -1;
-    return 1 + Math.min(lh, rh);
   }
 }
 

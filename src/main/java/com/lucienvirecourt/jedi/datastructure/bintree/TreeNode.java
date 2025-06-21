@@ -2,7 +2,7 @@ package com.lucienvirecourt.jedi.datastructure.bintree;
 
 import java.util.Objects;
 
-public class TreeNode<T> {
+public class TreeNode<T extends Comparable<T>> {
   public T val;
   public TreeNode<T> left, right;
 
