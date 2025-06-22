@@ -42,12 +42,12 @@ class RecursionProblemsTest {
     assertThat("Assert n to one", nToOneActual, contains(nToOneParam.toArray()));
     assertThat("Assert n to one list size", nToOneActual, hasSize(n));
 
-    int[] reverseParam = new int[]{1,2,3,4,5,6};
+    int[] reverseParam = new int[]{1, 2, 3, 4, 5, 6};
     reverse(reverseParam);
-    int[] reverseActual = new int[]{6,5,4,3,2,1};
+    int[] reverseActual = new int[]{6, 5, 4, 3, 2, 1};
     assertThat("Assert reversing nums array", reverseActual, is(reverseParam));
 
-    int[] nums = new int[]{1,2,3,4,5};
+    int[] nums = new int[]{1, 2, 3, 4, 5};
     int s = sum(nums);
     assertThat("Assert sum", 15, is(s));
 
@@ -58,7 +58,48 @@ class RecursionProblemsTest {
 
     String reversedStr = reverseStr(str1);
     assertThat("Assert string reverse", "olleh", is(reversedStr));
+  }
 
-    assertThat("Assert subsequence", subsequence(new int[]{1,2,3,4}), hasSize(16));
+  @Test
+  void testSubset() {
+    var actual = List.of(List.of(), List.of(1), List.of(2), List.of(1, 2), List.of(3), List.of(1, 3), List.of(2, 3), List.of(1, 2, 3));
+    assertThat("Assert subsets", actual, containsInAnyOrder(subsets(new int[]{1, 2, 3}).toArray()));
+  }
+
+  @Test
+  void testCombinationSum() {
+    assertThat("Assert combination sum - 1",
+      List.of(List.of(2, 2, 3), List.of(7)),
+      containsInAnyOrder(combinationSum(new int[]{2, 3, 6, 7}, 7).toArray())
+    );
+    assertThat("Assert combination sum - 2",
+      List.of(List.of(2, 2, 2, 2), List.of(2, 3, 3), List.of(3, 5)),
+      containsInAnyOrder(combinationSum(new int[]{2, 3, 5}, 8).toArray())
+    );
+
+    assertThat("Assert combination sum with duplicate",
+      List.of(List.of(1, 1, 6), List.of(1, 2, 5), List.of(1, 7), List.of(2, 6)),
+      containsInAnyOrder(combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8).toArray())
+    );
+
+    assertThat("Assert subsets with duplicate",
+      List.of(List.of(), List.of(1), List.of(1, 2), List.of(1, 2, 2), List.of(2), List.of(2, 2)),
+      containsInAnyOrder(subsetsWithDuplicate(new int[]{1, 2, 2}).toArray())
+    );
+
+    List<List<Integer>> expected = permute(new int[]{1, 2, 3});
+    assertThat("Assert permutation", 6, is(expected.size()));
+
+    assertThat("Assert word search - true", true, is(wordSearch(new char[][]{
+      {'A', 'B', 'C', 'E'},
+      {'S', 'F', 'C', 'S'},
+      {'A', 'D', 'E', 'E'},
+    }, "ABCCED")));
+
+    assertThat("Assert word search - false", false, is(wordSearch(new char[][]{
+      {'A', 'B', 'C', 'E'},
+      {'S', 'F', 'C', 'S'},
+      {'A', 'D', 'E', 'E'},
+    }, "ABCB")));
   }
 }

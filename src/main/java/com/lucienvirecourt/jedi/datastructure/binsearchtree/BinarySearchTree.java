@@ -99,14 +99,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
     Deque<TreeNode<T>> stack = new ArrayDeque<>();
 
     while (i < n) {
-      // if the p.val is less than then go to left
+      // if the p.val is less than, then go to left
+      assert p != null;
       if (numbers[i].compareTo(p.val) < 0) {
         TreeNode<T> newNode = new TreeNode<>(numbers[i++]);
         p.left = newNode;
         stack.offerFirst(p);
         p = newNode;
       } else {
-        // in this case, check if the value is between p.val and node at the top of the stack
+        // in this case, check if the value is between p.val and the node at the top of the stack
         var top = stack.peekFirst() == null ? Integer.MAX_VALUE : (Integer) stack.peekFirst().val;
         if (numbers[i].compareTo(p.val) > 0 && (Integer) numbers[i] < top) {
           TreeNode<T> newNode = new TreeNode<>(numbers[i++]);
@@ -128,14 +129,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
   }
 
   private boolean isValidBSTHelper(TreeNode<T> node, T left, T right) {
-    // For large test cases, we need to use long for the boundary value
-    if (node == null) {
-      return true;
-    }
-    // -inf < val < right
-    if (left.compareTo(node.val) > 0 || right.compareTo(node.val) < 0) {
-      return false;
-    }
+    if (node == null) return true;
+    // leftLimit < val < rightLimit
+    if (left.compareTo(node.val) > 0 || right.compareTo(node.val) < 0) return false;
     var leftSubtree = isValidBSTHelper(node.left, left, node.val);
     var rightSubtree = isValidBSTHelper(node.right, node.val, right);
     return leftSubtree && rightSubtree;

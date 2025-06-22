@@ -85,26 +85,6 @@ public class RecursionProblems {
     reverseStr(i + 1, n, chars);
   }
 
-  static List<List<Integer>> subsequence(int[] nums) {
-    List<List<Integer>> result = new ArrayList<>();
-    result.add(new ArrayList<>());
-    subsequence(0, nums.length, nums, result, new ArrayList<>());
-    return result;
-  }
-
-  private static void subsequence(int i, int n, int[] nums, List<List<Integer>> result, List<Integer> temp) {
-    if (i == n) {
-      return;
-    }
-    // take
-    temp.add(nums[i]);
-    result.add(new ArrayList<>(temp));
-    subsequence(i + 1, n, nums, result, temp);
-    // not take
-    temp.removeLast();
-    subsequence(i + 1, n, nums, result, temp);
-  }
-
   static void mergeSort(int[] arr) {
     mergeSort(arr, 0, arr.length - 1);
   }
@@ -131,12 +111,12 @@ public class RecursionProblems {
         right++;
       }
     }
-    // remaining in left sub-array
+    // remaining in left subarray
     while (left <= mid) {
       tmp.add(arr[left]);
       left++;
     }
-    // remaining int right sub-array
+    // remaining int right subarray
     while (right <= high) {
       tmp.add(arr[right]);
       right++;
@@ -160,15 +140,15 @@ public class RecursionProblems {
       aux.add(candidates[idx]);
       combinationSum(idx, candidates, target - candidates[idx], aux, result); // we stay at that idx because we have a choice to take it again
       // not take
-      aux.remove(aux.size() - 1);
+      aux.removeLast();
     }
-    combinationSum(idx + 1, candidates, target, aux, result); // didn't take it so we need to move forward
+    combinationSum(idx + 1, candidates, target, aux, result); // didn't take it, so we need to move forward
   }
 
   static public List<List<Integer>> combinationSum2(int[] candidates, int target) {
     Arrays.sort(candidates);
     List<List<Integer>> result = new ArrayList<>();
-    combinationSum2(candidates, target, 0, result, new ArrayList<Integer>());
+    combinationSum2(candidates, target, 0, result, new ArrayList<>());
     return result;
   }
 
@@ -177,8 +157,14 @@ public class RecursionProblems {
       result.add(new ArrayList<>(auxList));
       return;
     }
-    for (int i = idx; i < candidates.length; i++) {
 
+    for (int i = idx; i < candidates.length; i++) {
+      if (i > idx && candidates[i] == candidates[i - 1]) continue;
+      if (candidates[i] > target) break;
+      // take
+      auxList.add(candidates[i]);
+      combinationSum2(candidates, target - candidates[i], i + 1, result, auxList);
+      auxList.removeLast();
     }
   }
 
@@ -189,36 +175,31 @@ public class RecursionProblems {
   }
 
   private static void subsets(int[] nums, int idx, List<Integer> aux, List<List<Integer>> result) {
-    if (idx >= nums.length) {
+    if (idx == nums.length) {
       result.add(new ArrayList<>(aux));
-//            Integer sum = aux.stream().reduce(0, Integer::sum);
-//            System.out.print(sum);
       return;
     }
     // take
     aux.add(nums[idx]);
-    subsets(nums, idx + 1, aux, result);
-    // not take
-    // even if i'm not taking i'm not gonna stay there
-    // i need to move because i can't take same elem multiple times
-    aux.remove(aux.size() - 1);
-    subsets(nums, idx + 1, aux, result);
+    subsets(nums, idx + 1, aux, result); // we have a chance to take that again, so we don't move forward
+    aux.removeLast();
+    subsets(nums, idx + 1, aux, result); // since we've ignored it, move forward
   }
 
-  public static List<List<Integer>> subsetsWithDup(int[] nums) {
+  public static List<List<Integer>> subsetsWithDuplicate(int[] nums) {
     Arrays.sort(nums);
     List<List<Integer>> result = new ArrayList<>();
-    subsetsWithDup(nums, 0, new ArrayList<>(), result);
+    subsetsWithDuplicate(nums, 0, new ArrayList<>(), result);
     return result;
   }
 
-  private static void subsetsWithDup(int[] nums, int idx, List<Integer> aux, List<List<Integer>> result) {
+  private static void subsetsWithDuplicate(int[] nums, int idx, List<Integer> aux, List<List<Integer>> result) {
     result.add(new ArrayList<>(aux));
     for (int i = idx; i < nums.length; ++i) {
       if (i > idx && nums[i - 1] == nums[i]) continue;
       aux.add(nums[i]);
-      subsetsWithDup(nums, i + 1, aux, result);
-      aux.remove(aux.size() - 1);
+      subsetsWithDuplicate(nums, i + 1, aux, result);
+      aux.removeLast();
     }
   }
 
@@ -229,21 +210,103 @@ public class RecursionProblems {
     return result;
   }
 
-  private static void permute(int[] nums, List<Integer> aux, boolean[] map, List<List<Integer>> result) {
-    if (aux.size() == nums.length) {
-      result.add(new ArrayList<>(aux));
+  private static void permute(int[] nums, List<Integer> current, boolean[] map, List<List<Integer>> result) {
+    if (current.size() == nums.length) {
+      result.add(new ArrayList<>(current));
       return;
     }
     for (int i = 0; i < nums.length; ++i) {
       if (!map[i]) {
-        aux.add(nums[i]);
+        current.add(nums[i]);
         map[i] = true;
-        permute(nums, aux, map, result);
-        aux.remove(aux.size() - 1);
+        permute(nums, current, map, result);
+        current.removeLast();
         map[i] = false;
       }
     }
 
   }
 
+  public static boolean wordSearch(char[][] board, String word) {
+    int m = board.length, n = board[0].length;
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (dfs(board, i, j, m, n, 0, word)) return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean dfs(char[][] board, int r, int c, int m, int n, int i, String word) {
+    if (i >= word.length()) return true;
+    if (r < 0 || c < 0 || r >= m || c >= n || board[r][c] != word.charAt(i)) return false;
+    boolean res = false;
+    if (board[r][c] == word.charAt(i)) {
+      board[r][c] += 100;
+      res = dfs(board, r - 1, c, m, n, i + 1, word) ||
+        dfs(board, r, c - 1, m, n, i + 1, word) ||
+        dfs(board, r + 1, c, m, n, i + 1, word) ||
+        dfs(board, r, c + 1, m, n, i + 1, word);
+      board[r][c] -= 100;
+    }
+    return res;
+  }
+
+  public static void solveSudoku(char[][] board) {
+    solveSudoku(board, board.length, board[0].length);
+  }
+
+  private static boolean solveSudoku(char[][] board, int m, int n) {
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (board[i][j] == '.') {
+          for (char c = '1'; c <= '9'; ++c) {
+            if (isValid(board, i, j, c)) {
+              board[i][j] = c;
+              if (solveSudoku(board, m, n)) return true;
+              else board[i][j] = '.';
+            }
+          }
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private static boolean isValid(char[][] board, int r, int c, char ch) {
+    for (int i = 0; i < 9; ++i) {
+      if (board[i][c] == ch) return false;
+      if (board[r][i] == ch) return false;
+      if (board[3 * (r / 3) + i / 3][3 * (c / 3) + i % 3] == ch) return false;
+    }
+    return true;
+  }
+
+  public List<List<String>> partitionPalindrome(String s) {
+    List<List<String>> result = new ArrayList<>();
+    partitionPalindrome(0, s.length(), s, result, new ArrayList<>());
+    return result;
+  }
+
+  private static void partitionPalindrome(int idx, int n, String s, List<List<String>> result, List<String> current) {
+    if (idx == n) {
+      result.add(new ArrayList<>(current));
+      return;
+    }
+    for (int i = idx; i < n; ++i) {
+      if (isPalindrome(s, idx, i)) {
+        current.add(s.substring(idx, i+1));
+        partitionPalindrome(i, n, s, result, current);
+        current.removeLast();
+      }
+    }
+  }
+
+  private static boolean isPalindrome(String s, int i, int j) {
+    while (i < j) {
+      if (s.charAt(i++) != s.charAt(j--)) return false;
+    }
+    return true;
+  }
 }
