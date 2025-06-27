@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static com.lucienvirecourt.jedi.problems.DynamicProgrammingProblems.*;
 import static com.lucienvirecourt.jedi.problems.DynamicProgrammingProblems.partitionCount;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DynamicProgrammingProblemsTest {
@@ -111,5 +113,10 @@ class DynamicProgrammingProblemsTest {
     assertEquals("cabac", shortestCommonSupersequence("abac", "cab"));
     assertEquals("aaaaaaaa", shortestCommonSupersequence("aaaaaaaa", "aaaaaaaa"));
     assertEquals("bbcccabacabab", shortestCommonSupersequence("bbabacaa", "cccababab"));
+  }
+
+  @Test
+  void testLis() {
+    assertThat("Assert LIS", 4, is(largestDivisibleSubset(new int[]{3,4,16,8})));
   }
 }

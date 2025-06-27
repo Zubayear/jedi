@@ -102,5 +102,26 @@ public class SlidingWindowProblem {
     }
     return maxLen;
   }
+
+  public static int lengthOfLongestSubstringKDistinct(String s, int k) {
+    int n = s.length(), l = 0, r = 0, ans = 0;
+    Map<Character, Integer> map = new HashMap<>();
+    while (r < n) {
+      char ch = s.charAt(r);
+      map.put(ch, map.getOrDefault(ch, 0) + 1);
+      if (map.size() > k) {
+        char key = s.charAt(l);
+        if (map.get(key) == 1) {
+          map.remove(key);
+        } else {
+          map.compute(key, (_, v) -> v - 1);
+        }
+        l++;
+      }
+      ans = Math.max(ans, r - l + 1);
+      r++;
+    }
+    return ans;
+  }
 }
 

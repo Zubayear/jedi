@@ -45,7 +45,7 @@ public class ArrayProblems {
       sb.append(Arrays.toString(keyCounter));
       String key = sb.toString();
       sb.setLength(0);
-      map.computeIfAbsent(key, k -> new ArrayList<>());
+      map.computeIfAbsent(key, _ -> new ArrayList<>());
       map.get(key).add(str);
     }
 

@@ -1,6 +1,8 @@
 package com.lucienvirecourt.jedi.problems;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DynamicProgrammingProblems {
   static int mod = (int) (1e9 + 7);
@@ -434,5 +436,36 @@ public class DynamicProgrammingProblems {
     return result.reverse().toString();
   }
 
+  public static List<Integer> largestDivisibleSubset(int[] nums) {
+    // [10,9,2,5,3,7,101,18]
+    int n = nums.length;
+    Arrays.sort(nums);
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    int[] hash = new int[n];
+    int ans = 1, lastIdx = 0;
+    for (int i = 0; i < n; ++i) {
+      hash[i] = i;
+      for (int j = 0; j < i; ++j) {
+        if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
+          dp[i] = dp[j] + 1;
+          hash[i] = j;
+//          dp[i] = Math.max(dp[i], dp[j] + 1);
+//          ans = Math.max(dp[i], ans);
+        }
+      }
+      if (dp[i] > ans) {
+        ans = dp[i];
+        lastIdx = i;
+      }
+    }
+    List<Integer> temp = new ArrayList<>();
+    temp.add(nums[lastIdx]);
+    while (hash[lastIdx] != lastIdx) {
+      lastIdx = hash[lastIdx];
+      temp.add(nums[lastIdx]);
+    }
+    return temp.reversed();
+  }
 
 }
