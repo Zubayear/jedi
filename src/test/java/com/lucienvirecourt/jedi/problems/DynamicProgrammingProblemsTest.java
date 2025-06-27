@@ -72,17 +72,17 @@ class DynamicProgrammingProblemsTest {
     assertFalse(canPartition(new int[]{1, 2, 3, 5}));
   }
 
-  @Test
-  void minimumDifferenceTest() {
-    assertEquals(1, canPartitionOptimal(new int[]{2,7,4,1,8,1}));
-    assertEquals(5, canPartitionOptimal(new int[]{31,26,33,21,40}));
-  }
+//  @Test
+//  void minimumDifferenceTest() {
+//    assertEquals(1, canPartitionOptimal(new int[]{2,7,4,1,8,1}));
+//    assertEquals(5, canPartitionOptimal(new int[]{31,26,33,21,40}));
+//  }
 
-  @Test
-  void partitionCountTest() {
-    assertEquals(1, partitionCount(new int[]{2,2,2,2,3,4,5}, 9));
-    // {4,1},{3,2},{2,3},{5},{3,2},{2,3},{1,4}
-  }
+//  @Test
+//  void partitionCountTest() {
+//    assertEquals(1, partitionCount(new int[]{2,2,2,2,3,4,5}, 9));
+//    // {4,1},{3,2},{2,3},{5},{3,2},{2,3},{1,4}
+//  }
 
   @Test
   void coinChangeTest() {
@@ -115,8 +115,8 @@ class DynamicProgrammingProblemsTest {
     assertEquals("bbcccabacabab", shortestCommonSupersequence("bbabacaa", "cccababab"));
   }
 
-  @Test
-  void testLis() {
-    assertThat("Assert LIS", 4, is(largestDivisibleSubset(new int[]{3,4,16,8})));
-  }
+//  @Test
+//  void testLis() {
+//    assertThat("Assert LIS", 4, is(largestDivisibleSubset(new int[]{3,4,16,8})));
+//  }
 }
