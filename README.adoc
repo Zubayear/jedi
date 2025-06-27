@@ -1,0 +1,87 @@
+= Java DSA and Design Patterns Practice
+
+== Overview
+This repository contains implementations of various Data Structures, Algorithms, Design Patterns, and Concurrency solutions in Java. The project serves as a learning resource and reference implementation for common programming concepts and LeetCode problem solutions.
+
+== Project Structure
+
+=== Data Structures
+- Array-based implementations
+- Linked structures
+- Tree-based structures
+- Graph implementations
+- Hash-based structures
+
+=== Algorithms
+- LeetCode problem solutions
+- Sorting algorithms
+- Searching algorithms
+- Dynamic Programming
+- Graph algorithms
+
+=== Design Patterns
+==== Creational Patterns
+- Singleton
+- Factory
+- Abstract Factory
+- Builder
+- Prototype
+
+==== Structural Patterns
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+
+==== Behavioral Patterns
+- Observer
+- Strategy
+- Command
+- State
+- Iterator
+
+=== Concurrency
+- Thread management
+- Synchronization mechanisms
+- Concurrent collections
+- Thread pools
+- Locks and atomic operations
+
+== Usage (Each implementation includes)
+  1. Source code with detailed comments
+  2. Time and space complexity analysis (for algorithms)
+  3. Unit tests (where applicable)
+
+
+== Running the Code
+1. Clone the repository
+2. Open in IntelliJ IDEA
+3. Navigate to the specific implementation you want to run
+4. Run the main method or associated test cases
+
+== Contributing (Feel free to)
+  1. Add new problem solutions
+  2. Optimize existing implementations
+  3. Add more test cases
+  4. Improve documentation
+
+== Study Guide
+=== Recommended Learning Path
+1. Start with basic data structures
+2. Move to essential algorithms
+3. Practice LeetCode problems
+4. Study design patterns
+5. Explore concurrency concepts
+
+=== Resources
+- LeetCode: [https://leetcode.com/](https://leetcode.com/)
+
+== License
+This project is licensed under the MIT License—see the LICENSE file for details.
+
+== Notes
+- All implementations are in Java
+- Solutions focus on both efficiency and readability
+- Includes explanations of complex algorithms and patterns
+- Concurrent implementations follow Java best practices
