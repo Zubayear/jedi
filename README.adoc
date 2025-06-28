@@ -75,7 +75,8 @@ This repository contains implementations of various Data Structures, Algorithms,
 5. Explore concurrency concepts
 
 === Resources
-- LeetCode: [https://leetcode.com/](https://leetcode.com/)
+- LeetCode: https://leetcode.com
+- NeetCode: https://neetcode.io/practice
 
 == License
 This project is licensed under the MIT License—see the LICENSE file for details.

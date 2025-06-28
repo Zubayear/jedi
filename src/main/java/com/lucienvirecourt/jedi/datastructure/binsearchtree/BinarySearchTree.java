@@ -4,66 +4,43 @@ import com.lucienvirecourt.jedi.datastructure.bintree.TreeNode;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
-  public TreeNode<T> sortedArrayToBST(List<T> numbers) {
-    if (numbers == null || numbers.isEmpty()) {
-      return null;
-    }
-    return sortedArrayToBST(numbers, 0, numbers.size() - 1);
-  }
+  private TreeNode<T> root;
 
-  public TreeNode<T> sortedArrayToBST(List<T> numbers, int left, int right) {
-    if (left > right) {
-      return null;
-    }
-    int mid = (left + right) / 2;
-    TreeNode<T> root = new TreeNode<>(numbers.get(mid));
-    // 10,20,30,40,50,60
-    // -----|   |-------
-    // left     right
-    root.left = sortedArrayToBST(numbers, left, mid - 1);
-    root.right = sortedArrayToBST(numbers, mid + 1, right);
+  public TreeNode<T> getRoot() {
     return root;
   }
 
-  // TC - O(H); log(n)<=h<=n
-  public TreeNode<T> insertIntoBST(TreeNode<T> root, T val) {
-    if (root == null) {
-      return null;
+  public boolean add(T val) {
+    if (isExists(root, val)) {
+      return false;
+    } else {
+      root = add(root, val);
+      return true;
     }
-    TreeNode<T> tail = null;
-    TreeNode<T> newNode = new TreeNode<>(val);
-    while (root != null) {
-      tail = root;
-      if (root.val == val) {
-        return root;
-      } else if (val.compareTo(root.val) < 0) {
-        root = root.left;
+  }
+
+  private TreeNode<T> add(TreeNode<T> node, T val) {
+    if (node == null) {
+      node = new TreeNode<>(val);
+    } else {
+      if (val.compareTo(node.val) < 0) {
+        node.left = add(node.left, val);
       } else {
-        root = root.right;
+        node.right = add(node.right, val);
       }
     }
-    if (val.compareTo(tail.val) < 0) {
-      tail.left = newNode;
-    } else {
-      tail.right = newNode;
-    }
-    return newNode;
+    return node;
   }
 
-  public TreeNode<T> insertRecursive(TreeNode<T> root, T val) {
-    if (root == null) {
-      return new TreeNode<>(val);
-    }
-    if (val.compareTo(root.val) < 0) {
-      root.left = insertRecursive(root.left, val);
-    } else {
-      root.right = insertRecursive(root.right, val);
-    }
-    return root;
+  private boolean isExists(TreeNode<T> node, T val) {
+    if (node == null) return false;
+    int cmp = val.compareTo(node.val);
+    if (cmp < 0) return isExists(node.left, val);
+    else if (cmp > 0) return isExists(node.right, val);
+    else return true;
   }
 
   public TreeNode<T> deleteNode(TreeNode<T> root, T key) {
@@ -121,33 +98,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return root;
   }
 
-  public boolean isValidBST(TreeNode<T> root, T left, T right) {
-    if (root == null) {
-      return true;
-    }
-    return isValidBSTHelper(root, left, right);
-  }
-
-  private boolean isValidBSTHelper(TreeNode<T> node, T left, T right) {
-    if (node == null) return true;
-    // leftLimit < val < rightLimit
-    if (left.compareTo(node.val) > 0 || right.compareTo(node.val) < 0) return false;
-    var leftSubtree = isValidBSTHelper(node.left, left, node.val);
-    var rightSubtree = isValidBSTHelper(node.right, node.val, right);
-    return leftSubtree && rightSubtree;
-  }
-
-  public TreeNode<T> searchInBST(TreeNode<T> root, T key) {
-    if (root == null) {
-      return null;
-    }
-    if (key.compareTo(root.val) < 0) {
-      return searchInBST(root.left, key);
-    } else {
-      return searchInBST(root.right, key);
-    }
-  }
-
   private TreeNode<T> successor(TreeNode<T> node) {
     while (node.left != null) {
       node = node.left;
@@ -174,85 +124,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return predecessor;
   }
 
-  public String preorder(TreeNode<T> root) {
-    /*
-     * when t is not null, print and push it to stack then go to left
-     * otherwise pop from stack and go to right
-     */
-    if (root == null) {
-      return "";
-    }
-    StringBuilder result = new StringBuilder();
-    Deque<TreeNode<T>> stack = new ArrayDeque<>();
-    TreeNode<T> t = root;
-    result.append("[");
-    while (t != null || !stack.isEmpty()) {
-      if (t != null) {
-        result.append(t.val).append(",");
-        stack.offerFirst(t);
-        t = t.left;
-      } else {
-        t = stack.pollFirst();
-        t = t.right;
-      }
-    }
-    result.deleteCharAt(result.length() - 1);
-    result.append("]");
-    return result.toString();
-  }
-
-  public String inorder(TreeNode<T> root) {
-    if (root == null) {
-      return "";
-    }
-    StringBuilder result = new StringBuilder();
-    Deque<TreeNode<T>> stack = new ArrayDeque<>();
-    TreeNode<T> t = root;
-    result.append("[");
-    while (t != null || !stack.isEmpty()) {
-      if (t != null) {
-        stack.offerFirst(t);
-        t = t.left;
-      } else {
-        t = stack.pollFirst();
-        result.append(t.val).append(",");
-        t = t.right;
-      }
-    }
-    result.deleteCharAt(result.length() - 1);
-    result.append("]");
-    return result.toString();
-  }
-
-  public String postorder(TreeNode<T> root) {
-    if (root == null) {
-      return "";
-    }
-    StringBuilder result = new StringBuilder();
-    Deque<Object[]> stack = new ArrayDeque<>();
-    TreeNode<T> t = root;
-    result.append("[");
-    while (t != null || !stack.isEmpty()) {
-      if (t != null) {
-        stack.offerFirst(new Object[]{t, "+"});
-        t = t.left;
-      } else {
-        Object[] objects = stack.pollFirst();
-        t = (TreeNode<T>) objects[0];
-        if (objects[1] == "+") {
-          stack.offerFirst(new Object[]{t, "-"});
-          t = t.right;
-        } else {
-          result.append(t.val).append(",");
-          t = null;
-        }
-      }
-    }
-    result.deleteCharAt(result.length() - 1);
-    result.append("]");
-    return result.toString();
-  }
-
   public String leverOrder(TreeNode<T> root) {
     StringBuilder sb = new StringBuilder();
     if (root == null) {
@@ -266,6 +137,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
       sb.append("[");
       for (int i = 0; i < qSize; i++) {
         TreeNode<T> node = queue.pollLast();
+        assert node != null;
         sb.append(node.val).append(",");
         if (node.left != null) {
           queue.offerFirst(node.left);

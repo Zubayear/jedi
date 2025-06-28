@@ -1,88 +1,38 @@
 package com.lucienvirecourt.jedi.datastructure.binsearchtree;
 
 import com.lucienvirecourt.jedi.datastructure.bintree.TreeNode;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 class BinarySearchTreeTest {
 
-  BinarySearchTree<Integer> binarySearchTree;
+  BinarySearchTree<Integer> bst;
 
   @BeforeEach
   void setUp() {
-    binarySearchTree = new BinarySearchTree<>();
+    bst = new BinarySearchTree<>();
+    bst.add(4);
+    bst.add(2);
+    bst.add(7);
+    bst.add(1);
+    bst.add(3);
+    bst.add(5);
   }
 
   @AfterEach
   void tearDown() {
-    binarySearchTree = null;
+    bst = null;
   }
 
   @Test
-  void insertIntoBST() {
-    List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
-    var root = binarySearchTree.sortedArrayToBST(list);
-    binarySearchTree.insertIntoBST(root, 38);
-
-    Assertions.assertNull(binarySearchTree.searchInBST(root, 69));
-  }
-
-  @Test
-  void sortedArrayToBST() {
-    List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
-    var root = binarySearchTree.sortedArrayToBST(list);
-    binarySearchTree.insertIntoBST(root, 38);
-    String result = binarySearchTree.inorder(root);
-    Assertions.assertEquals("[10,20,30,38,40,50,60]", result);
-
-    binarySearchTree.insertRecursive(root, 78);
-    String s = binarySearchTree.leverOrder(root);
-    Assertions.assertEquals("[[30],[10,50],[20,40,60],[38,78]]", s);
-  }
-
-  @Test
-  void insertRecursive() {
-    TreeNode<Integer> root = binarySearchTree.insertRecursive(null, 30);
-    binarySearchTree.insertRecursive(root, 10);
-    binarySearchTree.insertRecursive(root, 20);
-    binarySearchTree.insertRecursive(root, 40);
-    binarySearchTree.insertRecursive(root, 50);
-    binarySearchTree.insertRecursive(root, 60);
-    binarySearchTree.insertRecursive(root, 38);
-    String result = binarySearchTree.inorder(root);
-    Assertions.assertEquals("[10,20,30,38,40,50,60]", result);
-
-  }
-
-  @Test
-  void isValidBST() {
-    List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
-    var root = binarySearchTree.sortedArrayToBST(list);
-    binarySearchTree.insertIntoBST(root, 38);
-    Assertions.assertTrue(binarySearchTree.isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
-  }
-
-  @Test
-  void deleteNode() {
-    Integer[] numbers = new Integer[]{30, 20, 10, 15, 25, 40, 50, 45};
-    var root = binarySearchTree.preorderToBST(numbers);
-    var result = binarySearchTree.deleteNode(root, 30);
-    String inorder = binarySearchTree.inorder(result);
-    Assertions.assertEquals("[10,15,20,25,40,45,50]", inorder);
-  }
-
-  @Test
-  void inorderPredecessor() {
-    List<Integer> list = Arrays.asList(10, 20, 30, 40, 50, 60);
-    var root = binarySearchTree.sortedArrayToBST(list);
-
-
-    var result = binarySearchTree.inorderPredecessor(root, new TreeNode<>(40));
-    System.out.println(result.val);
+  @DisplayName("Test binary search tree creation")
+  void testBinarySearchTree() {
+    TreeNode<Integer> root = bst.getRoot();
+    assertThat("[[4],[2,7],[1,3,5]]", is(bst.leverOrder(root)));
   }
 }

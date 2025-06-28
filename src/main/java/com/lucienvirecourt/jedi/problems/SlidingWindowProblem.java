@@ -57,33 +57,6 @@ public class SlidingWindowProblem {
     return result;
   }
 
-  public int longestSubstringKDistinct(String s, int k) {
-    int result = -1, traveler = 0, left = 0;
-    Map<Character, Integer> map = new HashMap<>();
-    while (traveler < s.length()) {
-      map.put(s.charAt(traveler), map.getOrDefault(s.charAt(traveler), 0) + 1);
-      if (map.size() < k) {
-        traveler++;
-      } else if (map.size() == k) {
-        result = Math.max(result, (traveler - left + 1));
-        traveler++;
-      } else {
-        while (map.size() != k) {
-          char ch = s.charAt(left);
-          if (map.containsKey(ch)) {
-            map.put(ch, map.get(ch) - 1);
-            if (map.get(ch) == 0) {
-              map.remove(ch);
-            }
-            left++;
-          }
-        }
-        traveler++;
-      }
-    }
-    return result;
-  }
-
   public static int lengthOfLongestSubstring(String s) {
     // cadbzabcd
     int maxLen = 0, n = s.length(), left = 0, right = 0, windowLen;
@@ -114,7 +87,7 @@ public class SlidingWindowProblem {
         if (map.get(key) == 1) {
           map.remove(key);
         } else {
-          map.compute(key, (_, v) -> v - 1);
+          map.computeIfPresent(key, (_, v) -> v - 1);
         }
         l++;
       }
@@ -122,6 +95,68 @@ public class SlidingWindowProblem {
       r++;
     }
     return ans;
+  }
+
+  public static int numberOfStrings(String s) {
+    // try to find the minimum window having a,b,c
+    // get the min idx of the window and add 1 to count the ans we can form
+    // e.g., abcabc at idx = 2 we can form a minimum window having a,b.c so the len will be min index out of (a,b,c)+1
+    // at idx = 3 the len will be min idx out of a,b,c and add 1
+    int a = -1, b = -1, c = -1, n = s.length(), ans = 0;
+    for (int i = 0; i < n; ++i) {
+      char ch = s.charAt(i);
+      if (ch == 'a') a = i;
+      else if (ch == 'b') b = i;
+      else c = i;
+      if (a != -1 && b != -1 && c != -1) ans += Math.min(a, Math.min(b, c)) + 1;
+    }
+    return ans;
+  }
+
+  public static int characterReplacement(String s, int k) {
+    // if windowSize - maxFreq <= k, then we can expand the window
+    // AAABBCCD, k = 2 for this, when we at 5th index 6-3 <= 2 so, we need to shrink
+    int n = s.length(), l = 0, r = 0, maxLen = 0, maxFreq = 0;
+    int[] map = new int[26];
+    while (r < n) {
+      char ch = s.charAt(r);
+      map[ch - 'A']++;
+      maxFreq = Math.max(maxFreq, map[ch - 'A']);
+      while (r - l + 1 - maxFreq > k) { // we can just replace while with if too. think about it
+        char key = s.charAt(l);
+        map[key - 'A']--;
+        maxFreq = 0;
+        for (int i = 0; i < 26; ++i) {
+          maxFreq = Math.max(maxFreq, map[i]);
+        }
+        l++;
+      }
+      if (r - l + 1 - maxFreq <= k) maxLen = Math.max(maxLen, r - l + 1);
+      r++;
+    }
+    return maxLen;
+  }
+
+  public static int numSubarraysWithSum(int[] nums, int goal) {
+    // we will try to find sum <= goal, then find sum <= goal-1
+    int a = findNumSubarraysWithSum(nums, goal);
+    int b = findNumSubarraysWithSum(nums, goal - 1);
+    return a - b;
+  }
+
+  private static int findNumSubarraysWithSum(int[] nums, int goal) {
+    if (goal < 0) return 0;
+    int l = 0, r = 0, n = nums.length, sum = 0, count = 0;
+    while (r < n) {
+      sum += nums[r];
+      while (sum > goal) {
+        sum -= nums[l];
+        l++;
+      }
+      count += r - l + 1;
+      r++;
+    }
+    return count;
   }
 }
 

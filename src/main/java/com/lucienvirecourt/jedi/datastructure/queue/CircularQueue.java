@@ -1,9 +1,11 @@
 package com.lucienvirecourt.jedi.datastructure.queue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class CircularQueue<T> {
+public class CircularQueue<T> implements Iterable<T> {
 
   private final List<T> data;
   private int front = 0;
@@ -12,11 +14,10 @@ public class CircularQueue<T> {
   private final int cap;
 
   public CircularQueue(int cap) {
+    if (cap <= 0) throw new IllegalArgumentException("Capacity must be greater than 0");
     this.cap = cap;
     data = new ArrayList<>(cap);
-    for (int i = 0; i < cap; i++) {
-      data.add(null);
-    }
+    for (int i = 0; i < cap; i++) data.add(null);
   }
 
   public int size() {
@@ -33,7 +34,7 @@ public class CircularQueue<T> {
 
   public void enqueue(T element) {
     if (isFull()) throw new IllegalStateException("Queue is full");
-    data.add(rear % cap, element);
+    data.set(rear % cap, element);
     rear++;
     size++;
   }
@@ -54,10 +55,10 @@ public class CircularQueue<T> {
   }
 
   public void clear() {
-    rear = -1;
+    rear = 0;
     front = 0;
     size = 0;
-    data.clear();
+    for (int i = 0; i < cap; ++i) data.set(i, null);
   }
 
   public String queueStr() {
@@ -70,5 +71,29 @@ public class CircularQueue<T> {
     sb.deleteCharAt(sb.length() - 1);
     sb.append("]");
     return sb.toString();
+  }
+
+  private class CircularQueueIterator implements Iterator<T> {
+    private int count = 0;
+    private int index = front;
+
+    @Override
+    public boolean hasNext() {
+      return count < size;
+    }
+
+    @Override
+    public T next() {
+      if (!hasNext()) throw new NoSuchElementException();
+      T item = data.get(index % cap);
+      index++;
+      count++;
+      return item;
+    }
+  }
+
+  @Override
+  public Iterator<T> iterator() {
+    return new CircularQueueIterator();
   }
 }

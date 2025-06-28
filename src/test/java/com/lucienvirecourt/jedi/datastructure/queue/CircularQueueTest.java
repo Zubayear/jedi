@@ -1,9 +1,10 @@
 package com.lucienvirecourt.jedi.datastructure.queue;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CircularQueueTest {
 
@@ -29,16 +30,21 @@ class CircularQueueTest {
       circularQueue.enqueue(ch);
     }
 
-    Assertions.assertFalse(circularQueue.isEmpty());
-    Assertions.assertEquals(13, circularQueue.size());
-    Assertions.assertEquals('t', circularQueue.dequeue());
-    Assertions.assertEquals('o', circularQueue.peek());
+    assertFalse(circularQueue.isEmpty());
+    assertEquals(13, circularQueue.size());
+    assertEquals('t', circularQueue.dequeue());
+    assertEquals('o', circularQueue.peek());
 
-    Assertions.assertEquals("[o,b,e,o,r,n,o,t,t,o,b,e]", circularQueue.queueStr());
+    assertEquals("[o,b,e,o,r,n,o,t,t,o,b,e]", circularQueue.queueStr());
 
 
     circularQueue.clear();
-    Assertions.assertTrue(circularQueue.isEmpty());
+    assertTrue(circularQueue.isEmpty());
+
+    circularQueue.enqueue('h');
+    circularQueue.enqueue('e');
+    circularQueue.enqueue('l');
+    assertEquals('h', circularQueue.peek());
 
   }
 }
