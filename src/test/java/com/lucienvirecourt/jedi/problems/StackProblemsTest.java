@@ -25,4 +25,11 @@ class StackProblemsTest {
   void dailyTemperaturesTest() {
     assertArrayEquals(new int[]{1, 1, 4, 2, 1, 1, 0, 0}, dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73}));
   }
+
+  @Test
+  void decodeStringTest() {
+    assertEquals("accaccacc", decodeString("3[a2[c]]"));
+    assertEquals("aaabcbc", decodeString("3[a]2[bc]"));
+    assertEquals("abcabccdcdcdef", decodeString("2[abc]3[cd]ef"));
+  }
 }

@@ -1,9 +1,6 @@
 package com.lucienvirecourt.jedi.problems;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public class StackProblems {
   public static String removingStarsFromAString(String s) {
@@ -78,5 +75,41 @@ public class StackProblems {
       stack.offerFirst(i);
     }
     return result;
+  }
+
+  public static String decodeString(String str) {
+    int n = str.length();
+    Deque<String> stack = new ArrayDeque<>();
+    StringBuilder sb = new StringBuilder();
+    // 3[a2[c]]
+    // a2[c]a2[c]a2[c]
+    // 54[cba]
+    // accaccacc
+    // we push everything until we encounter ]
+    // then we keep on popping value from the stack until we get [
+    int num = 0;
+    for (int i = 0; i < n; ++i) {
+      char ch = str.charAt(i);
+      if (ch >= '0' && ch <= '9') num = num * 10 + ch - '0';
+      else if (ch == '[') {
+        stack.push(num + "");
+        stack.push("[");
+        num = 0;
+      } else if (ch == ']') {
+        while (!Objects.equals(stack.peekFirst(), "[")) {
+          sb.append(stack.pollFirst());
+        }
+        stack.pollFirst(); // pop [
+        int count = Integer.parseInt(Objects.requireNonNull(stack.pollFirst()));
+        sb.append(String.valueOf(sb).repeat(Math.max(0, count - 1)));
+        stack.offerFirst(sb.toString());
+      } else {
+        stack.offerFirst(String.valueOf(ch));
+      }
+      sb.delete(0, sb.length());
+    }
+    sb.delete(0, sb.length());
+    while (!stack.isEmpty()) sb.append(stack.pollFirst());
+    return sb.reverse().toString();
   }
 }
