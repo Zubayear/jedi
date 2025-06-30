@@ -275,7 +275,7 @@ public class GraphProblems {
       topologicalSort(i, graph, visited, stack);
     }
     while (!stack.isEmpty()) {
-      result.add(stack.poll());
+      result.add(stack.pollFirst());
     }
     return result;
   }
@@ -287,6 +287,6 @@ public class GraphProblems {
         topologicalSort(neighbor, graph, visited, stack);
       }
     }
-    stack.offer(current);
+    stack.offerFirst(current);
   }
 }

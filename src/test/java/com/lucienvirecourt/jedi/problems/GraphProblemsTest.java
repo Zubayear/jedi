@@ -114,6 +114,7 @@ class GraphProblemsTest {
       {0, 1},
       {0, 2}
     };
-    assertThat("Topological sort", List.of(5, 4, 2, 3, 1, 0), containsInAnyOrder(topologicalSort(graph).toArray()));
+    // although we can have different ordering too
+    assertThat("Topological sort", List.of(5, 4, 2, 3, 1, 0), is(topologicalSort(graph)));
   }
 }
