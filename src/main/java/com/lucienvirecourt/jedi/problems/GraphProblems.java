@@ -179,4 +179,114 @@ public class GraphProblems {
   public static boolean isBipartite(int[][] grid) {
     return false;
   }
+
+  /*
+   * Cycle detection in undirected graph
+   * */
+  public static boolean cycleExists(int[][] graph) {
+    int n = graph.length;
+    boolean[] visited = new boolean[n];
+    return cycleExists(0, -1, graph, visited);
+  }
+
+  private static boolean cycleExists(int current, int parent, int[][] graph, boolean[] visited) {
+    visited[current] = true;
+    int[] neighbors = graph[current];
+    for (int n : neighbors) {
+      if (!visited[n]) {
+        if (cycleExists(n, current, graph, visited)) return true;
+      } else {
+        if (n != parent) return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean cycleExitsInDirectedGraph(int[][] graph) {
+    int n = graph.length;
+    boolean[] visited = new boolean[n];
+    boolean[] visitedPath = new boolean[n];
+    for (int i = 0; i < n; ++i) {
+      if (visited[i]) continue;
+      if (cycleExitsInDirectedGraph(i, graph, visited, visitedPath)) return true;
+    }
+    return false;
+  }
+
+  private static boolean cycleExitsInDirectedGraph(int current, int[][] graph, boolean[] visited, boolean[] visitedPath) {
+    visited[current] = true;
+    visitedPath[current] = true;
+    int[] neighbors = graph[current];
+    for (int neighbor : neighbors) {
+      if (!visited[neighbor]) {
+        if (cycleExitsInDirectedGraph(neighbor, graph, visited, visitedPath)) return true;
+      } else {
+        // node has been visited
+        // also if it's on the same path
+        if (visitedPath[neighbor]) return true;
+      }
+    }
+    visitedPath[current] = false;
+    return false;
+  }
+
+  public static List<Integer> eventualSafeNodes(int[][] graph) {
+    // we use cycle detection in the directed graph
+    // if a node is part of the cycle, then that isn't a safe node
+    int n = graph.length;
+    boolean[] visited = new boolean[n];
+    boolean[] pathVisited = new boolean[n];
+    for (int i = 0; i < n; ++i) {
+      if (visited[i]) continue;
+      eventualSafeNodes(i, graph, visited, pathVisited);
+    }
+    List<Integer> result = new ArrayList<>();
+    for (int i = 0; i < n; ++i) {
+      if (!pathVisited[i]) {
+        result.add(i);
+      }
+    }
+    return result;
+  }
+
+  private static boolean eventualSafeNodes(int current, int[][] graph, boolean[] visited, boolean[] pathVisited) {
+    visited[current] = true;
+    pathVisited[current] = true;
+    for (int neighbor : graph[current]) {
+      if (!visited[neighbor]) {
+        if (eventualSafeNodes(neighbor, graph, visited, pathVisited)) return true;
+      } else if (pathVisited[neighbor]) {
+        return true;
+      }
+    }
+    pathVisited[current] = false;
+    return false;
+  }
+
+  public static List<Integer> topologicalSort(int[][] graph) {
+    // use dfs, but before backtracking put the value in the stack
+    // this will return one of the possible ordering btw
+    List<Integer> result = new ArrayList<>();
+    Deque<Integer> stack = new ArrayDeque<>();
+    int n = graph.length;
+    boolean[] visited = new boolean[n];
+    for (int i = 0; i < n; ++i) {
+      if (visited[i]) continue;
+      topologicalSort(i, graph, visited, stack);
+    }
+    while (!stack.isEmpty()) {
+      result.add(stack.poll());
+    }
+    return result;
+  }
+
+  private static void topologicalSort(int current, int[][] graph, boolean[] visited, Deque<Integer> stack) {
+    visited[current] = true;
+    for (int neighbor : graph[current]) {
+      if (!visited[neighbor]) {
+        topologicalSort(neighbor, graph, visited, stack);
+      }
+    }
+    stack.offer(current);
+  }
 }
