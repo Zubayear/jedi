@@ -468,4 +468,75 @@ public class DynamicProgrammingProblems {
     return temp.reversed();
   }
 
+  /*
+   * dp on stocks
+   * */
+  // Best Time to Buy and Sell Stock III
+  public int maxProfit(int[] prices) {
+    int n = prices.length;
+    int[][][] dp = new int[n + 1][2][3];
+    for (int i = n - 1; i >= 0; --i) {
+      for (int buy = 0; buy <= 1; ++buy) {
+        for (int cap = 1; cap <= 2; ++cap) {
+          if (buy == 1) {
+            dp[i][buy][cap] = Math.max(-prices[i] + dp[i + 1][0][cap], dp[i + 1][buy][cap]);
+          } else {
+            dp[i][buy][cap] = Math.max(prices[i] + dp[i + 1][1][cap - 1], dp[i + 1][0][cap]);
+          }
+        }
+      }
+    }
+    return dp[0][1][2];
+  }
+
+  public static int bestTimeToBuyAndSellStockWithCooldown(int[] prices) {
+    int n = prices.length;
+    int[][] dp = new int[n + 2][2];
+    // for recursion, we start from 0 to n,
+    // so, in tabulation we do the opposite i.e., n-1 to 0
+    for (int i = n - 1; i >= 0; --i) {
+      for (int buy = 0; buy <= 1; ++buy) {
+        if (buy == 1) {
+          dp[i][buy] = Math.max(-prices[i] + dp[i + 1][0], dp[i + 1][buy]);
+        } else {
+          dp[i][buy] = Math.max(prices[i] + dp[i + 2][1], dp[i + 1][buy]);
+        }
+      }
+    }
+    return dp[0][1];
+  }
+
+  public static int bestTimeToBuyAndSellStockWithTransactionFee(int[] prices, int fee) {
+    int n = prices.length;
+    int[][] dp = new int[n + 1][2];
+    // for recursion, we start from 0 to n,
+    // so, in tabulation we do the opposite i.e., n-1 to 0
+    for (int i = n - 1; i >= 0; --i) {
+      for (int buy = 0; buy <= 1; ++buy) {
+        if (buy == 1) {
+          dp[i][buy] = Math.max(-prices[i] + dp[i + 1][0], dp[i + 1][buy]);
+        } else {
+          // so after a transaction is complete, we subtract the fee
+          dp[i][buy] = Math.max(prices[i] - fee + dp[i + 1][1], dp[i + 1][buy]);
+        }
+      }
+    }
+    return dp[0][1];
+  }
+
+  private static int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
+    if (i == n) return 0;
+    int profit = -(int) 1e9;
+    if (buy == 1) {
+      profit = Math.max(-prices[i] + bestTimeToBuyAndSellStockWithCooldown(i + 1, 0, prices, n),
+        bestTimeToBuyAndSellStockWithCooldown(i + 1, buy, prices, n));
+    } else {
+      // after selling we need a cooldown period that is why i+2
+      profit = Math.max(prices[i] + bestTimeToBuyAndSellStockWithCooldown(i + 2, 1, prices, n),
+        bestTimeToBuyAndSellStockWithCooldown(i + 1, buy, prices, n));
+    }
+    return profit;
+  }
+
+
 }

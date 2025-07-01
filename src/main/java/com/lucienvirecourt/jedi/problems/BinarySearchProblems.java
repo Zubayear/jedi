@@ -233,7 +233,7 @@ public class BinarySearchProblems {
       // also I'm at even then check if next is equal to current
       // then I'm at left,
       if ((mid % 2 == 1 && nums[mid - 1] == nums[mid]) || (mid % 2 == 0 && nums[mid] == nums[mid + 1])) left = mid + 1;
-        // (odd, even) -> then element on the left half => eliminates right half
+        // (odd, even) -> then an element on the left half => eliminates the right half
       else right = mid - 1;
     }
     return -1;

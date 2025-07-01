@@ -115,6 +115,12 @@ class DynamicProgrammingProblemsTest {
     assertEquals("bbcccabacabab", shortestCommonSupersequence("bbabacaa", "cccababab"));
   }
 
+  @Test
+  void bestTimeToBuyAndSellStockWithCooldownTest() {
+    assertEquals(3, bestTimeToBuyAndSellStockWithCooldown(new int[]{1,2,3,0,2}));
+    assertEquals(0, bestTimeToBuyAndSellStockWithCooldown(new int[]{1}));
+  }
+
 //  @Test
 //  void testLis() {
 //    assertThat("Assert LIS", 4, is(largestDivisibleSubset(new int[]{3,4,16,8})));
