@@ -1,4 +1,4 @@
-name: Maven CI
+name: JEDI CI
 
 on:
   push:
