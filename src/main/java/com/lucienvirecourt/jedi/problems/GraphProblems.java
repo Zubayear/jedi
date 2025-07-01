@@ -264,8 +264,8 @@ public class GraphProblems {
   }
 
   public static List<Integer> topologicalSort(int[][] graph) {
-    // use dfs, but before backtracking put the value in the stack
-    // this will return one of the possible ordering btw
+    // use dfs, but before backtracking put the value in the stack,
+    // this will return one of the possible orderings btw
     List<Integer> result = new ArrayList<>();
     Deque<Integer> stack = new ArrayDeque<>();
     int n = graph.length;
@@ -288,5 +288,57 @@ public class GraphProblems {
       }
     }
     stack.offerFirst(current);
+  }
+
+  public static List<Integer> topologicalSortBfs(int[][] graph) {
+    // create indegrees
+    // push all node having 0 indegrees
+    // try to make indegree to zero for those having indegree > 0
+    int n = graph.length;
+    int[] indegree = new int[n];
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < graph[i].length; ++j) {
+        indegree[graph[i][j]]++;
+      }
+    }
+    Deque<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < indegree.length; ++i) {
+      if (indegree[i] == 0) queue.offer(i);
+    }
+    List<Integer> result = new ArrayList<>();
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
+      result.add(current);
+      for (int i : graph[current]) {
+        indegree[i]--;
+        if (indegree[i] == 0) queue.offer(i);
+      }
+    }
+    return result;
+  }
+
+  public static boolean cycleExistsWithTopologicalSort(int[][] graph) {
+    // so, if we can have a valid topological sort, then there is no cycle
+    int n = graph.length;
+    int[] indegree = new int[n];
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < graph[i].length; ++j) {
+        indegree[graph[i][j]]++;
+      }
+    }
+    Deque<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < indegree.length; ++i) {
+      if (indegree[i] == 0) queue.offer(i);
+    }
+    int count = 0;
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
+      count++;
+      for (int i : graph[current]) {
+        indegree[i]--;
+        if (indegree[i] == 0) queue.offer(i);
+      }
+    }
+    return count == n;
   }
 }

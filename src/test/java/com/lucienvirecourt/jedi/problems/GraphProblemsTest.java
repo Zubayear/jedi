@@ -117,4 +117,43 @@ class GraphProblemsTest {
     // although we can have different ordering too
     assertThat("Topological sort", List.of(5, 4, 2, 3, 1, 0), is(topologicalSort(graph)));
   }
+
+  @Test
+  void topologicalSortBfsTest() {
+    int[][] graph = {
+      {},
+      {},
+      {3},
+      {1},
+      {0, 1},
+      {0, 2}
+    };
+    // although we can have different ordering too
+    assertThat("Topological sort bfs", List.of(4, 5, 0, 2, 3, 1), is(topologicalSortBfs(graph)));
+  }
+
+  @Test
+  void cycleExistsWithTopologicalSortTest() {
+    assertTrue(cycleExistsWithTopologicalSort(
+      new int[][]{
+        {},
+        {},
+        {3},
+        {1},
+        {0, 1},
+        {0, 2}
+      }
+    ));
+
+    assertFalse(cycleExistsWithTopologicalSort(
+      new int[][]{
+        {},
+        {2},
+        {3},
+        {4, 5},
+        {2},
+        {}
+      }
+    ));
+  }
 }
