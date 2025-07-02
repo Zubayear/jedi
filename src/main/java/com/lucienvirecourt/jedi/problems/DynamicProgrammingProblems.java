@@ -7,6 +7,7 @@ import java.util.List;
 public class DynamicProgrammingProblems {
   static int mod = (int) (1e9 + 7);
 
+  // O(n) | O(1)
   public static int climbStairs(int n) {
     // memoization
     /*int[] cache = new int[n + 1];
@@ -67,6 +68,8 @@ public class DynamicProgrammingProblems {
   }
 
   public static int nthTribonacciNumber(int n) {
+    if (n == 0) return 0;
+    if (n == 1 || n == 2) return 1;
     int t0 = 0, t1 = 1, t2 = 1;
     for (int i = 3; i <= n; i++) {
       // 0  1  1  2
@@ -106,10 +109,10 @@ public class DynamicProgrammingProblems {
 
   public static int houseRobberII(int[] nums) {
     int n = nums.length;
+    if (n == 1) return nums[0];
     int[] nums1 = new int[n - 1];
     int[] nums2 = new int[n - 1];
     for (int i = 0; i < n; ++i) {
-      // 1 2 3 1
       if (i != 0) nums1[i - 1] = nums[i];
       if (i != n - 1) nums2[i] = nums[i];
     }
@@ -310,7 +313,7 @@ public class DynamicProgrammingProblems {
   }
 
   /*
-   * lcs
+   * dp on strings
    * */
   public static String longestCommonSubsequence(String text1, String text2) {
     if (text1.equals(text2)) return text1;
@@ -353,6 +356,33 @@ public class DynamicProgrammingProblems {
     return result.reverse().toString();
   }
 
+  public static int longestCommonSubsequenceRecur(String s1, String s2) {
+    int m = s1.length(), n = s2.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int[] d : dp) Arrays.fill(d, -1);
+    return longestCommonSubsequenceRecur(m - 1, n - 1, s1, s2, dp);
+  }
+
+  public static int longestCommonSubsequenceRecur(int i, int j, String s1, String s2, int[][] dp) {
+    if (i == 0 || j == 0) return 0;
+    if (dp[i][j] != -1) return dp[i][j];
+    // a | a
+    // both matches so we move the index
+    if (s1.charAt(i - 1) == s2.charAt(j - 1))
+      return dp[i][j] = 1 + longestCommonSubsequenceRecur(i - 1, j - 1, s1, s2, dp);
+      // ac | ce
+      //  i    j
+      // we have a chance to match c and c if we move j only
+      // ec | ce
+      //  i    j
+      // we have a chance to match e with e if we move i only
+      // so, we explore both possibilities and get the max
+    else return dp[i][j] = Math.max(
+      longestCommonSubsequenceRecur(i - 1, j, s1, s2, dp),
+      longestCommonSubsequenceRecur(i, j - 1, s1, s2, dp)
+    );
+  }
+
   public static String longestCommonSubstring(String text1, String text2) {
     if (text1.equals(text2)) return text1;
     int m = text1.length(), n = text2.length();
@@ -371,17 +401,26 @@ public class DynamicProgrammingProblems {
       }
     }
     StringBuilder result = new StringBuilder();
+
     int len = -(int) 1e9;
-    int maxIdx = 0;
-    for (int i = 1; i < m; ++i) {
-      for (int j = 1; j < n; ++j) {
+    int maxI = 0, maxJ = 0;
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
         if (len < dp[i][j]) {
           len = dp[i][j];
-          maxIdx = i;
+          maxI = i;
+          maxJ = j;
         }
       }
     }
-    if (len > 0) result.append(text1.charAt(maxIdx - 1));
+    int i = maxI, j = maxJ;
+    while (i > 0 && j > 0) {
+      if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+        result.append(text1.charAt(i - 1));
+        i = i - 1;
+        j = j - 1;
+      } else break;
+    }
     return result.reverse().toString();
   }
 
@@ -466,6 +505,40 @@ public class DynamicProgrammingProblems {
       temp.add(nums[lastIdx]);
     }
     return temp.reversed();
+  }
+
+  public static int longestPalindromeSubsequence(String s) {
+    // s = bbbab, if we reverse s and get the lcs between s and s1, we can find the ans
+    int n = s.length();
+    if (n < 2) return n;
+    StringBuilder sb = new StringBuilder(s);
+    String s1 = sb.reverse().toString();
+    int[][] dp = new int[n + 1][n + 1];
+
+    // so, the base case is when i == 0 || j == 0 we return 0
+    for (int i = 0; i < n; ++i) dp[0][i] = 0; // first row to zero
+    for (int i = 0; i < n; ++i) dp[i][0] = 0; // first col to zero
+
+    for (int i = 1; i <= n; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (s.charAt(i - 1) == s1.charAt(j - 1)) {
+          dp[i][j] = 1 + dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+    return dp[n][n];
+  }
+
+  public static int minimumInsertionToMakeStringPalindrome(String s) {
+    // don't touch the longest palindrome
+    // try to insert the rest by reversing and putting in between to make it work
+    // s = abcaa, lps = aaa, and we have bc which we reverse and insert
+    // so, n - lps will be the ans
+    int n = s.length();
+    int lps = longestPalindromeSubsequence(s);
+    return n - lps;
   }
 
   /*
