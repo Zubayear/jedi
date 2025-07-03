@@ -179,6 +179,9 @@ public class DynamicProgrammingProblems {
     return dp[a][b];
   }
 
+  /*
+   * dp on subset
+   * */
   public static boolean canPartition(int[] nums) {
     int sum = 0;
     for (int n : nums) {
@@ -197,36 +200,31 @@ public class DynamicProgrammingProblems {
     return skip || include;
   }
 
-  public static int canPartitionOptimal(int[] nums) {
+  public static boolean partitionEqualSubsetSum(int[] nums) {
+    int len = nums.length;
+    if (len == 0) return false;
     int sum = 0;
     for (int n : nums) sum += n;
-    if (sum % 2 != 0) return 0;
-    int n = nums.length, target = sum / 2;
-    boolean[][] dp = new boolean[n][target + 1];
-    for (int i = 0; i < n; ++i) dp[i][0] = true;
-    dp[0][nums[0]] = true;
-    for (int i = 1; i < n; ++i) {
-      for (int j = 0; j < target; ++j) {
+    if (sum % 2 != 0) return false;
+    int t = sum / 2;
+    boolean[][] dp = new boolean[len][t + 1];
+    // when target is zero we set to true i.e.; first column is set to zero
+    // for idx 0, we set dp[0][nums[0]] to true; [1,5,11,5]
+    for (int i = 0; i < len; ++i) dp[i][0] = true;
+    if (nums[0] <= t) dp[0][nums[0]] = true;
+
+    for (int i = 1; i < len; ++i) {
+      for (int j = 1; j <= t; ++j) {
+        // we can skip or include a position
         boolean skip = dp[i - 1][j];
         boolean include = false;
         if (nums[i] <= j) include = dp[i - 1][j - nums[i]];
         dp[i][j] = skip || include;
       }
     }
-    boolean[] lastRow = dp[n - 1];
-    int result = (int) 1e9;
-    for (int i = 0; i < lastRow.length; ++i) {
-      if (lastRow[i]) {
-        int absDiff = Math.abs(target - i);
-        result = Math.min(result, absDiff);
-      }
-    }
-    return result * 2;
+    return dp[len - 1][t];
   }
 
-  /*
-   * Partition count (p17)
-   * */
   public static int partitionCount(int[] nums, int k) {
     int[][] dp = new int[nums.length][k];
     for (int[] d : dp) Arrays.fill(d, -1);
@@ -256,6 +254,43 @@ public class DynamicProgrammingProblems {
     int[][] dp = new int[nums.length][target + 1];
     for (int[] d : dp) Arrays.fill(d, -1);
     return findTargetSumWays(nums.length - 1, (sum - target) / 2, nums, dp);
+  }
+
+  // this is only for positive numbers
+  public static int minimumDifference(int[] nums) {
+    // the last row of the dp table will tell you the answer
+    // [3,2,7]
+    // 0 1 2 3 4 5 6 7 8 9 10 11 12 <- last row
+    // y n y y n y n y n y y  n  y
+    // so the possible s1 is 0   2 3 5 7 9 10 12
+    // corresponding s2 is.  12 10 9 7 5 3 2  0
+    // find abs(s1-s2)
+    int n = nums.length;
+    int sum = 0;
+    for (int num : nums) sum += num;
+    boolean[][] dp = new boolean[n][sum + 1];
+    // when target is zero we set to true i.e.; first column is set to zero
+    // for idx 0, we set dp[0][nums[0]] to true; [1,5,11,5]
+    for (int i = 0; i < n; ++i) dp[i][0] = true;
+    if (nums[0] <= sum) dp[0][sum] = true;
+
+    for (int i = 1; i < n; ++i) {
+      for (int j = 1; j <= sum; ++j) {
+        // we can skip or include a position
+        boolean skip = dp[i - 1][j];
+        boolean include = false;
+        if (nums[i] <= j) include = dp[i - 1][j - nums[i]];
+        dp[i][j] = skip || include;
+      }
+    }
+
+    int min = (int) 1e9;
+    for (int i = 0; i <= sum; ++i) {
+      if (dp[n - 1][i]) {
+        min = Math.min(min, Math.abs(i - (sum - i)));
+      }
+    }
+    return min;
   }
 
   private static int findTargetSumWays(int idx, int target, int[] nums, int[][] dp) {
@@ -358,9 +393,10 @@ public class DynamicProgrammingProblems {
 
   public static int longestCommonSubsequenceRecur(String s1, String s2) {
     int m = s1.length(), n = s2.length();
+    if (m == 0 || n == 0) return 0;
     int[][] dp = new int[m + 1][n + 1];
     for (int[] d : dp) Arrays.fill(d, -1);
-    return longestCommonSubsequenceRecur(m - 1, n - 1, s1, s2, dp);
+    return longestCommonSubsequenceRecur(m, n, s1, s2, dp);
   }
 
   public static int longestCommonSubsequenceRecur(int i, int j, String s1, String s2, int[][] dp) {
@@ -452,11 +488,12 @@ public class DynamicProgrammingProblems {
     int i = m, j = n;
     StringBuilder result = new StringBuilder();
     while (i > 0 && j > 0) {
+      // common char taken once
       if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
         result.append(str1.charAt(i - 1));
         i = i - 1;
         j = j - 1;
-      } else if (dp[i - 1][j] > dp[i][j - 1]) {
+      } else if (dp[i - 1][j] > dp[i][j - 1]) { // we are removing either of st1 or st2, and we need to take that char too
         result.append(str1.charAt(i - 1));
         i = i - 1;
       } else {
@@ -539,6 +576,134 @@ public class DynamicProgrammingProblems {
     int n = s.length();
     int lps = longestPalindromeSubsequence(s);
     return n - lps;
+  }
+
+  public static int deleteOperationForTwoString(String word1, String word2) {
+    // word1 = abcd, word2 = anc
+    // so to make word1 into word2, we can keep the lcs intact,
+    // remove the rest of the word1 and make n-lcs insert to word2
+    int lcs = longestCommonSubsequenceRecur(word1, word2);
+    int n1 = word1.length(), n2 = word2.length();
+    return n1 - lcs + n2 - lcs;
+  }
+
+  public static int distinctSubsequence(String s, String t) {
+    int m = s.length(), n = t.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int[] i : dp) Arrays.fill(i, -1);
+    return distinctSubsequence(m, n, s, t, dp);
+  }
+
+  private static int distinctSubsequence(int i, int j, String s, String t, int[][] dp) {
+    // nb: we use 0-based instead of -1 like if (j<0)
+    if (j == 0) return 1; // since t is exhausted I have matched all chars with s
+    if (i == 0) return 0; // since s is exhausted, there is still some matching to be done in t
+    if (dp[i][j] != -1) return dp[i][j];
+    // s = babgbag, t = bag
+    //           i        j
+    // so if i and j match we can take it and move on
+    // also, let's say we want t[j] i.e., g to match with the g in the left of s[i]
+    // so, we need to move i
+    if (s.charAt(i - 1) == t.charAt(j - 1)) {
+      return dp[i][j] = distinctSubsequence(i - 1, j - 1, s, t, dp) + distinctSubsequence(i - 1, j, s, t, dp);
+    } else {
+      // if two char doesn't match, I have to exhaust s since it's the bigger string;
+      // there is some chance I can match s[i] with t[j] in the left of s[i]
+      return dp[i][j] = distinctSubsequence(i - 1, j, s, t, dp);
+    }
+  }
+
+  public static int distinctSubsequenceTabulation(String s, String t) {
+    int m = s.length(), n = t.length();
+    int[][] dp = new int[m + 1][n + 1];
+    // j==0 means t is empty dp[i][j] <- here j is 0
+    for (int i = 0; i <= m; ++i) dp[i][0] = 1;
+    for (int j = 1; j <= n; ++j) dp[0][j] = 0;
+
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (s.charAt(i - 1) == t.charAt(j - 1)) {
+          dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+        } else {
+          dp[i][j] = dp[i - 1][j];
+        }
+      }
+    }
+
+    return dp[m][n];
+  }
+
+  public static int editDistance(String word1, String word2) {
+    int m = word1.length(), n = word2.length();
+    if (m == 0) return n;
+    if (n == 0) return m;
+    int[][] dp = new int[m + 1][n + 1];
+    for (int[] d : dp) Arrays.fill(d, -1);
+    editDistance(m, n, word1, word2, dp);
+    return dp[m][n];
+  }
+
+  private static int editDistance(int i, int j, String word1, String word2, int[][] dp) {
+    // base case
+    //  horse ros
+    // i       j
+    // to make empty string to 'ro' how many operations do we need? 2 inserts that's why j+1
+    // if (i < 0) return j + 1;
+    if (i == 0) return j; // we shift -1 to 0
+    //  horse   ros
+    //   i     j
+    // min operations to convert ho to empty string?
+    // if (j < 0) return i + 1;
+    if (j == 0) return i;
+    if (dp[i][j] != -1) return dp[i][j];
+    // horse ros
+    // if two char matches, we don't do anything
+    if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+      return dp[i][j] = editDistance(i - 1, j - 1, word1, word2, dp);
+    } else {
+      // we need to perform insert, update, delete
+      // insert operation
+      // horse ros
+      //     i   j
+      // if we insert at word1[i+1] then word2[j] matches
+      // so, we matched by inserting now we reduce j
+      int insert = 1 + editDistance(i, j - 1, word1, word2, dp);
+
+      // update operation
+      // horse ros
+      //     i   j
+      // if we update word1[i] with s then word1[i] match with word2[j]
+      // so, we move reduce both i & j
+      int update = 1 + editDistance(i - 1, j - 1, word1, word2, dp);
+
+      // delete operation
+      // rorse ros
+      // if we delete r from the first string, we get rose
+      // so we move i
+      int delete = 1 + editDistance(i - 1, j, word1, word2, dp);
+      return dp[i][j] = Math.min(insert, Math.min(update, delete));
+    }
+  }
+
+  public static int editDistanceTabulation(String word1, String word2) {
+    int m = word1.length(), n = word2.length();
+    if (m == 0) return n;
+    if (n == 0) return m;
+    int[][] dp = new int[m + 1][n + 1];
+    // base case i == 0 return j; j == 0 return i
+    for (int i = 0; i <= m; ++i) dp[i][0] = i;
+    for (int j = 0; j <= n; ++j) dp[0][j] = j;
+
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = 1 + Math.min(dp[i][j - 1], Math.min(dp[i - 1][j - 1], dp[i - 1][j]));
+        }
+      }
+    }
+    return dp[m][n];
   }
 
   /*
