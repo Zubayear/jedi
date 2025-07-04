@@ -42,7 +42,7 @@ public class GraphProblems {
     });
   }
 
-  public int findCircleNum(int[][] isConnected) {
+  public static int findCircleNum(int[][] isConnected) {
     int n = isConnected.length;
     boolean[] visited = new boolean[n];
     int result = 0;
@@ -55,7 +55,7 @@ public class GraphProblems {
     return result;
   }
 
-  private void findCircleNum(int[][] isConnected, boolean[] visited, int node) {
+  private static void findCircleNum(int[][] isConnected, boolean[] visited, int node) {
     if (visited[node]) return;
     visited[node] = true;
     for (int i = 0; i < isConnected.length; ++i) {
@@ -65,7 +65,7 @@ public class GraphProblems {
     }
   }
 
-  public void surroundedRegion(char[][] board) {
+  public static void surroundedRegion(char[][] board) {
     int m = board.length, n = board[0].length;
     // we remove the corner values out of the equation
     // then work towards solving the rest
@@ -99,7 +99,7 @@ public class GraphProblems {
 
   }
 
-  private void surroundedRegion(char[][] board, int i, int j, int m, int n) {
+  private static void surroundedRegion(char[][] board, int i, int j, int m, int n) {
     if (i < 0 || j < 0 || i >= m || j >= n || board[i][j] != 'O') return;
     board[i][j] = 'D';
     surroundedRegion(board, i - 1, j, m, n);
@@ -108,7 +108,7 @@ public class GraphProblems {
     surroundedRegion(board, i, j + 1, m, n);
   }
 
-  public int numEnclaves(int[][] grid) {
+  public static int numEnclaves(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     for (int j = 0; j < n; ++j) {
       if (grid[0][j] == 1) numEnclaves(grid, 0, j, m, n);
@@ -136,7 +136,7 @@ public class GraphProblems {
 
   }
 
-  private void numEnclaves(int[][] grid, int i, int j, int m, int n) {
+  private static void numEnclaves(int[][] grid, int i, int j, int m, int n) {
     if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] != 1) return;
     grid[i][j] = 0;
     numEnclaves(grid, i - 1, j, m, n);
@@ -290,7 +290,7 @@ public class GraphProblems {
     stack.offerFirst(current);
   }
 
-  public static List<Integer> topologicalSortBfs(int[][] graph) {
+  public static int[] topologicalSortBfs(int[][] graph) {
     // create indegrees
     // push all node having 0 indegrees
     // try to make indegree to zero for those having indegree > 0
@@ -305,16 +305,17 @@ public class GraphProblems {
     for (int i = 0; i < indegree.length; ++i) {
       if (indegree[i] == 0) queue.offer(i);
     }
-    List<Integer> result = new ArrayList<>();
+    int[] result = new int[n];
+    int ind = 0;
     while (!queue.isEmpty()) {
       int current = queue.poll();
-      result.add(current);
+      result[ind++] = current;
       for (int i : graph[current]) {
-        indegree[i]--;
+        if (indegree[i] > 0) indegree[i]--;
         if (indegree[i] == 0) queue.offer(i);
       }
     }
-    return result;
+    return ind == n ? result : new int[0];
   }
 
   public static boolean cycleExistsWithTopologicalSort(int[][] graph) {
@@ -340,5 +341,75 @@ public class GraphProblems {
       }
     }
     return count == n;
+  }
+
+  // O(V+E) | O(V+E)
+  public static boolean courseSchedule(int numCourses, int[][] prerequisites) {
+    // first we create a directed graph,
+    // then run topological sort, if there is cycle we return false
+    // [[1,0]] = 0 -> 1,
+    // so the result will be [[1],[]]
+    List<List<Integer>> graph = new ArrayList<>(numCourses);
+    for (int i = 0; i < numCourses; ++i) graph.add(new ArrayList<>());
+    int[] indegrees = new int[numCourses];
+
+    for (int[] edge : prerequisites) {
+      int course = edge[0], prereq = edge[1];
+      graph.get(prereq).add(course);
+      indegrees[course]++;
+    }
+
+    Deque<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < numCourses; ++i) {
+      if (indegrees[i] == 0) queue.offer(i);
+    }
+    int count = 0;
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
+      count++;
+      // reduce indegree of neighbors
+      for (int neighbor : graph.get(current)) {
+        if (indegrees[neighbor] > 0) indegrees[neighbor]--;
+        if (indegrees[neighbor] == 0) queue.offer(neighbor);
+      }
+    }
+    return count == numCourses;
+  }
+
+  // O(V+E) | O(V+E)
+  public static int[] courseScheduleFindOrder(int numCourses, int[][] prerequisites) {
+    // first we create a directed graph,
+    // then run topological sort, if there is cycle we return false
+    // [[1,0]] = 0 -> 1,
+    // so the result will be [[1],[]]
+    List<List<Integer>> graph = new ArrayList<>(numCourses);
+    int[] indegrees = new int[numCourses];
+    for (int i = 0; i < numCourses; ++i) graph.add(new ArrayList<>());
+
+    // build graph prereq -> course
+    // also increment course indegree
+    for (int[] edge : prerequisites) {
+      int course = edge[0];
+      int prereq = edge[1];
+      graph.get(prereq).add(course);
+      indegrees[course]++;
+    }
+
+    Deque<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < numCourses; ++i) {
+      if (indegrees[i] == 0) queue.offer(i);
+    }
+    int[] result = new int[numCourses];
+    int ind = 0;
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
+      result[ind++] = current;
+      // reduce indegree of neighbors
+      for (int neighbor : graph.get(current)) {
+        if (indegrees[neighbor] > 0) indegrees[neighbor]--;
+        if (indegrees[neighbor] == 0) queue.offer(neighbor);
+      }
+    }
+    return ind == numCourses ? result : new int[0];
   }
 }

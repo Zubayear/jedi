@@ -70,8 +70,12 @@ public class BinaryTreeProblems {
       List<Integer> temp = new LinkedList<>();
       for (int i = 0; i < size; ++i) {
         TreeNode<Integer> current = queue.poll();
-        if (lToR) temp.add(current.val);
-        else temp.addFirst(current.val);
+        assert current != null;
+        if (lToR) {
+          temp.add(current.val);
+        } else {
+          temp.addFirst(current.val);
+        }
       }
       result.add(temp);
       lToR = !lToR;
