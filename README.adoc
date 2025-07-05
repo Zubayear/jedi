@@ -1,7 +1,7 @@
-= Java DSA and Design Patterns Practice
+= Java [DSA, Design Patterns and Concurrency] Practice
 
 == Overview
-This repository contains implementations of various Data Structures, Algorithms, Design Patterns, and Concurrency solutions in Java. The project serves as a learning resource and reference implementation for common programming concepts and LeetCode problem solutions.
+This repository contains implementations of various Data Structures, Algorithms, Design Patterns, and Concurrency solutions in Java. The project serves as a learning resource and reference implementation for common programming concepts and solutions to LeetCode problems.
 
 == Project Structure
 
