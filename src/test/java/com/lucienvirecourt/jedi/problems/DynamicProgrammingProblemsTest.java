@@ -76,12 +76,6 @@ class DynamicProgrammingProblemsTest {
     assertFalse(partitionEqualSubsetSum(new int[]{3, 2, 7}), "Sum = 12 → cannot partition equally");
   }
 
-
-//  @Test
-//  void testPartitionCount() {
-//    assertEquals(1, partitionCount(new int[]{2, 2, 2, 2, 3, 4, 5}, 9));
-//  }
-
   @Test
   void testCoinChange() {
     assertEquals(3, coinChange(new int[]{1, 2, 5}, 11));
@@ -313,6 +307,107 @@ class DynamicProgrammingProblemsTest {
     int[] nums10 = {2, 3, 5, 7, 11, 13};
     int expected10 = 1; // The best partition may not be perfect
     assertEquals(expected10, minimumDifference(nums10));
+  }
+
+  @Test
+  void testLis() {
+    assertEquals(3, lis(new int[]{5, 4, 11, 1, 6, 18}));
+    assertEquals(3, lis(new int[]{5, 4, 11, 1, 16, 8}));
+  }
+
+  @Test
+  public void testRecursiveLIS() {
+    assertEquals(4, longestIncreasingSubsequence(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
+    assertEquals(1, longestIncreasingSubsequence(new int[]{5}));
+    assertEquals(0, longestIncreasingSubsequence(new int[]{}));
+    assertEquals(1, longestIncreasingSubsequence(new int[]{5, 5, 5}));
+    assertEquals(6, longestIncreasingSubsequence(new int[]{1, 2, 3, 4, 5, 6}));
+  }
+
+  @Test
+  public void testMemoizedLIS() {
+    int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+    int[][] dp = new int[arr.length][arr.length + 1];
+    for (int[] row : dp) Arrays.fill(row, -1);
+    assertEquals(4, lengthOfLIS(0, -1, arr, arr.length, dp));
+  }
+
+  @Test
+  public void testTabulationLIS() {
+    assertEquals(4, longestIncreasingSubsequenceTabulation(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
+    assertEquals(1, longestIncreasingSubsequenceTabulation(new int[]{5}));
+    assertEquals(0, longestIncreasingSubsequenceTabulation(new int[]{}));
+    assertEquals(1, longestIncreasingSubsequenceTabulation(new int[]{5, 5, 5}));
+    assertEquals(6, longestIncreasingSubsequenceTabulation(new int[]{1, 2, 3, 4, 5, 6}));
+  }
+
+  @Test
+  public void testDPBottomUpLIS() {
+    assertEquals(4, lis(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
+    assertEquals(1, lis(new int[]{5}));
+    assertEquals(0, lis(new int[]{}));
+    assertEquals(1, lis(new int[]{5, 5, 5}));
+    assertEquals(6, lis(new int[]{1, 2, 3, 4, 5, 6}));
+    assertEquals(3, lis(new int[]{5, 4, 11, 1, 16, 8}));
+  }
+
+  @Test
+  public void testLISChain() {
+    int[] result = lisChain(new int[]{5, 4, 11, 1, 16, 8});
+    assertTrue(isIncreasing(result));
+    assertEquals(3, result.length);
+
+    int[] singleElement = lisChain(new int[]{5});
+    assertArrayEquals(new int[]{5}, singleElement);
+
+    int[] emptyArray = lisChain(new int[]{});
+    assertEquals(0, emptyArray.length);
+  }
+
+  private boolean isIncreasing(int[] arr) {
+    for (int i = 1; i < arr.length; ++i) {
+      if (arr[i] <= arr[i - 1]) return false;
+    }
+    return true;
+  }
+
+  @Test
+  void testHouseRobberRecur() {
+    assertEquals(4, houseRobber(3, new int[]{1, 2, 3, 1}));
+    assertEquals(12, houseRobber(4, new int[]{2, 7, 9, 3, 1}));
+    assertEquals(4, houseRobber(3, new int[]{2, 1, 1, 2}));
+
+    assertEquals(5, houseRobber(0, new int[]{5}));
+    assertEquals(9, houseRobber(1, new int[]{9, 1}));
+    assertEquals(7, houseRobber(1, new int[]{3, 7}));
+    assertEquals(0, houseRobber(3, new int[]{0, 0, 0, 0}));
+    assertEquals(9, houseRobber(4, new int[]{3, 3, 3, 3, 3}));
+    assertEquals(41, houseRobber(6, new int[]{6, 7, 1, 30, 8, 2, 4}));
+    assertEquals(132, houseRobber(6, new int[]{20, 30, 50, 10, 2, 40, 60}));
+  }
+
+  @Test
+  public void testBuySellWithTransactionFee() {
+    assertEquals(8, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{1, 3, 2, 8, 4, 9}, 2));
+    assertEquals(0, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{1}, 2));
+    assertEquals(0, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{5, 4, 3, 2, 1}, 1));
+    assertEquals(3, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{1, 5}, 1));
+    assertEquals(0, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{1, 2}, 2));
+    assertEquals(7, bestTimeToBuyAndSellStockWithTransactionFee(new int[]{2, 1, 4, 5, 2, 9, 7}, 2));
+  }
+
+  private static int bestTimeToBuyAndSellStockWithCooldownWrapper(int[] prices) {
+    return bestTimeToBuyAndSellStockWithCooldown(0, 1, prices, prices.length);
+  }
+
+  @Test
+  public void testBuySellWithCooldown() {
+    assertEquals(3, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{1, 2, 3, 0, 2}));
+    assertEquals(0, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{1}));
+    assertEquals(0, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{5, 4, 3}));
+    assertEquals(1, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{1, 2}));
+    assertEquals(2, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{1, 2, 3}));
+    assertEquals(5, bestTimeToBuyAndSellStockWithCooldownWrapper(new int[]{1, 2, 3, 0, 2, 1, 4}));
   }
 
 }

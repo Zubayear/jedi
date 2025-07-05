@@ -99,7 +99,7 @@ public class DynamicProgrammingProblems {
 //    return houseRobber(nums.length - 1, nums);
   }
 
-  private static int houseRobber(int idx, int[] nums) {
+  static int houseRobber(int idx, int[] nums) {
     if (idx == 0) return nums[0]; // means we have not picked adjacent 1
     if (idx < 0) return 0;
     int take = nums[idx] + houseRobber(idx - 2, nums);
@@ -762,8 +762,8 @@ public class DynamicProgrammingProblems {
     return dp[0][1];
   }
 
-  private static int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
-    if (i == n) return 0;
+  static int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
+    if (i >= n) return 0;
     int profit = -(int) 1e9;
     if (buy == 1) {
       profit = Math.max(-prices[i] + bestTimeToBuyAndSellStockWithCooldown(i + 1, 0, prices, n),
@@ -774,6 +774,109 @@ public class DynamicProgrammingProblems {
         bestTimeToBuyAndSellStockWithCooldown(i + 1, buy, prices, n));
     }
     return profit;
+  }
+
+  public static int longestIncreasingSubsequence(int[] nums) {
+    // [10,9,2,5,3,7,101,18]
+    // we can either include an element in LIS or skip it
+    // depending on a previous element, if a previous element is lesser, then we might take it
+    int n = nums.length;
+    return longestIncreasingSubsequence(0, -1, nums, n);
+  }
+
+  public static int longestIncreasingSubsequence(int i, int p, int[] nums, int n) {
+    if (i == n) return 0;
+    // if we skip the current index, then we just move forward and previous stays the same
+    int skip = longestIncreasingSubsequence(i + 1, p, nums, n);
+    // if we include it then len increase by one,
+    // and we move to next index with current index being the previous
+    // p = -1 means the first index
+    int include = 0;
+    if (p == -1 || nums[p] < nums[i]) include = 1 + longestIncreasingSubsequence(i + 1, i, nums, n);
+    return Math.max(skip, include);
+  }
+
+  public static int longestIncreasingSubsequenceTabulation(int[] nums) {
+    int n = nums.length;
+    int[][] dp = new int[n + 1][n + 1];
+    // reverse of recursion i.e., i = n-1 to 0 and p = i-1 to -1
+    for (int i = n - 1; i >= 0; --i) {
+      for (int p = i - 1; p >= -1; --p) {
+        int skip = dp[i + 1][p + 1];
+        int include = 0;
+        if (p == -1 || nums[p] < nums[i]) include = 1 + dp[i + 1][i + 1];
+        dp[i][p + 1] = Math.max(skip, include);
+      }
+    }
+    return dp[0][0];
+  }
+
+  public static int lengthOfLIS(int i, int p, int[] nums, int n, int[][] dp) {
+    // move the index by 1 position for previous
+    if (i == n) return 0;
+    if (dp[i][p + 1] != -1) return dp[i][p + 1];
+    int skip = lengthOfLIS(i + 1, p, nums, n, dp);
+    int include = 0;
+    if (p == -1 || nums[p] < nums[i]) include = 1 + lengthOfLIS(i + 1, i, nums, n, dp);
+    return dp[i][p + 1] = Math.max(skip, include);
+  }
+
+  public static int lis(int[] nums) {
+    int n = nums.length;
+    if (n == 0) return 0;
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    int ans = 1;
+    // 5,4,11,1,16,8
+    // dp[i] = lis that ends at index i
+    // so, in each index we are storing the lis that ends at that index
+    for (int i = 1; i < n; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (nums[i] > nums[j]) { // we can merge both if too
+          if (dp[i] < dp[j] + 1) {
+            dp[i] = dp[j] + 1;
+            ans = Math.max(ans, dp[i]);
+          }
+        }
+      }
+    }
+    return ans;
+  }
+
+  public static int[] lisChain(int[] nums) {
+    int n = nums.length;
+    if (n == 0) return new int[0];
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    int[] idxArr = new int[n];
+    for (int i = 0; i < n; ++i) {
+      idxArr[i] = i;
+    }
+    int ans = 1;
+    int startIdx = 0;
+    // 5,4,11,1,16,8
+    // dp[i] = lis that ends at index i
+    // so, in each index we are storing the lis that ends at that index
+    for (int i = 1; i < n; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (nums[i] > nums[j] && dp[i] < dp[j] + 1) { // we can merge both if too
+          dp[i] = dp[j] + 1;
+          if (ans < dp[i]) {
+            ans = dp[i];
+            // we need to keep trace of the index that updated the lis ending at i
+            startIdx = i; // index of the end of a lis chain
+            idxArr[i] = j;
+          }
+        }
+      }
+    }
+    int[] result = new int[ans];
+    while (startIdx != idxArr[startIdx]) { // 5 != 2
+      result[--ans] = nums[startIdx]; // store value 18
+      startIdx = idxArr[startIdx]; // startIdx = 2
+    }
+    result[--ans] = nums[startIdx];
+    return result;
   }
 
 
