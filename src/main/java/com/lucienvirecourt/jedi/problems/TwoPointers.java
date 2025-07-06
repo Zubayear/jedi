@@ -24,7 +24,7 @@ public class TwoPointers {
           k--;
         } else {
           result.add(Arrays.asList(nums[i], nums[j], nums[k]));
-          // move j and k til we find different element
+          // move j and k till we find a different element
           while (j < k && nums[j] != nums[j - 1]) {
             j++;
           }

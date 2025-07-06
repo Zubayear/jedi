@@ -3,7 +3,7 @@ package com.lucienvirecourt.jedi.problems;
 import java.util.*;
 
 public class GraphProblems {
-  public static List<Integer> bfs(List<List<Integer>> graph, int start) {
+  public List<Integer> bfs(List<List<Integer>> graph, int start) {
     Deque<Integer> queue = new ArrayDeque<>();
     List<Integer> result = new ArrayList<>();
     int v = graph.size();
@@ -23,7 +23,7 @@ public class GraphProblems {
     return result;
   }
 
-  public static List<Integer> dfs(List<List<Integer>> graph, int start) {
+  public List<Integer> dfs(List<List<Integer>> graph, int start) {
     var result = new ArrayList<Integer>();
     int v = graph.size();
     boolean[] visited = new boolean[v];
@@ -31,7 +31,7 @@ public class GraphProblems {
     return result;
   }
 
-  private static void dfs(List<List<Integer>> graph, int start, boolean[] visited, List<Integer> result) {
+  private void dfs(List<List<Integer>> graph, int start, boolean[] visited, List<Integer> result) {
     if (visited[start]) return;
     visited[start] = true;
     result.add(start);
@@ -42,7 +42,7 @@ public class GraphProblems {
     });
   }
 
-  public static int findCircleNum(int[][] isConnected) {
+  public int findCircleNum(int[][] isConnected) {
     int n = isConnected.length;
     boolean[] visited = new boolean[n];
     int result = 0;
@@ -55,7 +55,7 @@ public class GraphProblems {
     return result;
   }
 
-  private static void findCircleNum(int[][] isConnected, boolean[] visited, int node) {
+  private void findCircleNum(int[][] isConnected, boolean[] visited, int node) {
     if (visited[node]) return;
     visited[node] = true;
     for (int i = 0; i < isConnected.length; ++i) {
@@ -65,7 +65,7 @@ public class GraphProblems {
     }
   }
 
-  public static void surroundedRegion(char[][] board) {
+  public void surroundedRegion(char[][] board) {
     int m = board.length, n = board[0].length;
     // we remove the corner values out of the equation
     // then work towards solving the rest
@@ -99,7 +99,7 @@ public class GraphProblems {
 
   }
 
-  private static void surroundedRegion(char[][] board, int i, int j, int m, int n) {
+  private void surroundedRegion(char[][] board, int i, int j, int m, int n) {
     if (i < 0 || j < 0 || i >= m || j >= n || board[i][j] != 'O') return;
     board[i][j] = 'D';
     surroundedRegion(board, i - 1, j, m, n);
@@ -108,7 +108,7 @@ public class GraphProblems {
     surroundedRegion(board, i, j + 1, m, n);
   }
 
-  public static int numEnclaves(int[][] grid) {
+  public int numEnclaves(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     for (int j = 0; j < n; ++j) {
       if (grid[0][j] == 1) numEnclaves(grid, 0, j, m, n);
@@ -136,7 +136,7 @@ public class GraphProblems {
 
   }
 
-  private static void numEnclaves(int[][] grid, int i, int j, int m, int n) {
+  private void numEnclaves(int[][] grid, int i, int j, int m, int n) {
     if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] != 1) return;
     grid[i][j] = 0;
     numEnclaves(grid, i - 1, j, m, n);
@@ -145,7 +145,7 @@ public class GraphProblems {
     numEnclaves(grid, i, j + 1, m, n);
   }
 
-  public static int numberOfDistinctIslands(int[][] grid) {
+  public int numberOfDistinctIslands(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     List<String> list = new ArrayList<>();
     Set<List<String>> set = new HashSet<>();
@@ -162,11 +162,11 @@ public class GraphProblems {
     return set.size();
   }
 
-  private static String toString(int a, int b) {
+  private String toString(int a, int b) {
     return a + " " + b;
   }
 
-  private static void numberOfDistinctIslands(int[][] grid, int i, int j, int a, int b, List<String> aux, int m, int n) {
+  private void numberOfDistinctIslands(int[][] grid, int i, int j, int a, int b, List<String> aux, int m, int n) {
     if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == 0) return;
     grid[i][j] = 0;
     aux.add(toString(i - a, j - b));
@@ -176,20 +176,20 @@ public class GraphProblems {
     numberOfDistinctIslands(grid, i, j + 1, a, b, aux, m, n);
   }
 
-  public static boolean isBipartite(int[][] grid) {
+  public boolean isBipartite(int[][] grid) {
     return false;
   }
 
   /*
    * Cycle detection in undirected graph
    * */
-  public static boolean cycleExists(int[][] graph) {
+  public boolean cycleExists(int[][] graph) {
     int n = graph.length;
     boolean[] visited = new boolean[n];
     return cycleExists(0, -1, graph, visited);
   }
 
-  private static boolean cycleExists(int current, int parent, int[][] graph, boolean[] visited) {
+  private boolean cycleExists(int current, int parent, int[][] graph, boolean[] visited) {
     visited[current] = true;
     int[] neighbors = graph[current];
     for (int n : neighbors) {
@@ -202,7 +202,7 @@ public class GraphProblems {
     return false;
   }
 
-  public static boolean cycleExitsInDirectedGraph(int[][] graph) {
+  public boolean cycleExitsInDirectedGraph(int[][] graph) {
     int n = graph.length;
     boolean[] visited = new boolean[n];
     boolean[] visitedPath = new boolean[n];
@@ -213,7 +213,7 @@ public class GraphProblems {
     return false;
   }
 
-  private static boolean cycleExitsInDirectedGraph(int current, int[][] graph, boolean[] visited, boolean[] visitedPath) {
+  private boolean cycleExitsInDirectedGraph(int current, int[][] graph, boolean[] visited, boolean[] visitedPath) {
     visited[current] = true;
     visitedPath[current] = true;
     int[] neighbors = graph[current];
@@ -230,7 +230,7 @@ public class GraphProblems {
     return false;
   }
 
-  public static List<Integer> eventualSafeNodes(int[][] graph) {
+  public List<Integer> eventualSafeNodes(int[][] graph) {
     // we use cycle detection in the directed graph
     // if a node is part of the cycle, then that isn't a safe node
     int n = graph.length;
@@ -249,7 +249,7 @@ public class GraphProblems {
     return result;
   }
 
-  private static boolean eventualSafeNodes(int current, int[][] graph, boolean[] visited, boolean[] pathVisited) {
+  private boolean eventualSafeNodes(int current, int[][] graph, boolean[] visited, boolean[] pathVisited) {
     visited[current] = true;
     pathVisited[current] = true;
     for (int neighbor : graph[current]) {
@@ -263,7 +263,7 @@ public class GraphProblems {
     return false;
   }
 
-  public static List<Integer> topologicalSort(int[][] graph) {
+  public List<Integer> topologicalSort(int[][] graph) {
     // use dfs, but before backtracking put the value in the stack,
     // this will return one of the possible orderings btw
     List<Integer> result = new ArrayList<>();
@@ -280,7 +280,7 @@ public class GraphProblems {
     return result;
   }
 
-  private static void topologicalSort(int current, int[][] graph, boolean[] visited, Deque<Integer> stack) {
+  private void topologicalSort(int current, int[][] graph, boolean[] visited, Deque<Integer> stack) {
     visited[current] = true;
     for (int neighbor : graph[current]) {
       if (!visited[neighbor]) {
@@ -290,7 +290,7 @@ public class GraphProblems {
     stack.offerFirst(current);
   }
 
-  public static int[] topologicalSortBfs(int[][] graph) {
+  public int[] topologicalSortBfs(int[][] graph) {
     // create indegrees
     // push all node having 0 indegrees
     // try to make indegree to zero for those having indegree > 0
@@ -318,7 +318,7 @@ public class GraphProblems {
     return ind == n ? result : new int[0];
   }
 
-  public static boolean cycleExistsWithTopologicalSort(int[][] graph) {
+  public boolean cycleExistsWithTopologicalSort(int[][] graph) {
     // so, if we can have a valid topological sort, then there is no cycle
     int n = graph.length;
     int[] indegree = new int[n];
@@ -344,7 +344,7 @@ public class GraphProblems {
   }
 
   // O(V+E) | O(V+E)
-  public static boolean courseSchedule(int numCourses, int[][] prerequisites) {
+  public boolean courseSchedule(int numCourses, int[][] prerequisites) {
     // first we create a directed graph,
     // then run topological sort, if there is cycle we return false
     // [[1,0]] = 0 -> 1,
@@ -377,7 +377,7 @@ public class GraphProblems {
   }
 
   // O(V+E) | O(V+E)
-  public static int[] courseScheduleFindOrder(int numCourses, int[][] prerequisites) {
+  public int[] courseScheduleFindOrder(int numCourses, int[][] prerequisites) {
     // first we create a directed graph,
     // then run topological sort, if there is cycle we return false
     // [[1,0]] = 0 -> 1,

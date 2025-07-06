@@ -2,7 +2,7 @@ package com.lucienvirecourt.jedi.problems;
 
 public class BinarySearchProblems {
 
-  public static int lowerBound(int[] nums, int k) {
+  public  int lowerBound(int[] nums, int k) {
     // smallest index such that nums[idx] >= k
     int n = nums.length, left = 0, right = n - 1, res = n;
     while (left <= right) {
@@ -17,7 +17,7 @@ public class BinarySearchProblems {
     return res;
   }
 
-  public static int upperBound(int[] nums, int k) {
+  public  int upperBound(int[] nums, int k) {
     // smallest index such that nums[idx] > k
     int n = nums.length, left = 0, right = n - 1, res = n;
     while (left <= right) {
@@ -32,7 +32,7 @@ public class BinarySearchProblems {
     return res;
   }
 
-  public static int floor(int[] nums, int k) {
+  public  int floor(int[] nums, int k) {
     // largest number in nums <= k
     // nums = [10,20,30,40,50] k = 25
     int n = nums.length, left = 0, right = n, ans = -1;
@@ -48,7 +48,7 @@ public class BinarySearchProblems {
     return ans;
   }
 
-  public static int ceil(int[] nums, int k) {
+  public  int ceil(int[] nums, int k) {
     // smallest number in nums >= k
     // nums = [10,20,30,40,50] k = 25 ans = 30
     int n = nums.length, left = 0, right = n, ans = -1;
@@ -64,7 +64,7 @@ public class BinarySearchProblems {
     return ans;
   }
 
-  public static int[] firstAndLastOccurrence(int[] nums, int k) {
+  public  int[] firstAndLastOccurrence(int[] nums, int k) {
     // lower bound and upper bound
     int lb = lowerBound(nums, k);
     if (lb == nums.length || nums[lb] != k) return new int[]{-1, -1};
@@ -72,7 +72,7 @@ public class BinarySearchProblems {
     return new int[]{lb, up - 1};
   }
 
-  public static int searchInRotatedSortedArray(int[] nums, int target) {
+  public  int searchInRotatedSortedArray(int[] nums, int target) {
     // find middle
     // find sorted section
     // ask if target lies within sorted section
@@ -99,7 +99,7 @@ public class BinarySearchProblems {
     return -1;
   }
 
-  public static boolean searchInRotatedSortedArrayWithDuplicates(int[] nums, int target) {
+  public  boolean searchInRotatedSortedArrayWithDuplicates(int[] nums, int target) {
     int n = nums.length;
     int left = 0, right = n - 1;
     while (left <= right) {
@@ -131,7 +131,7 @@ public class BinarySearchProblems {
     return false;
   }
 
-  public static int findMinInRotatedSortedArray(int[] nums) {
+  public  int findMinInRotatedSortedArray(int[] nums) {
     // 4,5,6,7,0,1,2
     // sorted section might or might not have the min
     // so, pick the min from the sorted section and eliminate that half since we got the min of that half
@@ -156,7 +156,7 @@ public class BinarySearchProblems {
     return ans;
   }
 
-  public static int findRotationTime(int[] nums) {
+  public  int findRotationTime(int[] nums) {
     int n = nums.length, left = 0, right = n - 1, idx = 0, ans = (int) 1e9;
     // 4,5,6,7,0,1,2
     while (left <= right) {
@@ -186,7 +186,7 @@ public class BinarySearchProblems {
     return idx;
   }
 
-  public static int minEatingSpeed(int[] piles, int h) {
+  public  int minEatingSpeed(int[] piles, int h) {
     int max = -(int)1e9;
     for (int p : piles) max = Math.max(max, p);
     int left = 1, right = max, ans = (int)1e9;
@@ -203,7 +203,7 @@ public class BinarySearchProblems {
     return ans;
   }
 
-  private static int eat(int[] piles, int speed) {
+  private  int eat(int[] piles, int speed) {
     int sum = 0;
     for (int p : piles) {
       sum += (int) Math.ceil((double) p/speed);
@@ -239,7 +239,7 @@ public class BinarySearchProblems {
     return -1;
   }
 
-  public static boolean searchMatrix(int[][] matrix, int target) {
+  public  boolean searchMatrix(int[][] matrix, int target) {
     int m = matrix.length, n = matrix[0].length, left = 0, right = m * n - 1;
     while (left <= right) {
       int mid = left + (right - left) / 2;

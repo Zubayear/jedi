@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DynamicProgrammingProblems {
-  static int mod = (int) (1e9 + 7);
+  int mod = (int) (1e9 + 7);
 
   // O(n) | O(1)
-  public static int climbStairs(int n) {
+  public int climbStairs(int n) {
     // memoization
     /*int[] cache = new int[n + 1];
     Arrays.fill(cache, -1);
@@ -18,7 +18,7 @@ public class DynamicProgrammingProblems {
     return climbStairsOptimal(n);
   }
 
-  private static int climbStairsOptimal(int n) {
+  private int climbStairsOptimal(int n) {
     int current, prev = 1, prev2 = 1;
     for (int i = 0; i < n - 1; i++) {
       current = prev + prev2;
@@ -28,13 +28,13 @@ public class DynamicProgrammingProblems {
     return prev;
   }
 
-  private static int climbStairs(int n, int[] cache) {
+  private int climbStairs(int n, int[] cache) {
     if (n == 0 || n == 1) return 1;
     if (cache[n] != -1) return cache[n];
     return cache[n] = climbStairs(n - 1, cache) + climbStairs(n - 2, cache);
   }
 
-  public static int minCostClimbingStairs(int[] cost) {
+  public int minCostClimbingStairs(int[] cost) {
     if (cost.length == 2) return Math.min(cost[0], cost[1]);
     return Math.min(
       minCostClimbingStairs(0, cost),
@@ -42,7 +42,7 @@ public class DynamicProgrammingProblems {
     );
   }
 
-  private static int minCostClimbingStairs(int idx, int[] cost) {
+  private int minCostClimbingStairs(int idx, int[] cost) {
     if (idx >= cost.length) return 0;
     return cost[idx] + Math.min(
       minCostClimbingStairs(idx + 1, cost),
@@ -50,7 +50,7 @@ public class DynamicProgrammingProblems {
     );
   }
 
-  private static int minCostClimbingStairsOptimal(int[] cost) {
+  private int minCostClimbingStairsOptimal(int[] cost) {
     if (cost.length == 2) return Math.min(cost[0], cost[1]);
     // optimal
     int n = cost.length + 1;
@@ -67,7 +67,7 @@ public class DynamicProgrammingProblems {
     return Math.min(newCost[0], newCost[1]);
   }
 
-  public static int nthTribonacciNumber(int n) {
+  public int nthTribonacciNumber(int n) {
     if (n == 0) return 0;
     if (n == 1 || n == 2) return 1;
     int t0 = 0, t1 = 1, t2 = 1;
@@ -82,7 +82,7 @@ public class DynamicProgrammingProblems {
     return t2;
   }
 
-  public static int houseRobber(int[] nums) {
+  public int houseRobber(int[] nums) {
     // optimal
     if (nums.length == 2) return Math.max(nums[0], nums[1]);
     int current, prev = nums[0], prev2 = 0;
@@ -99,7 +99,7 @@ public class DynamicProgrammingProblems {
 //    return houseRobber(nums.length - 1, nums);
   }
 
-  static int houseRobber(int idx, int[] nums) {
+  int houseRobber(int idx, int[] nums) {
     if (idx == 0) return nums[0]; // means we have not picked adjacent 1
     if (idx < 0) return 0;
     int take = nums[idx] + houseRobber(idx - 2, nums);
@@ -107,7 +107,7 @@ public class DynamicProgrammingProblems {
     return Math.max(take, ignore);
   }
 
-  public static int houseRobberII(int[] nums) {
+  public int houseRobberII(int[] nums) {
     int n = nums.length;
     if (n == 1) return nums[0];
     int[] nums1 = new int[n - 1];
@@ -119,7 +119,7 @@ public class DynamicProgrammingProblems {
     return Math.max(houseRobber(nums1), houseRobber(nums2));
   }
 
-  public static int minimumPathSum(int[][] grid) {
+  public int minimumPathSum(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int[][] dp = new int[m + 1][n + 1];
     for (int[] d : dp) {
@@ -128,7 +128,7 @@ public class DynamicProgrammingProblems {
     return minimumPathSum(m - 1, n - 1, grid, dp);
   }
 
-  private static int minimumPathSum(int i, int j, int[][] grid, int[][] dp) {
+  private int minimumPathSum(int i, int j, int[][] grid, int[][] dp) {
     if (i == 0 && j == 0) return grid[i][j];
     if (i < 0 || j < 0) return (int) 1e9;
     if (dp[i][j] != -1) return dp[i][j];
@@ -137,7 +137,7 @@ public class DynamicProgrammingProblems {
     return dp[i][j] = Math.min(up, left);
   }
 
-  public static int minimumFallingPathSum(int[][] grid) {
+  public int minimumFallingPathSum(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int ans = (int) 1e9;
 //    for (int j = 0; j < n; ++j) {
@@ -150,7 +150,7 @@ public class DynamicProgrammingProblems {
     return ans;
   }
 
-  private static int minimumFallingPathSum(int i, int j, int[][] grid) {
+  private int minimumFallingPathSum(int i, int j, int[][] grid) {
     if (j < 0 || j >= grid[0].length) return (int) 1e9;
     if (i == 0) return grid[i][j];
     int up = grid[i][j] + minimumFallingPathSum(i - 1, j, grid);
@@ -159,7 +159,7 @@ public class DynamicProgrammingProblems {
     return Math.min(up, Math.min(ld, rd));
   }
 
-  private static int minimumFallingPathSumOptimal(int[][] grid, int a, int b) {
+  private int minimumFallingPathSumOptimal(int[][] grid, int a, int b) {
     int m = grid.length, n = grid[0].length;
     int[][] dp = new int[m][n];
 //    for (int j = 0; j < n; ++j) dp[0][j] = grid[0][j];
@@ -182,7 +182,7 @@ public class DynamicProgrammingProblems {
   /*
    * dp on subset
    * */
-  public static boolean canPartition(int[] nums) {
+  public boolean canPartition(int[] nums) {
     int sum = 0;
     for (int n : nums) {
       sum += n;
@@ -191,7 +191,7 @@ public class DynamicProgrammingProblems {
     return tryPartition(nums.length - 1, sum / 2, nums);
   }
 
-  private static boolean tryPartition(int idx, int target, int[] nums) {
+  private boolean tryPartition(int idx, int target, int[] nums) {
     if (target == 0) return true;
     if (idx == 0) return nums[0] == target;
     boolean skip = tryPartition(idx - 1, target, nums);
@@ -200,7 +200,7 @@ public class DynamicProgrammingProblems {
     return skip || include;
   }
 
-  public static boolean partitionEqualSubsetSum(int[] nums) {
+  public boolean partitionEqualSubsetSum(int[] nums) {
     int len = nums.length;
     if (len == 0) return false;
     int sum = 0;
@@ -225,13 +225,13 @@ public class DynamicProgrammingProblems {
     return dp[len - 1][t];
   }
 
-  public static int partitionCount(int[] nums, int k) {
+  public int partitionCount(int[] nums, int k) {
     int[][] dp = new int[nums.length][k];
     for (int[] d : dp) Arrays.fill(d, -1);
     return partitionCount(nums.length - 1, k, nums, dp);
   }
 
-  private static int partitionCount(int idx, int target, int[] nums, int[][] dp) {
+  private int partitionCount(int idx, int target, int[] nums, int[][] dp) {
     if (idx == 0) {
       if (target == 0 && nums[0] == 0) return 2;
       if (target == 0 || target == nums[0]) return 1;
@@ -247,7 +247,7 @@ public class DynamicProgrammingProblems {
   /*
    * Count partitions with the given difference (p18)
    * */
-  public static int findTargetSumWays(int[] nums, int target) {
+  public int findTargetSumWays(int[] nums, int target) {
     int sum = 0;
     for (int n : nums) sum += n;
     if (sum - target < 0 || (sum - target) % 2 != 0) return 0;
@@ -257,7 +257,7 @@ public class DynamicProgrammingProblems {
   }
 
   // this is only for positive numbers
-  public static int minimumDifference(int[] nums) {
+  public int minimumDifference(int[] nums) {
     // the last row of the dp table will tell you the answer
     // [3,2,7]
     // 0 1 2 3 4 5 6 7 8 9 10 11 12 <- last row
@@ -293,7 +293,7 @@ public class DynamicProgrammingProblems {
     return min;
   }
 
-  private static int findTargetSumWays(int idx, int target, int[] nums, int[][] dp) {
+  private int findTargetSumWays(int idx, int target, int[] nums, int[][] dp) {
     if (idx == 0) {
       if (target == 0 && nums[0] == 0) return 2;
       if (target == 0 || target == nums[0]) return 1;
@@ -306,7 +306,7 @@ public class DynamicProgrammingProblems {
     return dp[idx][target] = (skip + include);
   }
 
-  public static int coinChange(int[] coins, int amount) {
+  public int coinChange(int[] coins, int amount) {
     int m = coins.length, n = amount + 1;
     int[][] dp = new int[m][n];
     for (int i = 0; i < n; ++i) {
@@ -326,7 +326,7 @@ public class DynamicProgrammingProblems {
     return result;
   }
 
-  public static int coinChangeOptimal(int[] coins, int amount) {
+  public int coinChangeOptimal(int[] coins, int amount) {
     int m = coins.length, n = amount + 1;
     int[] prev = new int[n], cur = new int[n];
     for (int i = 0; i < n; ++i) {
@@ -350,7 +350,7 @@ public class DynamicProgrammingProblems {
   /*
    * dp on strings
    * */
-  public static String longestCommonSubsequence(String text1, String text2) {
+  public String longestCommonSubsequence(String text1, String text2) {
     if (text1.equals(text2)) return text1;
     int m = text1.length(), n = text2.length();
     int[][] dp = new int[m + 1][n + 1];
@@ -391,7 +391,7 @@ public class DynamicProgrammingProblems {
     return result.reverse().toString();
   }
 
-  public static int longestCommonSubsequenceRecur(String s1, String s2) {
+  public int longestCommonSubsequenceRecur(String s1, String s2) {
     int m = s1.length(), n = s2.length();
     if (m == 0 || n == 0) return 0;
     int[][] dp = new int[m + 1][n + 1];
@@ -399,7 +399,7 @@ public class DynamicProgrammingProblems {
     return longestCommonSubsequenceRecur(m, n, s1, s2, dp);
   }
 
-  public static int longestCommonSubsequenceRecur(int i, int j, String s1, String s2, int[][] dp) {
+  public int longestCommonSubsequenceRecur(int i, int j, String s1, String s2, int[][] dp) {
     if (i == 0 || j == 0) return 0;
     if (dp[i][j] != -1) return dp[i][j];
     // a | a
@@ -419,7 +419,7 @@ public class DynamicProgrammingProblems {
     );
   }
 
-  public static String longestCommonSubstring(String text1, String text2) {
+  public String longestCommonSubstring(String text1, String text2) {
     if (text1.equals(text2)) return text1;
     int m = text1.length(), n = text2.length();
     int[][] dp = new int[m + 1][n + 1];
@@ -460,7 +460,7 @@ public class DynamicProgrammingProblems {
     return result.reverse().toString();
   }
 
-  public static String shortestCommonSupersequence(String str1, String str2) {
+  public String shortestCommonSupersequence(String str1, String str2) {
     int m = str1.length(), n = str2.length();
     int[][] dp = new int[m + 1][n + 1];
 
@@ -512,39 +512,7 @@ public class DynamicProgrammingProblems {
     return result.reverse().toString();
   }
 
-  public static List<Integer> largestDivisibleSubset(int[] nums) {
-    // [10,9,2,5,3,7,101,18]
-    int n = nums.length;
-    Arrays.sort(nums);
-    int[] dp = new int[n];
-    Arrays.fill(dp, 1);
-    int[] hash = new int[n];
-    int ans = 1, lastIdx = 0;
-    for (int i = 0; i < n; ++i) {
-      hash[i] = i;
-      for (int j = 0; j < i; ++j) {
-        if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
-          dp[i] = dp[j] + 1;
-          hash[i] = j;
-//          dp[i] = Math.max(dp[i], dp[j] + 1);
-//          ans = Math.max(dp[i], ans);
-        }
-      }
-      if (dp[i] > ans) {
-        ans = dp[i];
-        lastIdx = i;
-      }
-    }
-    List<Integer> temp = new ArrayList<>();
-    temp.add(nums[lastIdx]);
-    while (hash[lastIdx] != lastIdx) {
-      lastIdx = hash[lastIdx];
-      temp.add(nums[lastIdx]);
-    }
-    return temp.reversed();
-  }
-
-  public static int longestPalindromeSubsequence(String s) {
+  public int longestPalindromeSubsequence(String s) {
     // s = bbbab, if we reverse s and get the lcs between s and s1, we can find the ans
     int n = s.length();
     if (n < 2) return n;
@@ -568,7 +536,7 @@ public class DynamicProgrammingProblems {
     return dp[n][n];
   }
 
-  public static int minimumInsertionToMakeStringPalindrome(String s) {
+  public int minimumInsertionToMakeStringPalindrome(String s) {
     // don't touch the longest palindrome
     // try to insert the rest by reversing and putting in between to make it work
     // s = abcaa, lps = aaa, and we have bc which we reverse and insert
@@ -578,7 +546,7 @@ public class DynamicProgrammingProblems {
     return n - lps;
   }
 
-  public static int deleteOperationForTwoString(String word1, String word2) {
+  public int deleteOperationForTwoString(String word1, String word2) {
     // word1 = abcd, word2 = anc
     // so to make word1 into word2, we can keep the lcs intact,
     // remove the rest of the word1 and make n-lcs insert to word2
@@ -587,14 +555,14 @@ public class DynamicProgrammingProblems {
     return n1 - lcs + n2 - lcs;
   }
 
-  public static int distinctSubsequence(String s, String t) {
+  public int distinctSubsequence(String s, String t) {
     int m = s.length(), n = t.length();
     int[][] dp = new int[m + 1][n + 1];
     for (int[] i : dp) Arrays.fill(i, -1);
     return distinctSubsequence(m, n, s, t, dp);
   }
 
-  private static int distinctSubsequence(int i, int j, String s, String t, int[][] dp) {
+  private int distinctSubsequence(int i, int j, String s, String t, int[][] dp) {
     // nb: we use 0-based instead of -1 like if (j<0)
     if (j == 0) return 1; // since t is exhausted I have matched all chars with s
     if (i == 0) return 0; // since s is exhausted, there is still some matching to be done in t
@@ -613,7 +581,7 @@ public class DynamicProgrammingProblems {
     }
   }
 
-  public static int distinctSubsequenceTabulation(String s, String t) {
+  public int distinctSubsequenceTabulation(String s, String t) {
     int m = s.length(), n = t.length();
     int[][] dp = new int[m + 1][n + 1];
     // j==0 means t is empty dp[i][j] <- here j is 0
@@ -633,7 +601,7 @@ public class DynamicProgrammingProblems {
     return dp[m][n];
   }
 
-  public static int editDistance(String word1, String word2) {
+  public int editDistance(String word1, String word2) {
     int m = word1.length(), n = word2.length();
     if (m == 0) return n;
     if (n == 0) return m;
@@ -643,7 +611,7 @@ public class DynamicProgrammingProblems {
     return dp[m][n];
   }
 
-  private static int editDistance(int i, int j, String word1, String word2, int[][] dp) {
+  private int editDistance(int i, int j, String word1, String word2, int[][] dp) {
     // base case
     //  horse ros
     // i       j
@@ -685,7 +653,7 @@ public class DynamicProgrammingProblems {
     }
   }
 
-  public static int editDistanceTabulation(String word1, String word2) {
+  public int editDistanceTabulation(String word1, String word2) {
     int m = word1.length(), n = word2.length();
     if (m == 0) return n;
     if (n == 0) return m;
@@ -727,7 +695,7 @@ public class DynamicProgrammingProblems {
     return dp[0][1][2];
   }
 
-  public static int bestTimeToBuyAndSellStockWithCooldown(int[] prices) {
+  public int bestTimeToBuyAndSellStockWithCooldown(int[] prices) {
     int n = prices.length;
     int[][] dp = new int[n + 2][2];
     // for recursion, we start from 0 to n,
@@ -744,7 +712,7 @@ public class DynamicProgrammingProblems {
     return dp[0][1];
   }
 
-  public static int bestTimeToBuyAndSellStockWithTransactionFee(int[] prices, int fee) {
+  public int bestTimeToBuyAndSellStockWithTransactionFee(int[] prices, int fee) {
     int n = prices.length;
     int[][] dp = new int[n + 1][2];
     // for recursion, we start from 0 to n,
@@ -762,7 +730,7 @@ public class DynamicProgrammingProblems {
     return dp[0][1];
   }
 
-  static int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
+  int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
     if (i >= n) return 0;
     int profit = -(int) 1e9;
     if (buy == 1) {
@@ -776,7 +744,7 @@ public class DynamicProgrammingProblems {
     return profit;
   }
 
-  public static int longestIncreasingSubsequence(int[] nums) {
+  public int longestIncreasingSubsequence(int[] nums) {
     // [10,9,2,5,3,7,101,18]
     // we can either include an element in LIS or skip it
     // depending on a previous element, if a previous element is lesser, then we might take it
@@ -784,7 +752,7 @@ public class DynamicProgrammingProblems {
     return longestIncreasingSubsequence(0, -1, nums, n);
   }
 
-  public static int longestIncreasingSubsequence(int i, int p, int[] nums, int n) {
+  public int longestIncreasingSubsequence(int i, int p, int[] nums, int n) {
     if (i == n) return 0;
     // if we skip the current index, then we just move forward and previous stays the same
     int skip = longestIncreasingSubsequence(i + 1, p, nums, n);
@@ -796,7 +764,7 @@ public class DynamicProgrammingProblems {
     return Math.max(skip, include);
   }
 
-  public static int longestIncreasingSubsequenceTabulation(int[] nums) {
+  public int longestIncreasingSubsequenceTabulation(int[] nums) {
     int n = nums.length;
     int[][] dp = new int[n + 1][n + 1];
     // reverse of recursion i.e., i = n-1 to 0 and p = i-1 to -1
@@ -811,7 +779,7 @@ public class DynamicProgrammingProblems {
     return dp[0][0];
   }
 
-  public static int lengthOfLIS(int i, int p, int[] nums, int n, int[][] dp) {
+  public int lengthOfLIS(int i, int p, int[] nums, int n, int[][] dp) {
     // move the index by 1 position for previous
     if (i == n) return 0;
     if (dp[i][p + 1] != -1) return dp[i][p + 1];
@@ -821,7 +789,7 @@ public class DynamicProgrammingProblems {
     return dp[i][p + 1] = Math.max(skip, include);
   }
 
-  public static int lis(int[] nums) {
+  public int lis(int[] nums) {
     int n = nums.length;
     if (n == 0) return 0;
     int[] dp = new int[n];
@@ -843,7 +811,7 @@ public class DynamicProgrammingProblems {
     return ans;
   }
 
-  public static int[] lisChain(int[] nums) {
+  public int[] lisChain(int[] nums) {
     int n = nums.length;
     if (n == 0) return new int[0];
     int[] dp = new int[n];
@@ -864,7 +832,7 @@ public class DynamicProgrammingProblems {
           if (ans < dp[i]) {
             ans = dp[i];
             // we need to keep trace of the index that updated the lis ending at i
-            startIdx = i; // index of the end of a lis chain
+            startIdx = i; // end of a lis chain
             idxArr[i] = j;
           }
         }
@@ -879,5 +847,122 @@ public class DynamicProgrammingProblems {
     return result;
   }
 
+  // O(n^2) | O(n)
+  public List<Integer> largestDivisibleSubset(int[] nums) {
+    // the longest divisible subsequence; in LIS numbers were increasing,
+    // but here we need numbers which are divisible by the previous one
+    // [1,4,7,8,16]
+    // when we pick [1,4,8] since 8/4 that means 8/1 is also true
+    // [10,9,2,5,3,7,101,18]
+    int n = nums.length;
+    Arrays.sort(nums);
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    int[] hash = new int[n];
+    int ans = 1, lastIdx = 0;
+    for (int i = 0; i < n; ++i) {
+      hash[i] = i;
+      for (int j = 0; j < i; ++j) {
+        if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
+          dp[i] = dp[j] + 1;
+          hash[i] = j;
+        }
+      }
+      if (dp[i] > ans) {
+        ans = dp[i];
+        lastIdx = i;
+      }
+    }
+    List<Integer> temp = new ArrayList<>();
+    temp.add(nums[lastIdx]);
+    while (hash[lastIdx] != lastIdx) {
+      lastIdx = hash[lastIdx];
+      temp.add(nums[lastIdx]);
+    }
+    return temp.reversed();
+  }
 
+  // O(n^2 * L) | O(n)
+  public int longestStringChain(String[] words) {
+    // words = ["a","b","ba","bca","bda","bdca"]
+    // if we have a difference of 1 in consecutive string, then it's okay
+    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    int n = words.length;
+    int[] dp = new int[n];
+    int ans = 0;
+    Arrays.fill(dp, 1);
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (isSubsequence(words[i], words[j]) && dp[i] < dp[j] + 1) {
+          dp[i] = dp[j] + 1;
+        }
+      }
+      ans = Math.max(ans, dp[i]);
+    }
+    return ans;
+  }
+
+  private boolean isSubsequence(String s1, String s2) {
+    int m = s1.length(), n = s2.length();
+    if (m != n + 1) return false;
+    int i = 0, j = 0;
+    // abce abe
+    // i    j
+    while (i < m && j < n) {
+      if (s1.charAt(i) == s2.charAt(j)) {
+        i++;
+        j++;
+      } else {
+        // didn't match but still we can match since s1 > s1 just move i
+        i++;
+      }
+    }
+    return j == n; // bigger string exhausted; we need to check if we have gone through the smaller string
+  }
+
+  public int numberOfLis(int[] nums) {
+    if (nums == null || nums.length == 0) {
+      return 0;
+    }
+
+    int n = nums.length;
+    int[] dp = new int[n]; // Length of LIS ending at index i
+    Arrays.fill(dp, 1);
+    int[] count = new int[n]; // Number of LIS ending at index i
+    Arrays.fill(count, 1);
+
+    int maxLength = 1; // Length of the longest increasing subsequence
+
+    // 1,3,5,4,7
+    // 1,2,3,3,4
+    // 1,1,1,1,2
+    // dp[4] is being updated with dp[0],d[1] and so on
+    // when dp[3] tries to update dp[4] it sees the value to be already 4
+    // so we have encountered 4 again, now increase the lisCount[i]
+    for (int i = 1; i < n; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (nums[i] > nums[j]) {
+          if (dp[i] < dp[j] + 1) {
+            // Found a longer subsequence
+            dp[i] = dp[j] + 1;
+            count[i] = count[j]; // Reset count to match the new longer subsequence
+          } else if (dp[i] == dp[j] + 1) {
+            // Found another way to form the same length subsequence
+            count[i] += count[j];
+          }
+        }
+      }
+      maxLength = Math.max(maxLength, dp[i]);
+    }
+
+    // Count all subsequences with the maximum length
+    int result = 0;
+    for (int i = 0; i < n; ++i) {
+      if (dp[i] == maxLength) {
+        result += count[i];
+      }
+    }
+
+    return result;
+  }
 }

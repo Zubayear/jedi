@@ -3,7 +3,7 @@ package com.lucienvirecourt.jedi.problems;
 import java.util.*;
 
 public class StackProblems {
-  public static String removingStarsFromAString(String s) {
+  public String removingStarsFromAString(String s) {
     int starCount = 0;
     StringBuilder result = new StringBuilder();
     for (int i = s.length() - 1; i >= 0; ) {
@@ -23,7 +23,7 @@ public class StackProblems {
     return result.reverse().toString();
   }
 
-  public static Integer[] asteroidCollision(int[] asteroids) {
+  public Integer[] asteroidCollision(int[] asteroids) {
     Deque<Integer> stack = new ArrayDeque<>();
     for (int asteroid : asteroids) {
       if (asteroid > 0) {
@@ -46,7 +46,7 @@ public class StackProblems {
     return result.toArray(new Integer[0]);
   }
 
-  public static int[] nextGreaterElement(int[] nums) {
+  public int[] nextGreaterElement(int[] nums) {
     Deque<Integer> stack = new ArrayDeque<>();
     int n = nums.length;
     int[] result = new int[n];
@@ -62,7 +62,7 @@ public class StackProblems {
     return result;
   }
 
-  public static int[] dailyTemperatures(int[] temperatures) {
+  public int[] dailyTemperatures(int[] temperatures) {
     Deque<Integer> stack = new ArrayDeque<>();
     int n = temperatures.length;
     int[] result = new int[n];
@@ -77,7 +77,7 @@ public class StackProblems {
     return result;
   }
 
-  public static String decodeString(String str) {
+  public String decodeString(String str) {
     int n = str.length();
     Deque<String> stack = new ArrayDeque<>();
     StringBuilder sb = new StringBuilder();

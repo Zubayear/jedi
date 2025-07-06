@@ -57,7 +57,7 @@ public class SlidingWindowProblem {
     return result;
   }
 
-  public static int lengthOfLongestSubstring(String s) {
+  public int lengthOfLongestSubstring(String s) {
     // cadbzabcd
     int maxLen = 0, n = s.length(), left = 0, right = 0, windowLen;
     Map<Character, Integer> map = new HashMap<>();
@@ -76,7 +76,7 @@ public class SlidingWindowProblem {
     return maxLen;
   }
 
-  public static int lengthOfLongestSubstringKDistinct(String s, int k) {
+  public int lengthOfLongestSubstringKDistinct(String s, int k) {
     int n = s.length(), l = 0, r = 0, ans = 0;
     Map<Character, Integer> map = new HashMap<>();
     while (r < n) {
@@ -97,7 +97,7 @@ public class SlidingWindowProblem {
     return ans;
   }
 
-  public static int numberOfStrings(String s) {
+  public int numberOfStrings(String s) {
     // try to find the minimum window having a,b,c
     // get the min idx of the window and add 1 to count the ans we can form
     // e.g., abcabc at idx = 2 we can form a minimum window having a,b.c so the len will be min index out of (a,b,c)+1
@@ -113,7 +113,7 @@ public class SlidingWindowProblem {
     return ans;
   }
 
-  public static int characterReplacement(String s, int k) {
+  public int characterReplacement(String s, int k) {
     // if windowSize - maxFreq <= k, then we can expand the window
     // AAABBCCD, k = 2 for this, when we at 5th index 6-3 <= 2 so, we need to shrink
     int n = s.length(), l = 0, r = 0, maxLen = 0, maxFreq = 0;
@@ -137,14 +137,14 @@ public class SlidingWindowProblem {
     return maxLen;
   }
 
-  public static int numSubarraysWithSum(int[] nums, int goal) {
+  public int numSubarraysWithSum(int[] nums, int goal) {
     // we will try to find sum <= goal, then find sum <= goal-1
     int a = findNumSubarraysWithSum(nums, goal);
     int b = findNumSubarraysWithSum(nums, goal - 1);
     return a - b;
   }
 
-  private static int findNumSubarraysWithSum(int[] nums, int goal) {
+  private int findNumSubarraysWithSum(int[] nums, int goal) {
     if (goal < 0) return 0;
     int l = 0, r = 0, n = nums.length, sum = 0, count = 0;
     while (r < n) {

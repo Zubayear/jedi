@@ -3,7 +3,7 @@ package com.lucienvirecourt.jedi.problems;
 import java.util.Arrays;
 
 public class GreedyProblems {
-  public static boolean canAttendMeetings(int[][] meetings) {
+  public boolean canAttendMeetings(int[][] meetings) {
     Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
     int count = 1, end = meetings[0][1], n = meetings.length;
     for (int i = 1; i < n; ++i) {
@@ -16,7 +16,7 @@ public class GreedyProblems {
     return count == meetings.length;
   }
 
-  public static int meetingCount(int[][] meetings) {
+  public int meetingCount(int[][] meetings) {
     Arrays.sort(meetings, (a, b) -> a[1] - b[1]);
     int count = 1, end = meetings[0][1], n = meetings.length;
     for (int i = 1; i < n; ++i) {
@@ -29,7 +29,7 @@ public class GreedyProblems {
     return count;
   }
 
-  public static int eraseOverlapIntervals(int[][] intervals) {
+  public int eraseOverlapIntervals(int[][] intervals) {
     Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
     int count = 1, end = intervals[0][1], n = intervals.length;
     for (int i = 1; i < n; ++i) {

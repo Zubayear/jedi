@@ -1,5 +1,6 @@
 package com.lucienvirecourt.jedi.datastructure.bintree;
 
+import com.lucienvirecourt.jedi.problems.BinaryTreeProblems;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,12 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 class BinaryTreeTest {
 
   BinaryTree<Integer> binaryTree;
+  BinaryTreeProblems btp;
 
   @BeforeEach
   void setUp() {
     binaryTree = new BinaryTree<>();
+    btp = new BinaryTreeProblems();
   }
 
   @AfterEach
@@ -54,7 +57,7 @@ class BinaryTreeTest {
   void testBuildTree() {
     var p = binaryTree.buildTree(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8});
     var q = binaryTree.buildTree(new Integer[]{1, 2, 3, 4, 5, 6, 7, null, 8});
-    boolean sameTree = isSameTree(p, q);
+    boolean sameTree = btp.isSameTree(p, q);
     assertThat("Build tree from level order traversal", false, is(sameTree));
   }
 
@@ -62,18 +65,18 @@ class BinaryTreeTest {
   void testIsBalanced() {
     assertThat("Is tree balanced",
       false,
-      is(isBalanced(binaryTree.buildTree(new Integer[]{1, 2, 2, 3, 3, null, null, 4, 4})))
+      is(btp.isBalanced(binaryTree.buildTree(new Integer[]{1, 2, 2, 3, 3, null, null, 4, 4})))
     );
     assertThat("Tree balanced",
       true,
-      is(isBalanced(binaryTree.buildTree(new Integer[]{3, 9, 20, null, null, 15, 7})))
+      is(btp.isBalanced(binaryTree.buildTree(new Integer[]{3, 9, 20, null, null, 15, 7})))
     );
   }
 
   @Test
   void testDiameter() {
-    assertThat("Test Diameter", 3, is(diameter(binaryTree.buildTree(new Integer[]{1, 2, 3, 4, 5}))));
-    assertThat("Test Diameter", 1, is(diameter(binaryTree.buildTree(new Integer[]{1, 2}))));
+    assertThat("Test Diameter", 3, is(btp.diameter(binaryTree.buildTree(new Integer[]{1, 2, 3, 4, 5}))));
+    assertThat("Test Diameter", 1, is(btp.diameter(binaryTree.buildTree(new Integer[]{1, 2}))));
   }
 
   @Test
@@ -83,7 +86,7 @@ class BinaryTreeTest {
     var root = binaryTree.buildTree(nodes);
     assertThat("Left side view of the tree",
       List.of(1, 2, 4, 6, 12),
-      is(leftView(root))
+      is(btp.leftView(root))
     );
   }
 }

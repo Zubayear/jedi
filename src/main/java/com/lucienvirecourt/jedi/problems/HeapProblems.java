@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HeapProblems {
 
-  public static int findKthLargest(int[] nums, int k) {
+  public int findKthLargest(int[] nums, int k) {
     // since we need to find largest, we will create a min heap
     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
     for (int n : nums) {
@@ -14,7 +14,7 @@ public class HeapProblems {
     return !minHeap.isEmpty() ? minHeap.poll() : 0;
   }
 
-  public static String frequencySort(String s) {
+  public String frequencySort(String s) {
     int[] freq = new int[62];
     for (char ch : s.toCharArray()) {
       if (Character.isLowerCase(ch)) freq[ch - 'a']++;
@@ -42,7 +42,7 @@ public class HeapProblems {
   }
 
 
-  public static int[] getOrder(int[][] tasks) {
+  public int[] getOrder(int[][] tasks) {
     // modify the tasks to have index too
     int n = tasks.length;
     int[] result = new int[n];
