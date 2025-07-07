@@ -469,4 +469,14 @@ class GraphProblemsTest {
     };
     assertEquals(0, gp.numEnclaves(grid10), "1x1 land on border → 0");
   }
+
+  @Test
+  void wallsAndGatesTest() {
+    gp.wallsAndGates(new int[][]{
+      {(int) 1e9, -1, 0, (int) 1e9},
+      {(int) 1e9, (int) 1e9, (int) 1e9, -1},
+      {(int) 1e9, -1, (int) 1e9, -1},
+      {0, -1, (int) 1e9, (int) 1e9},
+    });
+  }
 }

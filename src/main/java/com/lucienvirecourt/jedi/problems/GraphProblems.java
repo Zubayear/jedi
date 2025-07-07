@@ -412,4 +412,36 @@ public class GraphProblems {
     }
     return ind == numCourses ? result : new int[0];
   }
+
+  public void wallsAndGates(int[][] grid) {
+    // Run BFS from 0 on grid and update the distance level by level
+    Deque<int[]> queue = new ArrayDeque<>();
+    int m = grid.length, n = grid[0].length;
+    boolean[][] visited = new boolean[m][n];
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (grid[i][j] == 0) {
+          visited[i][j] = true;
+          queue.offer(new int[]{i, j, 0});
+        }
+      }
+    }
+    int[][] surround = new int[][]{
+      {0, 1},
+      {0, -1},
+      {1, 0},
+      {-1, 0}
+    };
+    while (!queue.isEmpty()) {
+      int[] current = queue.poll();
+      int curX = current[0], curY = current[1], dis = current[2];
+      for (int[] dir : surround) {
+        int x = curX + dir[0], y = curY + dir[1];
+        if (x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == -1 || visited[x][y]) continue;
+        grid[x][y] = dis + 1;
+        visited[x][y] = true;
+        queue.offer(new int[]{x, y, dis + 1});
+      }
+    }
+  }
 }
