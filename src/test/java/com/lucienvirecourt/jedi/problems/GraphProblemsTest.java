@@ -479,4 +479,11 @@ class GraphProblemsTest {
       {0, -1, (int) 1e9, (int) 1e9},
     });
   }
+
+  @Test
+  void wordLadderTest() {
+    assertEquals(5, gp.wordLadder("hit", "cog", List.of("hot", "dot", "dog", "lot", "log", "cog")));
+    assertEquals(0, gp.wordLadder("hit", "cog", List.of("hot", "dot", "dog", "lot", "log")));
+    assertEquals(0, gp.wordLadder("hot", "dog", List.of("hot", "dog")));
+  }
 }

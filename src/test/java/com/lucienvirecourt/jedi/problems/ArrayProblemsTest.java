@@ -58,4 +58,11 @@ class ArrayProblemsTest {
       {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
     }));
   }
+
+  @Test
+  void numRescueBoatsTest() {
+    assertEquals(1, ap.numRescueBoats(new int[]{1, 2}, 3));
+    assertEquals(3, ap.numRescueBoats(new int[]{3, 2, 2, 1}, 3));
+    assertEquals(4, ap.numRescueBoats(new int[]{3, 5, 3, 4}, 5));
+  }
 }

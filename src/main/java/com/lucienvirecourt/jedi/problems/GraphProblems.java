@@ -343,7 +343,7 @@ public class GraphProblems {
     return count == n;
   }
 
-  // O(V+E) | O(V+E)
+  // O(V + E) | O(V + E)
   public boolean courseSchedule(int numCourses, int[][] prerequisites) {
     // first we create a directed graph,
     // then run topological sort, if there is cycle we return false
@@ -376,7 +376,7 @@ public class GraphProblems {
     return count == numCourses;
   }
 
-  // O(V+E) | O(V+E)
+  // O(V + E) | O(V + E)
   public int[] courseScheduleFindOrder(int numCourses, int[][] prerequisites) {
     // first we create a directed graph,
     // then run topological sort, if there is cycle we return false
@@ -443,5 +443,47 @@ public class GraphProblems {
         queue.offer(new int[]{x, y, dis + 1});
       }
     }
+  }
+
+  static class Pair {
+    String word;
+    int count;
+
+    public Pair(String word, int count) {
+      this.word = word;
+      this.count = count;
+    }
+  }
+
+  // O(N * L^2) | O(N * L)
+  public int wordLadder(String beginWord, String endWord, List<String> wordList) {
+    // Start the loop for BFS. In each iteration of the loop, get the first word from the queue and
+    // check if it's equal to the endWord. If it is, return the number of steps taken so far,
+    // which is equal to the number of words in the shortest transformation sequence.
+    // Generate all possible words by changing one letter of the current word and check
+    // if it's in the wordList If it is, add it to the queue for the next level of BFS.
+    Set<String> wordSet = new HashSet<>(wordList);
+    if (!wordSet.contains(endWord)) return 0;
+    Deque<Pair> queue = new ArrayDeque<>();
+    queue.offer(new Pair(beginWord, 1));
+    StringBuilder sb = new StringBuilder();
+    while (!queue.isEmpty()) {
+      Pair current = queue.poll();
+      String currentWord = current.word;
+      if (Objects.equals(currentWord, endWord)) return current.count;
+      int wordLen = currentWord.length();
+      for (int i = 0; i < wordLen; ++i) {
+        sb.delete(0, sb.length());
+        sb.append(currentWord);
+        for (char ch = 'a'; ch <= 'z'; ++ch) {
+          sb.deleteCharAt(i).insert(i, ch);
+          if (!sb.toString().equals(beginWord) && wordSet.contains(sb.toString())) {
+            queue.offer(new Pair(sb.toString(), current.count + 1));
+            wordSet.remove(sb.toString());
+          }
+        }
+      }
+    }
+    return 0;
   }
 }

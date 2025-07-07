@@ -16,10 +16,14 @@ public class ArrayProblems {
   }
 
   public String longestCommonPrefix(String[] strs) {
+    // when we sort, we get the lexicographically lowest string and the highest string,
+    // so, if we find the common part between these two, we will get the answer
+    // [flower, flow, flight]
+    // getting the common part of flower and flight is enough
     Arrays.sort(strs);
     String s1 = strs[0], s2 = strs[strs.length - 1];
-    int i = 0;
-    while (i < s1.length() && i < s2.length()) {
+    int i = 0, m = s1.length(), n = s2.length();
+    while (i < m && i < n) {
       if (s1.charAt(i) == s2.charAt(i)) {
         i++;
       } else {
@@ -271,6 +275,26 @@ public class ArrayProblems {
       }
     }
     return true;
+  }
+
+  public int numRescueBoats(int[] people, int limit) {
+    // we will put light and heavy people on the same boat,
+    // so if we sort, we will have lowest in the left and highest in the right
+    // first we sort the input i.e., [1,2,2,3] and then we use two pointers
+    Arrays.sort(people);
+    int l = 0, r = people.length - 1, count = 0;
+    while (l <= r) {
+      int sum = people[l] + people[r];
+      // light and heavy people can go on the same boat
+      if (sum <= limit) {
+        l++;
+        r--;
+      } else {
+        r--;
+      }
+      count++;
+    }
+    return count;
   }
 
   private void swap(int[] A, int a, int b) {
