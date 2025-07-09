@@ -1,8 +1,6 @@
 package com.lucienvirecourt.jedi.problems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DynamicProgrammingProblems {
   int mod = (int) (1e9 + 7);
@@ -964,5 +962,69 @@ public class DynamicProgrammingProblems {
     }
 
     return result;
+  }
+
+  public boolean wordBreak(String s, List<String> wordDict) {
+    Set<String> set = new HashSet<>(wordDict);
+    int n = s.length();
+    int[] dp = new int[n];
+    Arrays.fill(dp, -1);
+    return wordBreak(0, n, s, set, dp);
+  }
+
+  // O(N*N*N) | O(N)
+  private boolean wordBreak(int i, int n, String word, Set<String> set, int[] dp) {
+    if (i == n) return true;
+    if (dp[i] != -1) return dp[i] == 1;
+    if (set.contains(word)) return true;
+    // we try to break the word from i+1 and check if it exits in the set
+    // and recursively find for the rest of the chars
+    // leetcode -> l(eetcode) -> le(etcode) etc.
+    for (int end = i + 1; end <= n; ++end) {
+      if (set.contains(word.substring(i, end)) && wordBreak(end, n, word, set, dp)) {
+        dp[i] = 1;
+        return true;
+      }
+    }
+    dp[i] = 0;
+    return false;
+  }
+
+  // O(N^2) | O(N)
+  public boolean wordBreakTabulation(String s, List<String> wordDict) {
+    Set<String> set = new HashSet<>(wordDict);
+    int n = s.length();
+    boolean[] dp = new boolean[n + 1];
+    dp[0] = true;
+    for (int i = 1; i <= n; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (dp[j] && set.contains(s.substring(j, i))) {
+          dp[i] = true;
+          break;
+        }
+      }
+    }
+    return dp[n];
+  }
+
+  public int integerBreak(int n) {
+    // for n = 5 we can break (1,4) (2,3) (3,2) (4,1)
+    // then 4 in (1,4) to (1,3) (2,2) (3,1)
+    // either (i,n-i) 1*4 will be the best answer or break n-1 i.e., 4
+    // so, i * max((n-1), f(n-1))
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, -1);
+    return integerBrake(n, dp);
+  }
+
+  private int integerBrake(int n, int[] dp) {
+    if (n == 1) return 1;
+    if (dp[n] != -1) return dp[n];
+    int result = -(int) 1e9;
+    for (int i = 1; i <= n - 1; ++i) {
+      int prod = i * Math.max(n - i, integerBrake(n - i, dp));
+      result = Math.max(result, prod);
+    }
+    return dp[n] = result;
   }
 }

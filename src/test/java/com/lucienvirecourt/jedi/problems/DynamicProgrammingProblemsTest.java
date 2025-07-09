@@ -554,4 +554,14 @@ class DynamicProgrammingProblemsTest {
     assertEquals(6, dp.maxProfit(new int[]{3, 3, 5, 0, 0, 3, 1, 4}));
     assertEquals(0, dp.maxProfit(new int[]{1, 1, 1, 1, 1}));
   }
+
+  @Test
+  void wordBreakTest() {
+    assertTrue(dp.wordBreak("leetcode", List.of("leet", "code")));
+    assertTrue(dp.wordBreak("applepenapple", List.of("apple", "pen")));
+    assertFalse(dp.wordBreak("catsandog", List.of("cats", "dog", "sand", "and", "cat")));
+    assertFalse(dp.wordBreak("leetcode", List.of("leet", "dog", "sand", "and", "cat")));
+    assertTrue(dp.wordBreak("leetcode", List.of("leetco", "ode", "ed", "d", "e")));
+    assertTrue(dp.wordBreak("aaaaaaa", List.of("aaaa", "aaa")));
+  }
 }
