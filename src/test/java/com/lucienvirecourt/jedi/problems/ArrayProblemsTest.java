@@ -65,4 +65,11 @@ class ArrayProblemsTest {
     assertEquals(3, ap.numRescueBoats(new int[]{3, 2, 2, 1}, 3));
     assertEquals(4, ap.numRescueBoats(new int[]{3, 5, 3, 4}, 5));
   }
+
+  @Test
+  void nextGreaterElementTest() {
+    assertArrayEquals(new int[]{-1,3,-1}, ap.nextGreaterElement(new int[]{4, 1, 2}, new int[]{1, 3, 4, 2}));
+    assertArrayEquals(new int[]{3, -1}, ap.nextGreaterElement(new int[]{2, 4}, new int[]{1, 2, 3, 4}));
+    assertArrayEquals(new int[]{9, 4, 10, 20}, ap.nextGreaterElement(new int[]{1, 2, 3, 9}, new int[]{2, 4, 3, 10, 1, 9, 20, 22}));
+  }
 }

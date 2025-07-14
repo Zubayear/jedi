@@ -297,6 +297,46 @@ public class ArrayProblems {
     return count;
   }
 
+  public int maxDifference(String s) {
+    int[] frequency = new int[26];
+    int max = -(int) 1e9, min = (int) 1e9;
+    for (char ch : s.toCharArray()) {
+      frequency[ch - 'a']++;
+    }
+    for (int i = 0; i < 26; ++i) {
+      if (frequency[i] > 0 && frequency[i] % 2 == 0) min = Math.min(min, frequency[i]);
+      else max = Math.max(max, frequency[i]);
+    }
+    return max - min;
+  }
+
+  public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    int n2 = nums2.length, n1 = nums1.length;
+    int[] nextGreaterElements = new int[n2], result = new int[n1];
+    Deque<Integer> stack = new ArrayDeque<>();
+    nextGreaterElements[n2 - 1] = -1;
+    stack.offerFirst(nums2[n2 - 1]);
+    for (int i = n2 - 2; i >= 0; --i) {
+      // (x>top) pop these elems
+      while (!stack.isEmpty() && nums2[i] > stack.peek()) {
+        stack.poll();
+      }
+      nextGreaterElements[i] = !stack.isEmpty() ? stack.peek() : -1;
+      stack.offerFirst(nums2[i]);
+    }
+    Map<Integer, Integer> valToIdx = new HashMap<>(), idxToVal = new HashMap<>();
+    for (int i = 0; i < n2; ++i) {
+      valToIdx.put(nums2[i], i);
+    }
+    for (int i = 0; i < n2; ++i) {
+      idxToVal.put(i, nextGreaterElements[i]);
+    }
+    for (int i = 0; i < n1; ++i) {
+      result[i] = idxToVal.get(valToIdx.get(nums1[i]));
+    }
+    return result;
+  }
+
   private void swap(int[] A, int a, int b) {
     int t = A[a];
     A[a] = A[b];
