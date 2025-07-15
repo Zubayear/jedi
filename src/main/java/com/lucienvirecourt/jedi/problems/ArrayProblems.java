@@ -337,6 +337,45 @@ public class ArrayProblems {
     return result;
   }
 
+  // O(m+n) | O(1)
+  public int appendCharacters(String s, String t) {
+    int i = 0, j = 0, m = s.length(), n = t.length();
+    while (i < m && j < n) {
+      if (s.charAt(i) == t.charAt(j)) j++;
+      i++;
+    }
+    return n - j;
+  }
+
+  public int[] vowelStrings(String[] words, int[][] queries) {
+    int n = words.length;
+    int[] prefixSum = new int[n];
+    int[] vowelCount = new int[n];
+    int j = 0;
+    for (String word : words) {
+      if (isVowel(word.charAt(0)) && isVowel(word.charAt(word.length() - 1))) {
+        vowelCount[j] = 1;
+      }
+      j++;
+    }
+    prefixSum[0] = vowelCount[0];
+    for (int i = 1; i < n; ++i) {
+      prefixSum[i] = prefixSum[i - 1] + vowelCount[i];
+    }
+    int m = queries.length;
+    int[] result = new int[m];
+    for (int i = 0; i < m; ++i) {
+      int left = queries[i][0], right = queries[i][1];
+      if (left == 0) result[i] = prefixSum[right];
+      else result[i] = prefixSum[right] - prefixSum[left - 1];
+    }
+    return result;
+  }
+
+  private boolean isVowel(char ch) {
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+  }
+
   private void swap(int[] A, int a, int b) {
     int t = A[a];
     A[a] = A[b];

@@ -4,6 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static com.lucienvirecourt.jedi.problems.ArrayProblems.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,8 +72,25 @@ class ArrayProblemsTest {
 
   @Test
   void nextGreaterElementTest() {
-    assertArrayEquals(new int[]{-1,3,-1}, ap.nextGreaterElement(new int[]{4, 1, 2}, new int[]{1, 3, 4, 2}));
+    assertArrayEquals(new int[]{-1, 3, -1}, ap.nextGreaterElement(new int[]{4, 1, 2}, new int[]{1, 3, 4, 2}));
     assertArrayEquals(new int[]{3, -1}, ap.nextGreaterElement(new int[]{2, 4}, new int[]{1, 2, 3, 4}));
     assertArrayEquals(new int[]{9, 4, 10, 20}, ap.nextGreaterElement(new int[]{1, 2, 3, 9}, new int[]{2, 4, 3, 10, 1, 9, 20, 22}));
+  }
+
+  @Test
+  void appendCharactersTest() {
+    assertEquals(4, ap.appendCharacters("coaching", "coding"));
+    assertEquals(0, ap.appendCharacters("abcde", "a"));
+    assertEquals(5, ap.appendCharacters("z", "abcde"));
+    assertEquals(0, ap.appendCharacters("z", "z"));
+  }
+
+  @Test
+  void vowelStringsTest() {
+    assertArrayEquals(new int[]{2,3,0}, ap.vowelStrings(new String[]{"aba","bcb","ece","aa","e"}, new int[][]{
+      {0,2},
+      {1,4},
+      {1,1}
+    }));
   }
 }
