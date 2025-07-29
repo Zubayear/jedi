@@ -372,6 +372,36 @@ public class ArrayProblems {
     return result;
   }
 
+  public String mergeAlternately(String word1, String word2) {
+    int m = word1.length(), n = word2.length(), i = 0, j = 0;
+    StringBuilder sb = new StringBuilder();
+    while (i < m && j < n) {
+      sb.append(word1.charAt(i)).append(word2.charAt(j));
+      i++;
+      j++;
+    }
+    if (i < m) sb.append(word1, i, m);
+    if (j < n) sb.append(word2, j, n);
+    return sb.toString();
+  }
+
+  public String firstPalindrome(String[] words) {
+    for (String word : words) {
+      if (isPalindrome(word)) return word;
+    }
+    return "";
+  }
+
+  private boolean isPalindrome(String word) {
+    int i = 0, j = word.length() - 1;
+    while (i < j) {
+      if (word.charAt(i) != word.charAt(j)) return false;
+      i++;
+      j--;
+    }
+    return true;
+  }
+
   private boolean isVowel(char ch) {
     return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
   }
