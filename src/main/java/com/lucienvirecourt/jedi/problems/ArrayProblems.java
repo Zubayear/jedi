@@ -402,6 +402,39 @@ public class ArrayProblems {
     return true;
   }
 
+  // LC-2109
+  public String addSpaces(String s, int[] spaces) {
+    StringBuilder sb = new StringBuilder();
+    int n = s.length(), i = 0, j = 0, jn = spaces.length;
+    sb.ensureCapacity(n + jn);
+    while (i < n) {
+      if (j < jn && i == spaces[j]) {
+        sb.append(" ");
+        j++;
+      }
+      sb.append(s.charAt(i));
+      i++;
+    }
+    return sb.toString();
+  }
+
+  public int[] sortArrayByParity(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    // if the even number is at left, move on
+    // if the odd number is at right, just move on
+    // else swap
+    while (l < r) {
+      if (nums[l] % 2 == 0) l++;
+      else if (nums[r] % 2 == 1) r--;
+      else {
+        swap(nums, l, r);
+        l++;
+        r--;
+      }
+    }
+    return nums;
+  }
+
   private boolean isVowel(char ch) {
     return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
   }

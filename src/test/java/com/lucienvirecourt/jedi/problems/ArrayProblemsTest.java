@@ -87,10 +87,113 @@ class ArrayProblemsTest {
 
   @Test
   void vowelStringsTest() {
-    assertArrayEquals(new int[]{2,3,0}, ap.vowelStrings(new String[]{"aba","bcb","ece","aa","e"}, new int[][]{
-      {0,2},
-      {1,4},
-      {1,1}
+    assertArrayEquals(new int[]{2, 3, 0}, ap.vowelStrings(new String[]{"aba", "bcb", "ece", "aa", "e"}, new int[][]{
+      {0, 2},
+      {1, 4},
+      {1, 1}
     }));
+  }
+
+  @Test
+  void replaceElements() {
+  }
+
+  @Test
+  void longestCommonPrefix() {
+  }
+
+  @Test
+  void groupAnagrams() {
+  }
+
+  @Test
+  void canPlaceFlowers() {
+  }
+
+  @Test
+  void wordPattern() {
+  }
+
+  @Test
+  void topKFrequent() {
+  }
+
+  @Test
+  void secondMax() {
+  }
+
+  @Test
+  void removeDuplicates() {
+  }
+
+  @Test
+  void longestSubarrayWithSumK() {
+  }
+
+  @Test
+  void isValidSubsequence() {
+  }
+
+  @Test
+  void smallestDifference() {
+  }
+
+  @Test
+  void moveElementToEnd() {
+  }
+
+  @Test
+  void isMonotonic() {
+  }
+
+  @Test
+  void productExceptSelf() {
+  }
+
+  @Test
+  void firstDuplicateValue() {
+  }
+
+  @Test
+  void isValidSudoku() {
+  }
+
+  @Test
+  void numRescueBoats() {
+  }
+
+  @Test
+  void maxDifference() {
+  }
+
+  @Test
+  void nextGreaterElement() {
+  }
+
+  @Test
+  void appendCharacters() {
+  }
+
+  @Test
+  void vowelStrings() {
+  }
+
+  @Test
+  void mergeAlternately() {
+  }
+
+  @Test
+  void firstPalindrome() {
+  }
+
+  @Test
+  void addSpaces() {
+    assertEquals("Leetcode Helps Me Learn", ap.addSpaces("LeetcodeHelpsMeLearn", new int[]{8, 13, 15}));
+    assertEquals("i code in py thon", ap.addSpaces("icodeinpython", new int[]{1, 5, 7, 9}));
+    assertEquals(" s p a c i n g", ap.addSpaces("spacing", new int[]{0, 1, 2, 3, 4, 5, 6}));
+  }
+
+  @Test
+  void sortArrayByParity() {
   }
 }
