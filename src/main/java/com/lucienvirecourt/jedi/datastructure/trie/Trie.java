@@ -17,8 +17,10 @@ public class Trie {
       current.children.putIfAbsent(ch, new TrieNode());
       current = current.children.get(ch);
     }
-    current.isTerminal = true;
-    size++;
+    if (!current.isTerminal) {
+      current.isTerminal = true;
+      size++;
+    }
   }
 
   // O(k) | O(1)
