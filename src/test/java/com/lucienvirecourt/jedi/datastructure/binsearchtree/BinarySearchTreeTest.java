@@ -3,9 +3,6 @@ package com.lucienvirecourt.jedi.datastructure.binsearchtree;
 import com.lucienvirecourt.jedi.datastructure.bintree.TreeNode;
 import org.junit.jupiter.api.*;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 

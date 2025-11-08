@@ -5,6 +5,9 @@ import java.util.*;
 public class DynamicProgrammingProblems {
   int mod = (int) (1e9 + 7);
 
+  // ==============================
+  //          Sequence
+  // ==============================
   // O(n) | O(1)
   public int climbStairs(int n) {
     // memoization
@@ -97,6 +100,17 @@ public class DynamicProgrammingProblems {
 //    return houseRobber(nums.length - 1, nums);
   }
 
+  public int rob(int[] nums) {
+    if (nums.length == 2) return Math.max(nums[0], nums[1]);
+    // at any point we need to check max(a[i-1], a[i-2]+a[i])
+    int n = nums.length;
+    // 2,3,2
+    for (int i = 1; i < n; ++i) {
+      nums[i] = Math.max(nums[i - 1], i > 1 ? nums[i - 2] + nums[i] : nums[i]);
+    }
+    return nums[n-1];
+  }
+
   int houseRobber(int idx, int[] nums) {
     if (idx == 0) return nums[0]; // means we have not picked adjacent 1
     if (idx < 0) return 0;
@@ -117,6 +131,9 @@ public class DynamicProgrammingProblems {
     return Math.max(houseRobber(nums1), houseRobber(nums2));
   }
 
+  // ==============================
+  //          Grid/Path
+  // ==============================
   public int minimumPathSum(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int[][] dp = new int[m + 1][n + 1];
@@ -128,7 +145,7 @@ public class DynamicProgrammingProblems {
 
   private int minimumPathSum(int i, int j, int[][] grid, int[][] dp) {
     if (i == 0 && j == 0) return grid[i][j];
-    if (i < 0 || j < 0) return (int) 1e9;
+    if (i < 0 || j < 0) return mod;
     if (dp[i][j] != -1) return dp[i][j];
     int up = grid[i][j] + minimumPathSum(i - 1, j, grid, dp);
     int left = grid[i][j] + minimumPathSum(i, j - 1, grid, dp);
@@ -137,7 +154,7 @@ public class DynamicProgrammingProblems {
 
   public int minimumFallingPathSum(int[][] grid) {
     int m = grid.length, n = grid[0].length;
-    int ans = (int) 1e9;
+    int ans = mod;
 //    for (int j = 0; j < n; ++j) {
 //      ans = Math.min(ans, minimumFallingPathSum(m - 1, j, grid));
 //    }
@@ -149,7 +166,7 @@ public class DynamicProgrammingProblems {
   }
 
   private int minimumFallingPathSum(int i, int j, int[][] grid) {
-    if (j < 0 || j >= grid[0].length) return (int) 1e9;
+    if (j < 0 || j >= grid[0].length) return mod;
     if (i == 0) return grid[i][j];
     int up = grid[i][j] + minimumFallingPathSum(i - 1, j, grid);
     int ld = grid[i][j] + minimumFallingPathSum(i - 1, j - 1, grid);
@@ -167,10 +184,10 @@ public class DynamicProgrammingProblems {
         int up = grid[i][j] + dp[i - 1][j];
         int ld = grid[i][j];
         if (j >= 1) ld += dp[i - 1][j - 1];
-        else ld += (int) 1e9; // do we need it?
+        else ld += mod; // do we need it?
         int rd = grid[i][j];
         if (j < m - 1) rd += dp[i - 1][j + 1];
-        else rd += (int) 1e9;
+        else rd += mod;
         dp[i][j] = Math.min(up, Math.min(ld, rd));
       }
     }
@@ -282,7 +299,7 @@ public class DynamicProgrammingProblems {
       }
     }
 
-    int min = (int) 1e9;
+    int min = mod;
     for (int i = 0; i <= sum; ++i) {
       if (dp[n - 1][i]) {
         min = Math.min(min, Math.abs(i - (sum - i)));
@@ -309,18 +326,18 @@ public class DynamicProgrammingProblems {
     int[][] dp = new int[m][n];
     for (int i = 0; i < n; ++i) {
       if (i % coins[0] == 0) dp[0][i] = i / coins[0];
-      else dp[0][i] = (int) 1e9;
+      else dp[0][i] = mod;
     }
     for (int i = 1; i < m; ++i) {
       for (int j = 0; j < n; ++j) {
         int skip = dp[i - 1][j];
-        int include = (int) 1e9;
+        int include = mod;
         if (coins[i] <= j) include = 1 + dp[i][j - coins[i]];
         dp[i][j] = Math.min(skip, include);
       }
     }
     int result = dp[m - 1][amount];
-    if (result == (int) 1e9) return -1;
+    if (result == mod) return -1;
     return result;
   }
 
@@ -329,19 +346,19 @@ public class DynamicProgrammingProblems {
     int[] prev = new int[n], cur = new int[n];
     for (int i = 0; i < n; ++i) {
       if (i % coins[0] == 0) prev[i] = i / coins[0];
-      else prev[i] = (int) 1e9;
+      else prev[i] = mod;
     }
     for (int i = 1; i < m; ++i) {
       for (int j = 0; j < n; ++j) {
         int skip = prev[j];
-        int include = (int) 1e9;
+        int include = mod;
         if (coins[i] <= j) include = 1 + cur[j - coins[i]];
         cur[j] = Math.min(skip, include);
       }
       prev = cur;
     }
     int result = prev[amount];
-    if (result == (int) 1e9) return -1;
+    if (result == mod) return -1;
     return result;
   }
 
@@ -436,7 +453,7 @@ public class DynamicProgrammingProblems {
     }
     StringBuilder result = new StringBuilder();
 
-    int len = -(int) 1e9;
+    int len = -mod;
     int maxI = 0, maxJ = 0;
     for (int i = 1; i <= m; ++i) {
       for (int j = 1; j <= n; ++j) {
@@ -730,7 +747,7 @@ public class DynamicProgrammingProblems {
 
   int bestTimeToBuyAndSellStockWithCooldown(int i, int buy, int[] prices, int n) {
     if (i >= n) return 0;
-    int profit = -(int) 1e9;
+    int profit;
     if (buy == 1) {
       profit = Math.max(-prices[i] + bestTimeToBuyAndSellStockWithCooldown(i + 1, 0, prices, n),
         bestTimeToBuyAndSellStockWithCooldown(i + 1, buy, prices, n));
@@ -884,7 +901,7 @@ public class DynamicProgrammingProblems {
   public int longestStringChain(String[] words) {
     // words = ["a","b","ba","bca","bda","bdca"]
     // if we have a difference of 1 in consecutive string, then it's okay
-    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    Arrays.sort(words, Comparator.comparingInt(String::length));
     int n = words.length;
     int[] dp = new int[n];
     int ans = 0;
@@ -1020,7 +1037,7 @@ public class DynamicProgrammingProblems {
   private int integerBrake(int n, int[] dp) {
     if (n == 1) return 1;
     if (dp[n] != -1) return dp[n];
-    int result = -(int) 1e9;
+    int result = -mod;
     for (int i = 1; i <= n - 1; ++i) {
       int prod = i * Math.max(n - i, integerBrake(n - i, dp));
       result = Math.max(result, prod);

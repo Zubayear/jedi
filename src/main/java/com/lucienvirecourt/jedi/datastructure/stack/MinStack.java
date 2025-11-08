@@ -2,34 +2,44 @@ package com.lucienvirecourt.jedi.datastructure.stack;
 
 import java.util.*;
 
-public class MinStack {
-  private final Deque<int[]> stack;
+public class MinStack<T extends Comparable<T>> {
+  private final Deque<List<T>> stack;
 
   public MinStack() {
     this.stack = new ArrayDeque<>();
   }
 
-  public void push(int val) {
+  public void push(T val) {
     if (stack.isEmpty()) {
-      stack.offerFirst(new int[]{val, val});
+      stack.offerFirst(Arrays.asList(val, val));
       return;
     }
-    int[] top = stack.peekFirst();
+    List<T> top = stack.peekFirst();
+    T currentMin = top.get(1);
 
-    stack.offerFirst(new int[]{val, Math.min(top[1], val)});
+    T newMin = (val.compareTo(currentMin) < 0) ? val : currentMin;
+
+    stack.offerFirst(Arrays.asList(val, newMin));
   }
 
   public void pop() {
     stack.pollFirst();
   }
 
-  public int top() {
+  public T getTop() {
     assert stack.peekFirst() != null;
-    return stack.peekFirst()[0];
+    return stack.peekFirst().getFirst();
   }
 
-  public int getMin() {
-    return Objects.requireNonNull(stack.pollFirst())[1];
+  public T getMin() {
+    return Objects.requireNonNull(stack.peekFirst()).get(1);
+  }
+
+  @Override
+  public String toString() {
+    return "MinStack{" +
+      "stack=" + Arrays.deepToString(stack.toArray()) +
+      '}';
   }
 }
 

@@ -10,6 +10,9 @@ public class StackUsingQueue<T> {
     this.deque = new ArrayDeque<>();
   }
 
+  /*
+  * while pushing an item we would start from 1st idx to size of the queue
+  * */
   public void push(T item) {
     deque.offer(item);
     int size = deque.size();

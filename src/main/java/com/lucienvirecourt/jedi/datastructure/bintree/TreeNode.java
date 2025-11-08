@@ -6,15 +6,6 @@ public class TreeNode<T extends Comparable<T>> {
   public T val;
   public TreeNode<T> left, right;
 
-  public TreeNode() {
-  }
-
-  public TreeNode(T val, TreeNode<T> left, TreeNode<T> right) {
-    this.val = val;
-    this.left = left;
-    this.right = right;
-  }
-
   public TreeNode(T val) {
     this.val = val;
     this.left = null;
