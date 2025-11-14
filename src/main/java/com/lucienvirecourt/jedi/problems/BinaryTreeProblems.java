@@ -5,25 +5,26 @@ import com.lucienvirecourt.jedi.datastructure.bintree.TreeNode;
 import java.util.*;
 
 public class BinaryTreeProblems {
-  public  <T extends Comparable<T>> boolean isSameTree(TreeNode<T> p, TreeNode<T> q) {
+
+  public <T extends Comparable<T>> boolean isSameTree(TreeNode<T> p, TreeNode<T> q) {
     if (p == null && q == null) return true;
     if (p == null || q == null) return false;
     if (p.val != q.val) return false;
     return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
   }
 
-  public  <T extends Comparable<T>> int maxDepth(TreeNode<T> root) {
+  public <T extends Comparable<T>> int maxDepth(TreeNode<T> root) {
     if (root == null) return 0;
     int lh = maxDepth(root.left);
     int rh = maxDepth(root.right);
     return 1 + Math.max(lh, rh);
   }
 
-  public  <T extends Comparable<T>> boolean isBalanced(TreeNode<T> root) {
+  public <T extends Comparable<T>> boolean isBalanced(TreeNode<T> root) {
     return getHeight(root) != -1;
   }
 
-  private  <T extends Comparable<T>> int getHeight(TreeNode<T> root) {
+  private <T extends Comparable<T>> int getHeight(TreeNode<T> root) {
     if (root == null) return 0;
     int lh = getHeight(root.left);
     int rh = getHeight(root.right);
@@ -31,13 +32,13 @@ public class BinaryTreeProblems {
     return 1 + Math.max(lh, rh);
   }
 
-  public  <T extends Comparable<T>> int diameter(TreeNode<T> root) {
+  public <T extends Comparable<T>> int diameter(TreeNode<T> root) {
     int[] max = new int[]{-(int) 1e9};
     diameter(root, max);
     return max[0];
   }
 
-  private  <T extends Comparable<T>> int diameter(TreeNode<T> root, int[] max) {
+  private <T extends Comparable<T>> int diameter(TreeNode<T> root, int[] max) {
     if (root == null) return 0;
     int lh = diameter(root.left, max);
     int rh = diameter(root.right, max);
@@ -45,13 +46,13 @@ public class BinaryTreeProblems {
     return 1 + Math.max(lh, rh);
   }
 
-  public  int maxPathSum(TreeNode<Integer> root) {
+  public int maxPathSum(TreeNode<Integer> root) {
     int[] max = new int[]{-(int) 1e9};
     maxPathSum(root, max);
     return max[0];
   }
 
-  private  int maxPathSum(TreeNode<Integer> root, int[] max) {
+  private int maxPathSum(TreeNode<Integer> root, int[] max) {
     if (root == null) return 0;
     int ls = Math.max(0, maxPathSum(root.left, max)); // if we get a negative sum from the left
     int rs = Math.max(0, maxPathSum(root.right, max));
@@ -99,13 +100,13 @@ public class BinaryTreeProblems {
     rightView(root.left, level + 1, result);
   }
 
-  public  <T extends Comparable<T>> List<T> leftView(TreeNode<T> root) {
+  public <T extends Comparable<T>> List<T> leftView(TreeNode<T> root) {
     List<T> result = new ArrayList<>();
     leftView(root, 0, result);
     return result;
   }
 
-  private  <T extends Comparable<T>> void leftView(TreeNode<T> root, int level, List<T> result) {
+  private <T extends Comparable<T>> void leftView(TreeNode<T> root, int level, List<T> result) {
     // Root Left Right
     if (root == null) return;
     if (level == result.size()) result.add(root.val); // left most element of that level
@@ -113,7 +114,7 @@ public class BinaryTreeProblems {
     leftView(root.right, level + 1, result);
   }
 
-  public  TreeNode<Integer> lcs(TreeNode<Integer> root, TreeNode<Integer> p, TreeNode<Integer> q) {
+  public TreeNode<Integer> lcs(TreeNode<Integer> root, TreeNode<Integer> p, TreeNode<Integer> q) {
     if (root == null || root == p || root == q) return root;
     TreeNode<Integer> left = lcs(root.left, p, q);
     TreeNode<Integer> right = lcs(root.right, p, q);
@@ -121,7 +122,7 @@ public class BinaryTreeProblems {
     return left != null ? left : right;
   }
 
-  public  void childrenSumProperty(TreeNode<Integer> root) {
+  public void childrenSumProperty(TreeNode<Integer> root) {
     if (root == null) return;
     int child = 0;
     if (root.left != null) child += root.left.val;
@@ -140,7 +141,7 @@ public class BinaryTreeProblems {
     if (root.left != null || root.right != null) root.val = total;
   }
 
-  public  List<Integer> distanceK(TreeNode<Integer> root, TreeNode<Integer> target, int k) {
+  public List<Integer> distanceK(TreeNode<Integer> root, TreeNode<Integer> target, int k) {
     Map<TreeNode<Integer>, TreeNode<Integer>> parentMap = new HashMap<>();
     markParent(root, parentMap);
     Map<TreeNode<Integer>, Boolean> visited = new HashMap<>();
@@ -178,7 +179,7 @@ public class BinaryTreeProblems {
     return result;
   }
 
-  private  void markParent(TreeNode<Integer> root, Map<TreeNode<Integer>, TreeNode<Integer>> map) {
+  private void markParent(TreeNode<Integer> root, Map<TreeNode<Integer>, TreeNode<Integer>> map) {
     Deque<TreeNode<Integer>> queue = new ArrayDeque<>();
     queue.offer(root);
     while (!queue.isEmpty()) {

@@ -194,9 +194,9 @@ public class DynamicProgrammingProblems {
     return dp[a][b];
   }
 
-  /*
-   * dp on subset
-   * */
+  // ==============================
+  //          Subset DP
+  // ==============================
   public boolean canPartition(int[] nums) {
     int sum = 0;
     for (int n : nums) {
@@ -362,9 +362,9 @@ public class DynamicProgrammingProblems {
     return result;
   }
 
-  /*
-   * dp on strings
-   * */
+  // ==============================
+  //          DP on string
+  // ==============================
   public String longestCommonSubsequence(String text1, String text2) {
     if (text1.equals(text2)) return text1;
     int m = text1.length(), n = text2.length();

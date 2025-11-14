@@ -230,7 +230,7 @@ public class ArrayProblems {
     return 0;
   }
 
-  class EncodeDecodeString {
+  static class EncodeDecodeString {
     public String encode(List<String> str) {
       StringBuilder sb = new StringBuilder();
       for (String s : str) {
@@ -288,10 +288,8 @@ public class ArrayProblems {
       // light and heavy people can go on the same boat
       if (sum <= limit) {
         l++;
-        r--;
-      } else {
-        r--;
       }
+      r--;
       count++;
     }
     return count;
