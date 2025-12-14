@@ -41,7 +41,6 @@ public class HeapProblems {
     return result.toString();
   }
 
-
   public int[] getOrder(int[][] tasks) {
     // modify the tasks to have index too
     int n = tasks.length;
@@ -81,5 +80,57 @@ public class HeapProblems {
       }
     }
     return result;
+  }
+
+  public int[][] kClosest(int[][] points, int k) {
+    int[][] result = new int[k][2];
+    PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+    for (int[] point : points) {
+      maxHeap.offer(new int[]{point[0] * point[0] + point[1] * point[1], point[0], point[1]});
+      if (maxHeap.size() > k) {
+        maxHeap.poll();
+      }
+    }
+    int i = 0;
+    while (!maxHeap.isEmpty()) {
+      int[] top = maxHeap.poll();
+      result[i++] = new int[]{top[1], top[2]};
+    }
+    return result;
+  }
+
+  public int leastInterval(char[] tasks, int n) {
+    // pull max freq value, since we take it we need to wait for n times
+    // so we pull another n values following the same policy
+    int[] freq = new int[26];
+    for (char ch : tasks) freq[ch - 'A']++;
+
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    for (int i = 0; i < 26; ++i) {
+      if (freq[i] > 0) maxHeap.offer(freq[i]);
+    }
+
+    int time = 0;
+
+    while (!maxHeap.isEmpty()) {
+      List<Integer> store = new ArrayList<>();
+      int count = 0;
+      for (int i = 1; i <= n + 1; ++i) {
+        // so if we pick a value we will need to wait for n+1 to get that value again
+        // ex. A__|
+        // we pick A now we have two space left, we'll put another char there
+        // so if we have other char like B/C we put in those spaces
+        if (!maxHeap.isEmpty()) {
+          int top = maxHeap.poll();
+          if (top > 1) store.add(top - 1);
+          count++;
+        }
+      }
+      store.forEach(maxHeap::offer);
+      // AB_|AB_|AB
+      // for the last one heap will be empty, so we put the actual count
+      time += maxHeap.isEmpty() ? count : n + 1;
+    }
+    return time;
   }
 }

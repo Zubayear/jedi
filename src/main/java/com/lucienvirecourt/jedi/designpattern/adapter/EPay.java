@@ -33,7 +33,7 @@ class DemoPaymentProcessor implements PaymentProcessor {
 }
 
 class CheckoutService {
-  private PaymentProcessor paymentProcessor;
+  private final PaymentProcessor paymentProcessor;
 
   CheckoutService(PaymentProcessor paymentProcessor) {
     this.paymentProcessor = paymentProcessor;
@@ -90,7 +90,7 @@ class LegacyGatewayAdapter implements PaymentProcessor {
 }
 
 public class EPay {
-  public static void main(String[] args) {
+  static void main() {
     PaymentProcessor paymentProcessor = new DemoPaymentProcessor();
     CheckoutService checkoutService = new CheckoutService(paymentProcessor);
     checkoutService.checkout(99.09, "USD");

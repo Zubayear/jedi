@@ -1,7 +1,9 @@
 package com.lucienvirecourt.jedi.designpattern.decorator;
 
-// The Decorator Pattern allows you to dynamically add new behavior or responsibilities to objects at runtime, without modifying their code.
-// It works by wrapping the original object inside another object (the decorator) that implements the same interface and delegates calls to it — but with extra logic.
+// The Decorator Pattern allows you to dynamically add new
+// behavior or responsibilities to objects at runtime, without modifying their code.
+// It works by wrapping the original object inside another object (the decorator)
+// that implements the same interface and delegates calls to it — but with extra logic.
 interface Coffee {
   String getDescription();
   double getCost();
@@ -21,7 +23,7 @@ class SimpleCoffee implements Coffee {
 
 // this actually wraps coffee
 abstract class CoffeeDecorator implements Coffee {
-  protected Coffee decoratedCoffee;
+  protected final Coffee decoratedCoffee;
 
   public CoffeeDecorator(Coffee coffee) {
     this.decoratedCoffee = coffee;

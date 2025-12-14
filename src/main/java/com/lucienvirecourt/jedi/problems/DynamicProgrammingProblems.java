@@ -567,7 +567,9 @@ public class DynamicProgrammingProblems {
     // remove the rest of the word1 and make n-lcs insert to word2
     int lcs = longestCommonSubsequenceRecur(word1, word2);
     int n1 = word1.length(), n2 = word2.length();
-    return n1 - lcs + n2 - lcs;
+    int del = n1 - lcs;
+    int ins = n2 - lcs;
+    return del + ins;
   }
 
   public int distinctSubsequence(String s, String t) {
@@ -676,6 +678,7 @@ public class DynamicProgrammingProblems {
     // base case i == 0 return j; j == 0 return i
     for (int i = 0; i <= m; ++i) dp[i][0] = i;
     for (int j = 0; j <= n; ++j) dp[0][j] = j;
+    System.out.println(Arrays.deepToString(dp));
 
     for (int i = 1; i <= m; ++i) {
       for (int j = 1; j <= n; ++j) {
@@ -758,6 +761,12 @@ public class DynamicProgrammingProblems {
     }
     return profit;
   }
+
+  /// =======================
+  ///
+  ///        Subsequence
+  ///
+  /// =======================
 
   public int longestIncreasingSubsequence(int[] nums) {
     // [10,9,2,5,3,7,101,18]

@@ -181,7 +181,7 @@ public class RecursionProblems {
     }
     // take
     aux.add(nums[idx]);
-    subsets(nums, idx + 1, aux, result); // we have a chance to take that again, so we don't move forward
+    subsets(nums, idx + 1, aux, result);
     aux.removeLast();
     subsets(nums, idx + 1, aux, result); // since we've ignored it, move forward
   }

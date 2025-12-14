@@ -31,7 +31,6 @@ public class ArrayProblems {
       }
     }
     return s1.substring(0, i);
-
   }
 
   public List<List<String>> groupAnagrams(String[] strs) {
@@ -433,13 +432,83 @@ public class ArrayProblems {
     return nums;
   }
 
+  public List<List<Integer>> threeSum(int[] nums) {
+    Arrays.sort(nums); // need to sort so that we can ignore duplicate triplets
+    List<List<Integer>> result = new ArrayList<>();
+    int n = nums.length;
+    // -1,0,1,2,-1,-4
+    // i j          k
+    for (int i = 0; i < n; ++i) {
+      if (i > 0 && nums[i] == nums[i - 1]) continue;
+      int j = i + 1, k = n - 1;
+      while (j < k) {
+        // we keep the i pointer fixed and move j & k based on condition
+        int sum = nums[i] + nums[j] + nums[k];
+        if (sum < 0) j++;
+        else if (sum > 0) k--;
+        else {
+          result.add(Arrays.asList(nums[i], nums[j], nums[k]));
+          // here we move j & k till we find different element i.e, ignoring duplicate
+          while (j < k && nums[j] == nums[j + 1]) j++;
+          while (j < k && nums[k] == nums[k + 1]) k--;
+          j++;
+          k--;
+        }
+      }
+    }
+    return result;
+  }
+
+  public List<List<Integer>> fourSum(int[] nums, int target) {
+    Arrays.sort(nums);
+    List<List<Integer>> result = new ArrayList<>();
+    int n = nums.length;
+    // -1,0,1,2,-1,-4
+    // i j          k
+
+    // we fix i & j pointer, then move k & l pointer
+    for (int i = 0; i < n; ++i) {
+      if (i > 0 && nums[i] == nums[i - 1]) continue;
+      for (int j = i + 1; j < n; ++j) {
+        if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+        int k = j + 1, l = n - 1;
+        while (k < l) {
+          int sum = nums[i] + nums[j] + nums[k] + nums[l];
+          if (sum < target) k++;
+          else if (sum > target) l--;
+          else {
+            result.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
+            while (k < l && nums[k] == nums[k + 1]) k++;
+            while (k < l && nums[l] == nums[l - 1]) l--;
+            k++;
+            l--;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  public int trap(int[] height) {
+    int n = height.length;
+    int[] leftMax = new int[n], rightMax = new int[n];
+    for (int i = 1; i < n; ++i)
+      leftMax[i] = Math.max(leftMax[i - 1], height[i - 1]);
+    for (int i = n - 2; i >= 0; --i)
+      rightMax[i] = Math.max(height[i+1], rightMax[i+1]);
+    System.out.println(Arrays.toString(leftMax) + " " + Arrays.toString(rightMax));
+    return 1;
+  }
+
   private boolean isVowel(char ch) {
     return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
   }
+
 
   private void swap(int[] A, int a, int b) {
     int t = A[a];
     A[a] = A[b];
     A[b] = t;
   }
+
 }

@@ -115,6 +115,11 @@ public class BinaryTreeProblems {
   }
 
   public TreeNode<Integer> lcs(TreeNode<Integer> root, TreeNode<Integer> p, TreeNode<Integer> q) {
+    /*
+    * if we find the node we are looking for just return that node
+    * if we get two non-null node return the root
+    * if one of them return a node instead of null take that node
+    * */
     if (root == null || root == p || root == q) return root;
     TreeNode<Integer> left = lcs(root.left, p, q);
     TreeNode<Integer> right = lcs(root.right, p, q);
@@ -197,4 +202,79 @@ public class BinaryTreeProblems {
     }
   }
 
+  /// =========================
+  ///
+  ///         Traversal
+  ///
+  /// =========================
+
+  public <T extends Comparable<T>> List<T> preorderIterative(TreeNode<T> root) {
+    /*
+    * Take a stack and put the root
+    * Start the traversal, first pop the top of stack
+    * Since, it's root left right we put the right and then left
+    * Run the loop
+    * */
+    List<T> result = new ArrayList<>();
+    if (root == null) return result;
+    Deque<TreeNode<T>> stack = new ArrayDeque<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+      TreeNode<T> top = stack.pop();
+      result.add(top.val);
+      if (top.right != null) stack.push(top.right);
+      if (top.left != null) stack.push(top.right);
+    }
+    return result;
+  }
+
+  public <T extends Comparable<T>> List<T> inorderIterative(TreeNode<T> root) {
+    /*
+    * Since it's Left Root Right
+    * We move to the as far left as possible
+    * then if we encounter null we just take the root
+    * then we move to the right
+    * */
+    List<T> result = new ArrayList<>();
+    if (root == null) return result;
+    Deque<TreeNode<T>> stack = new ArrayDeque<>();
+    while (true) {
+      if (root != null) {
+        stack.push(root);
+        root = root.left;
+      } else {
+        if (stack.isEmpty()) {
+          break;
+        }
+        TreeNode<T> top = stack.pop();
+        result.add(top.val);
+        root = root.right;
+      }
+    }
+    return result;
+  }
+
+  public <T extends Comparable<T>> List<T> postorderIterative(TreeNode<T> root) {
+    /*
+     * Take a stack and put the root
+     * Start the traversal, first pop the top of stack
+     * if we have left and right we push it to the stack
+     * Run the loop
+     * */
+    List<T> result = new ArrayList<>();
+    if (root == null) return result;
+    Deque<TreeNode<T>> stack1 = new ArrayDeque<>();
+    Deque<TreeNode<T>> stack2 = new ArrayDeque<>();
+    stack1.push(root);
+    while (!stack1.isEmpty()) {
+      TreeNode<T> top = stack1.pop();
+      stack2.push(top);
+      if (top.left != null) stack1.push(top.left);
+      if (top.right != null) stack1.push(top.right);
+    }
+    while (!stack2.isEmpty()) {
+      result.add(stack2.pop().val);
+    }
+    return result;
+  }
 }

@@ -10,10 +10,10 @@ public class Person {
   private final String firstName;
   private final String lastName;
 
-  private String middleName;
-  private String emailAddress;
-  private LocalDate dob;
-  private String phoneNumber;
+  private final String middleName;
+  private final String emailAddress;
+  private final LocalDate dob;
+  private final String phoneNumber;
 
   private Person(PersonBuilder personBuilder) {
     this.lastName = personBuilder.lastName;
@@ -55,7 +55,6 @@ public class Person {
       return this;
     }
 
-
     public PersonBuilder mailAddress(String emailAddress) {
       this.emailAddress = emailAddress;
       return this;
@@ -79,7 +78,7 @@ public class Person {
 }
 
 class PersonDemo {
-  public static void main(String[] args) {
+  static void main() {
     var person = new Person.PersonBuilder("Bob", "Marley")
       .mailAddress("bob.marley@gmail.com")
       .build();
