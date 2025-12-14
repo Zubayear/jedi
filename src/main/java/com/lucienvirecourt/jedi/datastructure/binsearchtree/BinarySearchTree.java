@@ -14,7 +14,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
   }
 
   public boolean add(T val) {
-    if (isExists(root, val)) {
+    if (doesExist(root, val)) {
       return false;
     } else {
       root = add(root, val);
@@ -35,11 +35,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return node;
   }
 
-  private boolean isExists(TreeNode<T> node, T val) {
+  private boolean doesExist(TreeNode<T> node, T val) {
     if (node == null) return false;
     int cmp = val.compareTo(node.val);
-    if (cmp < 0) return isExists(node.left, val);
-    else if (cmp > 0) return isExists(node.right, val);
+    if (cmp < 0) return doesExist(node.left, val);
+    else if (cmp > 0) return doesExist(node.right, val);
     else return true;
   }
 

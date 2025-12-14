@@ -42,7 +42,7 @@ public class BinaryHeap<T extends Comparable<T>> {
     if (heap.isEmpty()) {
       return null;
     }
-    return heap.get(0);
+    return heap.getFirst();
   }
 
   // O(log(n))

@@ -12,7 +12,7 @@ class CircularQueueTest {
 
   @BeforeEach
   void setUp() {
-    circularQueue = new CircularQueue<>(50);
+    circularQueue = new CircularQueue<>(500);
   }
 
   @AfterEach
@@ -32,7 +32,8 @@ class CircularQueueTest {
 
     assertFalse(circularQueue.isEmpty());
     assertEquals(13, circularQueue.size());
-    assertEquals('t', circularQueue.dequeue());
+    Character dequeue = circularQueue.dequeue();
+    assertEquals('t', dequeue);
     assertEquals('o', circularQueue.peek());
 
     assertEquals("[o,b,e,o,r,n,o,t,t,o,b,e]", circularQueue.queueStr());

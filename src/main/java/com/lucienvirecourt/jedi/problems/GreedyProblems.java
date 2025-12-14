@@ -1,11 +1,12 @@
 package com.lucienvirecourt.jedi.problems;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class GreedyProblems {
 
   public boolean canAttendMeetings(int[][] meetings) {
-    Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
+    Arrays.sort(meetings, Comparator.comparingInt(a -> a[0]));
     int count = 1, end = meetings[0][1], n = meetings.length;
     for (int i = 1; i < n; ++i) {
       int start = meetings[i][0];
@@ -18,7 +19,7 @@ public class GreedyProblems {
   }
 
   public int meetingCount(int[][] meetings) {
-    Arrays.sort(meetings, (a, b) -> a[1] - b[1]);
+    Arrays.sort(meetings, Comparator.comparingInt(a -> a[1]));
     int count = 1, end = meetings[0][1], n = meetings.length;
     for (int i = 1; i < n; ++i) {
       int start = meetings[i][0];
@@ -31,7 +32,7 @@ public class GreedyProblems {
   }
 
   public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+    Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
     int count = 1, end = intervals[0][1], n = intervals.length;
     for (int i = 1; i < n; ++i) {
       int start = intervals[i][0];

@@ -9,7 +9,7 @@ public class CircularQueue<T> implements Iterable<T> {
 
   private final List<T> data;
   private int front = 0;
-  private int rear = 0;
+  private int rear = -1;
   private int size = 0;
   private final int cap;
 
@@ -25,7 +25,7 @@ public class CircularQueue<T> implements Iterable<T> {
   }
 
   private boolean isFull() {
-    return size >= cap;
+    return size == cap;
   }
 
   public boolean isEmpty() {
@@ -34,28 +34,27 @@ public class CircularQueue<T> implements Iterable<T> {
 
   public void enqueue(T element) {
     if (isFull()) throw new IllegalStateException("Queue is full");
-    data.set(rear % cap, element);
-    rear++;
+    rear = (rear + 1) % cap;
+    data.set(rear, element);
     size++;
   }
 
   public T dequeue() {
     if (isEmpty()) throw new RuntimeException("Queue is empty");
-    int idx = front % cap;
-    T item = data.get(idx);
-    front++;
+    T item = data.get(front);
+    data.set(front, null);
+    front = (front + 1) % cap;
     size--;
-    data.set(idx, null);
     return item;
   }
 
   public T peek() {
     if (isEmpty()) throw new RuntimeException("Queue is empty");
-    return data.get(front % cap);
+    return data.get(front);
   }
 
   public void clear() {
-    rear = 0;
+    rear = -1;
     front = 0;
     size = 0;
     for (int i = 0; i < cap; ++i) data.set(i, null);
@@ -65,8 +64,8 @@ public class CircularQueue<T> implements Iterable<T> {
     if (isEmpty()) throw new RuntimeException("Queue is empty");
     StringBuilder sb = new StringBuilder();
     sb.append("[");
-    for (int i = front; i <= rear - 1; i++) {
-      sb.append(data.get(i % cap)).append(",");
+    for (int i = front; i <= rear; i++) {
+      sb.append(data.get(i)).append(",");
     }
     sb.deleteCharAt(sb.length() - 1);
     sb.append("]");

@@ -261,7 +261,8 @@ public class BinarySearchProblems {
     // we need to run binary search
     // so the range will be between max(weights) to sum(weights)
     // we pick a cap and try to fit as many weights as possible within cap
-    int low = Arrays.stream(weights).max().getAsInt();
+    int low = MOD_MAX;
+    for (int weight : weights) low = Math.max(low, weight);
     int high = Arrays.stream(weights).sum();
     int ans = 0;
     while (low < high) {

@@ -3,7 +3,6 @@ package com.lucienvirecourt.jedi.problems;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.lucienvirecourt.jedi.problems.BinarySearchProblems.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySearchProblemsTest {
