@@ -197,7 +197,7 @@ public class ArrayProblems {
       if (nums[i] > nums[i - 1]) inc = true;
       if (nums[i] < nums[i - 1]) dec = true;
     }
-    return inc && dec ? false : true;
+    return !inc || !dec;
   }
 
   public int[] productExceptSelf(int[] nums) {

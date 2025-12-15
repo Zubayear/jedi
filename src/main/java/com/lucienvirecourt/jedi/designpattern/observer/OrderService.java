@@ -7,7 +7,7 @@ record OrderEvent(Order order, EventType eventType) {
   }
 }
 
-class Order {
+static class Order {
 
 }
 
@@ -17,7 +17,7 @@ interface OrderEventListener {
 }
 
 // Event publisher
-public class OrderService {
+static public class OrderService {
   private final List<OrderEventListener> listeners = new CopyOnWriteArrayList<>();
 
   public void addListener(OrderEventListener listener) {
@@ -38,7 +38,7 @@ public class OrderService {
   }
 }
 
-class EmailNotificationListener implements OrderEventListener {
+static class EmailNotificationListener implements OrderEventListener {
   @Override
   public void onOrderEvent(OrderEvent event) {
     if (event.eventType() == OrderEvent.EventType.CREATED) {
@@ -47,7 +47,7 @@ class EmailNotificationListener implements OrderEventListener {
   }
 }
 
- class InventoryListener implements OrderEventListener {
+static class InventoryListener implements OrderEventListener {
   @Override
   public void onOrderEvent(OrderEvent event) {
     if (event.eventType() == OrderEvent.EventType.CREATED) {
@@ -56,7 +56,7 @@ class EmailNotificationListener implements OrderEventListener {
   }
 }
 
- class AnalyticsListener implements OrderEventListener {
+static class AnalyticsListener implements OrderEventListener {
   @Override
   public void onOrderEvent(OrderEvent event) {
     System.out.println("track order");
@@ -64,7 +64,7 @@ class EmailNotificationListener implements OrderEventListener {
 }
 
 // NEW: Add fraud detection without touching OrderService
- class FraudDetectionListener implements OrderEventListener {
+static class FraudDetectionListener implements OrderEventListener {
   @Override
   public void onOrderEvent(OrderEvent event) {
     if (event.eventType() == OrderEvent.EventType.CREATED) {

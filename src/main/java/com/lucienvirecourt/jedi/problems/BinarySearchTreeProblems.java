@@ -37,7 +37,8 @@ public class BinarySearchTreeProblems {
       }
       // we encounter the node
       root = stack.poll();
-      if (--k == 0) return root.val;
+      if (--k == 0 && root != null) return root.val;
+      assert root != null;
       root = root.right; // we go to the right
     }
   }

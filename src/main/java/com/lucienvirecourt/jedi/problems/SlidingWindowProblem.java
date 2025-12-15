@@ -5,7 +5,12 @@ import java.util.*;
 public class SlidingWindowProblem {
   public int[] maxSlidingWindow(int[] nums, int k) {
     int ws = 0, we = 0, size = nums.length;
-    if (k > size) return new int[]{Arrays.stream(nums).max().getAsInt()};
+    int max = -(int) 1e9;
+
+    if (k > size) {
+      for (int n : nums) max = Math.max(max, n);
+      return new int[]{max};
+    }
     int[] result = new int[size - k + 1];
     Deque<Integer> q = new LinkedList<>();
     while (we < size) {
