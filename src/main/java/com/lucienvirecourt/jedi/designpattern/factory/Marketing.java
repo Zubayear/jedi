@@ -28,8 +28,10 @@ class SmsNotification implements Notification {
 }
 
 abstract class NotificationCreator {
+  // Factory method
   abstract Notification createNotification();
 
+  // Template method using the factory method
   void send(String from, String to, String message) {
     createNotification().send(from, to, message);
   }
@@ -59,7 +61,7 @@ class SmsNotificationCreator extends NotificationCreator {
 
 
 public class Marketing {
-  public static void main(String[] args) {
+  static void main() {
     NotificationCreator notificationCreator;
     notificationCreator = new SmsNotificationCreator();
     notificationCreator.send("abc@gmail.com", "sj.kin@gmail.com", "Hello, you are chosen.");

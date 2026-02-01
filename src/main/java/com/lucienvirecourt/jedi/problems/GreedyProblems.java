@@ -107,6 +107,8 @@ public class GreedyProblems {
   public boolean canJump(int[] nums) {
     // we keep a max index we can reach, we will update it everytime
     // we check if we have cross the maxIdx, if so then that case isn't valid
+    // when maxIdx < i we are essentially saying max we could've reached till maxIdx,
+    // but we have crossed it and that is not possible
     int maxIdx = 0, n = nums.length;
     for (int i = 0; i < n; ++i) {
       if (maxIdx < i) return false;
@@ -114,5 +116,19 @@ public class GreedyProblems {
       maxIdx = Math.max(maxIdx, nums[i] + i);
     }
     return true;
+  }
+
+  public int jump(int[] nums) {
+    // we try to find the farthest we can reach
+    int ans = 0, farthestReach = 0, n = nums.length, high = 0, low = 0;
+    while (high < n - 1) {
+      for (int i = low; i < high + 1; i++) {
+        farthestReach = Math.max(farthestReach, nums[i] + i);
+      }
+      low = high + 1;
+      high = farthestReach;
+      ans++;
+    }
+    return ans;
   }
 }

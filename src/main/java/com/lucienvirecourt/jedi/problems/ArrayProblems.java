@@ -511,4 +511,13 @@ public class ArrayProblems {
     A[b] = t;
   }
 
+  // LC - 392
+  public boolean isSubsequence(String s, String t) {
+    int l = 0, r = 0, n = t.length(), m = s.length();
+    while (l < m && r < n) {
+      if (s.charAt(l) == t.charAt(r)) l++;
+      r++;
+    }
+    return l == m;
+  }
 }

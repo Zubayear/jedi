@@ -70,4 +70,10 @@ class GreedyProblemsTest {
       {1, 3},
     }));
   }
+
+
+  @Test
+  void jump() {
+    assertEquals(2, greedyProblems.jump(new int[]{2,3,1,1,4}));
+  }
 }

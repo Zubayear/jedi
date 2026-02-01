@@ -84,7 +84,7 @@ class ChocolateBarProducer extends VendingMachine {
 
 public class Store {
 
-  public static void main(String[] args) {
+  static void main() {
     VendingMachine machine;
     machine = new ChocolateBarProducer();
     buySnack(machine);

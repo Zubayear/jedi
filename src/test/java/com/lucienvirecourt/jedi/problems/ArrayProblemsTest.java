@@ -191,4 +191,10 @@ class ArrayProblemsTest {
   @Test
   void sortArrayByParity() {
   }
+
+  @Test
+  void isSubsequence() {
+    assertTrue(ap.isSubsequence("abc", "ahbgdc"));
+    assertFalse(ap.isSubsequence("axc", "ahbgdc"));
+  }
 }

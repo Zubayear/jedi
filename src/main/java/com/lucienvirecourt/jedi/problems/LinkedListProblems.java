@@ -1,4 +1,6 @@
 package com.lucienvirecourt.jedi.problems;
 
-public class LinkedListProblems {
+import com.lucienvirecourt.jedi.datastructure.linkedlist.ListNode;
+
+public class LinkedListProblems<T> {
 }
