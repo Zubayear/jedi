@@ -25,6 +25,7 @@ class StackProblemsTest {
   void removingStarsFromAStringTest() {
     assertEquals("lecoe", sp.removingStarsFromAString("leet**cod*e"));
     assertEquals("", sp.removingStarsFromAString("erase*****"));
+    assertEquals("abc", sp.removingStarsFromAString("abc"));
   }
 
   @Test
@@ -32,11 +33,15 @@ class StackProblemsTest {
     assertArrayEquals(new Integer[]{5, 10}, sp.asteroidCollision(new int[]{5, 10, -5}));
     assertArrayEquals(new Integer[]{}, sp.asteroidCollision(new int[]{8, -8}));
     assertArrayEquals(new Integer[]{10}, sp.asteroidCollision(new int[]{10, 2, -5}));
+    assertArrayEquals(new Integer[]{-2, -1, 1, 2}, sp.asteroidCollision(new int[]{-2, -1, 1, 2}));
+    assertArrayEquals(new Integer[]{-10}, sp.asteroidCollision(new int[]{1, 2, 3, -10}));
   }
 
   @Test
   void dailyTemperaturesTest() {
     assertArrayEquals(new int[]{1, 1, 4, 2, 1, 1, 0, 0}, sp.dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73}));
+    assertArrayEquals(new int[]{0}, sp.dailyTemperatures(new int[]{30}));
+    assertArrayEquals(new int[]{0, 0, 0}, sp.dailyTemperatures(new int[]{80, 79, 78}));
   }
 
   @Test
@@ -44,5 +49,7 @@ class StackProblemsTest {
     assertEquals("accaccacc", sp.decodeString("3[a2[c]]"));
     assertEquals("aaabcbc", sp.decodeString("3[a]2[bc]"));
     assertEquals("abcabccdcdcdef", sp.decodeString("2[abc]3[cd]ef"));
+    assertEquals("aaaaaaaaaa", sp.decodeString("10[a]"));
+    assertEquals("abbabb", sp.decodeString("2[a2[b]]"));
   }
 }

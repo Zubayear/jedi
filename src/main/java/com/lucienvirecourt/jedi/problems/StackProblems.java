@@ -32,9 +32,12 @@ public class StackProblems {
         while (!stack.isEmpty() && stack.peekFirst() > 0 && stack.peekFirst() < -asteroid) {
           stack.pollFirst();
         }
+        boolean destroyed = false;
         if (!stack.isEmpty() && stack.peekFirst() == -asteroid) {
           stack.pollFirst();
-        } else if (stack.isEmpty() && asteroid < 0) {
+          destroyed = true;
+        }
+        if (!destroyed && (stack.isEmpty() || stack.peekFirst() < 0)) {
           stack.offerFirst(asteroid);
         }
       }
