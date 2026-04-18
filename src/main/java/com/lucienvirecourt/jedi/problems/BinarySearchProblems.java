@@ -40,7 +40,7 @@ public class BinarySearchProblems {
   public int floor(int[] nums, int k) {
     // largest number in nums <= k
     // nums = [10,20,30,40,50] k = 25
-    int n = nums.length, low = 0, high = n, ans = -1;
+    int n = nums.length, low = 0, high = n - 1, ans = -1;
     while (low <= high) {
       int mid = low + (high - low) / 2;
       if (nums[mid] <= k) {
@@ -56,7 +56,7 @@ public class BinarySearchProblems {
   public int ceil(int[] nums, int k) {
     // smallest number in nums >= k
     // nums = [10,20,30,40,50] k = 25 ans = 30
-    int n = nums.length, low = 0, high = n, ans = -1;
+    int n = nums.length, low = 0, high = n - 1, ans = -1;
     while (low <= high) {
       int mid = low + (high - low) / 2;
       if (nums[mid] < k) {
@@ -261,15 +261,15 @@ public class BinarySearchProblems {
     // we need to run binary search
     // so the range will be between max(weights) to sum(weights)
     // we pick a cap and try to fit as many weights as possible within cap
-    int low = MOD_MAX;
+    int low = MOD_MIN;
     for (int weight : weights) low = Math.max(low, weight);
     int high = Arrays.stream(weights).sum();
     int ans = 0;
     while (low < high) {
-      int cap = (low & high) + ((low ^ high) >> 1);
+      int cap = low + (high - low) / 2;
       int daysTaken = loadInShip(weights, cap);
       if (daysTaken <= days) {
-        ans = daysTaken;
+        ans = cap;
         high = cap - 1;
       } else {
         low = cap + 1;

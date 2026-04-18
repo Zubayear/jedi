@@ -19,26 +19,38 @@ class BinarySearchProblemsTest {
     assertEquals(1, bsp.lowerBound(new int[]{1, 2, 2, 3}, 2));
     assertEquals(1, bsp.lowerBound(new int[]{3, 5, 8, 15, 19}, 5));
     assertEquals(3, bsp.lowerBound(new int[]{3, 5, 8, 15, 19}, 9));
+    assertEquals(0, bsp.lowerBound(new int[]{2, 2, 2}, 1));
+    assertEquals(3, bsp.lowerBound(new int[]{2, 2, 2}, 3));
   }
 
   @Test
   void upperBoundTest() {
     assertEquals(3, bsp.upperBound(new int[]{2, 3, 6, 7, 8, 8, 11, 11, 11, 12}, 6));
+    assertEquals(0, bsp.upperBound(new int[]{2, 2, 2}, 1));
+    assertEquals(3, bsp.upperBound(new int[]{2, 2, 2}, 2));
   }
 
   @Test
   void floorTest() {
     assertEquals(22, bsp.floor(new int[]{10, 20, 22, 30, 40, 50}, 25));
+    assertEquals(-1, bsp.floor(new int[]{10, 20, 30}, 5));
+    assertEquals(30, bsp.floor(new int[]{30}, 30));
+    assertEquals(30, bsp.floor(new int[]{10, 20, 30}, 100));
   }
 
   @Test
   void ceilTest() {
     assertEquals(30, bsp.ceil(new int[]{10, 20, 30, 40, 50}, 25));
+    assertEquals(-1, bsp.ceil(new int[]{10, 20, 30}, 35));
+    assertEquals(10, bsp.ceil(new int[]{10, 20, 30}, 1));
+    assertEquals(30, bsp.ceil(new int[]{30}, 30));
   }
 
   @Test
   void firstAndLastOccurrenceTest() {
     assertArrayEquals(new int[]{3, 4}, bsp.firstAndLastOccurrence(new int[]{2, 4, 6, 8, 8, 11, 13}, 8));
+    assertArrayEquals(new int[]{-1, -1}, bsp.firstAndLastOccurrence(new int[]{2, 4, 6, 8, 8, 11, 13}, 7));
+    assertArrayEquals(new int[]{0, 2}, bsp.firstAndLastOccurrence(new int[]{5, 5, 5}, 5));
   }
 
   @Test
@@ -46,12 +58,16 @@ class BinarySearchProblemsTest {
     assertEquals(4, bsp.searchInRotatedSortedArray(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
     assertEquals(-1, bsp.searchInRotatedSortedArray(new int[]{4, 5, 6, 7, 0, 1, 2}, 3));
     assertEquals(-1, bsp.searchInRotatedSortedArray(new int[]{1}, 0));
+    assertEquals(0, bsp.searchInRotatedSortedArray(new int[]{1}, 1));
+    assertEquals(2, bsp.searchInRotatedSortedArray(new int[]{5, 1, 3}, 3));
   }
 
   @Test
   void searchInRotatedSortedArrayWithDuplicatesTest() {
     assertTrue(bsp.searchInRotatedSortedArrayWithDuplicates(new int[]{2, 5, 6, 0, 0, 1, 2}, 0));
     assertFalse(bsp.searchInRotatedSortedArrayWithDuplicates(new int[]{2, 5, 6, 0, 0, 1, 2}, 3));
+    assertTrue(bsp.searchInRotatedSortedArrayWithDuplicates(new int[]{1, 1, 1, 1}, 1));
+    assertFalse(bsp.searchInRotatedSortedArrayWithDuplicates(new int[]{1, 1, 1, 1}, 2));
   }
 
   @Test
@@ -59,6 +75,7 @@ class BinarySearchProblemsTest {
     assertEquals(1, bsp.findMinInRotatedSortedArray(new int[]{3, 4, 5, 1, 2}));
     assertEquals(0, bsp.findMinInRotatedSortedArray(new int[]{4, 5, 6, 7, 0, 1, 2}));
     assertEquals(11, bsp.findMinInRotatedSortedArray(new int[]{11, 13, 15, 17}));
+    assertEquals(7, bsp.findMinInRotatedSortedArray(new int[]{7}));
   }
 
   @Test
@@ -66,6 +83,7 @@ class BinarySearchProblemsTest {
     assertEquals(3, bsp.findRotationTime(new int[]{3, 4, 5, 1, 2}));
     assertEquals(4, bsp.findRotationTime(new int[]{4, 5, 6, 7, 0, 1, 2}));
     assertEquals(0, bsp.findRotationTime(new int[]{11, 13, 15, 17}));
+    assertEquals(0, bsp.findRotationTime(new int[]{7}));
   }
 
   @Test
@@ -75,6 +93,12 @@ class BinarySearchProblemsTest {
       {10, 11, 16, 20},
       {23, 30, 34, 60}
     }, 3));
+    assertFalse(bsp.searchMatrix(new int[][]{
+      {1, 3, 5, 7},
+      {10, 11, 16, 20},
+      {23, 30, 34, 60}
+    }, 13));
+    assertTrue(bsp.searchMatrix(new int[][]{{1}}, 1));
   }
 
   @Test
@@ -82,5 +106,20 @@ class BinarySearchProblemsTest {
     assertEquals(4, bsp.minEatingSpeed(new int[]{3, 6, 7, 11}, 8));
     assertEquals(30, bsp.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 5));
     assertEquals(23, bsp.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 6));
+    assertEquals(1, bsp.minEatingSpeed(new int[]{1, 1, 1, 1}, 4));
+    assertEquals(10, bsp.minEatingSpeed(new int[]{10}, 1));
+  }
+
+  @Test
+  void singleNonDuplicateTest() {
+    assertEquals(2, bsp.singleNonDuplicate(new int[]{1, 1, 2, 3, 3}));
+    assertEquals(10, bsp.singleNonDuplicate(new int[]{3, 3, 7, 7, 10, 11, 11}));
+    assertEquals(1, bsp.singleNonDuplicate(new int[]{1}));
+  }
+
+  @Test
+  void shipWithinDaysTest() {
+    assertEquals(15, bsp.shipWithinDays(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 5));
+    assertEquals(6, bsp.shipWithinDays(new int[]{3, 2, 2, 4, 1, 4}, 3));
   }
 }
