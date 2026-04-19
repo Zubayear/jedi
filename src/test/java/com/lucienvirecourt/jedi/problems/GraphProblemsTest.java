@@ -486,4 +486,151 @@ class GraphProblemsTest {
     assertEquals(0, gp.wordLadder("hit", "cog", List.of("hot", "dot", "dog", "lot", "log")));
     assertEquals(0, gp.wordLadder("hot", "dog", List.of("hot", "dog")));
   }
+
+  @Test
+  void bfs_emptyGraph() {
+    List<List<Integer>> graph = List.of(List.of(), List.of());
+    assertIterableEquals(List.of(0), gp.bfs(graph, 0));
+  }
+
+  @Test
+  void bfs_disconnectedNodes() {
+    List<List<Integer>> graph = List.of(
+      List.of(),
+      List.of(),
+      List.of(3),
+      List.of(2)
+    );
+    assertIterableEquals(List.of(0), gp.bfs(graph, 0));
+    assertIterableEquals(List.of(2, 3), gp.bfs(graph, 2));
+  }
+
+  @Test
+  void dfs_singleNode() {
+    List<List<Integer>> graph = List.of(List.of());
+    assertIterableEquals(List.of(0), gp.dfs(graph, 0));
+  }
+
+  @Test
+  void dfs_emptyGraph() {
+    List<List<Integer>> graph = List.of(List.of(), List.of());
+    assertIterableEquals(List.of(0), gp.dfs(graph, 0));
+  }
+
+  @Test
+  void cycleExists_singleNode() {
+    int[][] graph = {{}};
+    assertFalse(gp.cycleExists(graph));
+  }
+
+  @Test
+  void cycleExists_noCycle() {
+    int[][] graph = {
+      {1},
+      {2},
+      {}
+    };
+    assertFalse(gp.cycleExists(graph));
+  }
+
+  @Test
+  void cycleExists_simpleGraph() {
+    int[][] graph = {
+      {1},
+      {2},
+      {0}
+    };
+    assertTrue(gp.cycleExists(graph));
+  }
+
+  @Test
+  void cycleExitsInDirectedGraph_empty() {
+    int[][] graph = {};
+    assertFalse(gp.cycleExitsInDirectedGraph(graph));
+  }
+
+  @Test
+  void cycleExitsInDirectedGraph_noCycle() {
+    int[][] graph = {
+      {1},
+      {2},
+      {}
+    };
+    assertFalse(gp.cycleExitsInDirectedGraph(graph));
+  }
+
+  @Test
+  void findCircleNum_singleCity() {
+    assertEquals(1, gp.findCircleNum(new int[][]{{1}}));
+  }
+
+  @Test
+  void numEnclaves_singleCell() {
+    int[][] grid = {{0}};
+    assertEquals(0, gp.numEnclaves(grid));
+  }
+
+  @Test
+  void numEnclaves_noBorder() {
+    int[][] grid = {{1}};
+    assertEquals(0, gp.numEnclaves(grid));
+  }
+
+  @Test
+  void surroundedRegion_allX() {
+    char[][] board = {
+      {'X', 'X'},
+      {'X', 'X'}
+    };
+    gp.surroundedRegion(board);
+    assertArrayEquals(board, board);
+  }
+
+  @Test
+  void courseSchedule_noPrerequisites() {
+    assertTrue(gp.courseSchedule(3, new int[][]{}));
+  }
+
+  @Test
+  void courseSchedule_singleCourse() {
+    assertTrue(gp.courseSchedule(1, new int[][]{}));
+    assertEquals(1, gp.courseScheduleFindOrder(1, new int[][]{}).length);
+  }
+
+  @Test
+  void topologicalSort_emptyGraph() {
+    int[][] graph = {};
+    assertThat(gp.topologicalSort(graph), is(List.of()));
+  }
+
+  @Test
+  void topologicalSort_singleNode() {
+    int[][] graph = {{}};
+    assertThat(gp.topologicalSort(graph), is(List.of(0)));
+  }
+
+  @Test
+  void wallsAndGates_singleCell() {
+    int[][] grid = {{0}};
+    gp.wallsAndGates(grid);
+    assertEquals(0, grid[0][0]);
+  }
+
+  @Test
+  void wallsAndGates_noGate() {
+    int[][] grid = {{Integer.MAX_VALUE}};
+    gp.wallsAndGates(grid);
+    assertEquals(Integer.MAX_VALUE, grid[0][0]);
+  }
+
+  @Test
+  void wordLadder_sameWord() {
+    assertEquals(1, gp.wordLadder("hit", "hit", List.of("hit")));
+  }
+
+  @Test
+  void wordLadder_directTransform() {
+    assertEquals(2, gp.wordLadder("hot", "dot", List.of("hot", "dot")));
+    assertEquals(0, gp.wordLadder("hit", "cog", List.of("hit", "cog")));
+  }
 }

@@ -120,4 +120,30 @@ class GreedyProblemsTest {
     assertEquals(0, greedyProblems.jump(new int[]{0}));
     assertEquals(2, greedyProblems.jump(new int[]{2, 3, 0, 1, 4}));
   }
+
+  @Test
+  void testFindContentChildren_empty() {
+    assertEquals(0, greedyProblems.findContentChildren(new int[]{1, 2}, new int[]{}));
+  }
+
+  @Test
+  void testMaxSubArray_singleElement() {
+    assertEquals(5, greedyProblems.maxSubArray(new int[]{5}));
+    assertEquals(-5, greedyProblems.maxSubArray(new int[]{-5}));
+  }
+
+  @Test
+  void testMaxSubArray_allPositive() {
+    assertEquals(15, greedyProblems.maxSubArray(new int[]{1, 2, 3, 4, 5}));
+  }
+
+  @Test
+  void testCanJump_singleElement() {
+    assertTrue(greedyProblems.canJump(new int[]{0}));
+  }
+
+  @Test
+  void testJump_singleElement() {
+    assertEquals(0, greedyProblems.jump(new int[]{0}));
+  }
 }

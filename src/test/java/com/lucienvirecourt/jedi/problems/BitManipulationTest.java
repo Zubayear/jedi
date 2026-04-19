@@ -30,4 +30,32 @@ class BitManipulationTest {
     assertEquals(2, bm.missingNumbers(new int[]{3, 0, 1}));
     assertEquals(8, bm.missingNumbers(new int[]{9, 6, 4, 2, 3, 5, 7, 0, 1}));
   }
+
+  @Test
+  void minBitFlips_sameNumbers() {
+    assertEquals(0, bm.minBitFlips(5, 5));
+  }
+
+  @Test
+  void minBitFlips_singleBit() {
+    assertEquals(1, bm.minBitFlips(0, 1));
+    assertEquals(1, bm.minBitFlips(1, 0));
+  }
+
+  @Test
+  void minBitFlips_maxValues() {
+    assertEquals(0, bm.minBitFlips(1023, 1023));
+  }
+
+  @Test
+  void missingNumbers_singleElement() {
+    assertEquals(1, bm.missingNumbers(new int[]{0}));
+    assertEquals(0, bm.missingNumbers(new int[]{1}));
+  }
+
+  @Test
+  void missingNumbers_twoElements() {
+    assertEquals(2, bm.missingNumbers(new int[]{0, 1}));
+    assertEquals(1, bm.missingNumbers(new int[]{0, 2}));
+  }
 }

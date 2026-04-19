@@ -52,4 +52,34 @@ class StackProblemsTest {
     assertEquals("aaaaaaaaaa", sp.decodeString("10[a]"));
     assertEquals("abbabb", sp.decodeString("2[a2[b]]"));
   }
+
+  @Test
+  void removingStarsFromAString_emptyString() {
+    assertEquals("", sp.removingStarsFromAString(""));
+  }
+
+  @Test
+  void removingStarsFromAString_onlyStars() {
+    assertEquals("", sp.removingStarsFromAString("***"));
+  }
+
+  @Test
+  void asteroidCollision_allPositive() {
+    assertArrayEquals(new Integer[]{1, 2, 3}, sp.asteroidCollision(new int[]{1, 2, 3}));
+  }
+
+  @Test
+  void asteroidCollision_allNegative() {
+    assertArrayEquals(new Integer[]{-1, -2, -3}, sp.asteroidCollision(new int[]{-1, -2, -3}));
+  }
+
+  @Test
+  void asteroidCollision_equalSize() {
+    assertArrayEquals(new Integer[]{}, sp.asteroidCollision(new int[]{5, -5}));
+  }
+
+  @Test
+  void dailyTemperatures_empty() {
+    assertArrayEquals(new int[]{}, sp.dailyTemperatures(new int[]{}));
+  }
 }

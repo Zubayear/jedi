@@ -1,7 +1,5 @@
 package com.lucienvirecourt.jedi.problems;
 
-import java.util.Arrays;
-
 public class CyclicSort {
 
   public void cyclicSort(int[] numbers) {
@@ -22,7 +20,7 @@ public class CyclicSort {
   }
 
   public int missingNumber(int[] nums) {
-    int n = nums.length + 1, start = 0;
+    int n = nums.length, start = 0;
     while (start < n) {
       int idx = nums[start];
       if (nums[start] < n && nums[idx] != nums[start]) {
@@ -31,7 +29,6 @@ public class CyclicSort {
         nums[idx] = tmp;
       } else start++;
     }
-    System.out.println(Arrays.toString(nums));
     for (int i = 0; i < n; ++i) {
       if (i != nums[i]) return i;
     }

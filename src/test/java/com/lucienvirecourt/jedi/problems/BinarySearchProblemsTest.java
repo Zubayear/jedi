@@ -122,4 +122,52 @@ class BinarySearchProblemsTest {
     assertEquals(15, bsp.shipWithinDays(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 5));
     assertEquals(6, bsp.shipWithinDays(new int[]{3, 2, 2, 4, 1, 4}, 3));
   }
+
+  @Test
+  void lowerBound_emptyArray() {
+    assertEquals(0, bsp.lowerBound(new int[]{}, 1));
+  }
+
+  @Test
+  void upperBound_emptyArray() {
+    assertEquals(0, bsp.upperBound(new int[]{}, 1));
+  }
+
+  @Test
+  void floor_emptyArray() {
+    assertEquals(-1, bsp.floor(new int[]{}, 25));
+  }
+
+  @Test
+  void ceil_emptyArray() {
+    assertEquals(-1, bsp.ceil(new int[]{}, 25));
+  }
+
+  @Test
+  void searchInRotatedSortedArray_singleElement() {
+    assertEquals(0, bsp.searchInRotatedSortedArray(new int[]{1}, 1));
+    assertEquals(-1, bsp.searchInRotatedSortedArray(new int[]{1}, 0));
+  }
+
+  @Test
+  void findMinInRotatedSortedArray_notRotated() {
+    assertEquals(1, bsp.findMinInRotatedSortedArray(new int[]{1, 2, 3, 4}));
+  }
+
+  @Test
+  void searchMatrix_singleElement() {
+    assertTrue(bsp.searchMatrix(new int[][]{{1}}, 1));
+    assertFalse(bsp.searchMatrix(new int[][]{{1}}, 2));
+  }
+
+  @Test
+  void minEatingSpeed_singlePile() {
+    assertEquals(5, bsp.minEatingSpeed(new int[]{5}, 1));
+    assertEquals(1, bsp.minEatingSpeed(new int[]{1}, 1));
+  }
+
+  @Test
+  void singleNonDuplicate_simple() {
+    assertEquals(2, bsp.singleNonDuplicate(new int[]{1, 1, 2}));
+  }
 }

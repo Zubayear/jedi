@@ -678,7 +678,6 @@ public class DynamicProgrammingProblems {
     // base case i == 0 return j; j == 0 return i
     for (int i = 0; i <= m; ++i) dp[i][0] = i;
     for (int j = 0; j <= n; ++j) dp[0][j] = j;
-    System.out.println(Arrays.deepToString(dp));
 
     for (int i = 1; i <= m; ++i) {
       for (int j = 1; j <= n; ++j) {
