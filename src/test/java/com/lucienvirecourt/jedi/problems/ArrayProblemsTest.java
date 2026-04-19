@@ -253,6 +253,132 @@ class ArrayProblemsTest {
     assertFalse(ap.isSubsequence("axc", "ahbgdc"));
   }
 
+  @Test
+  void canPlaceFlowers_basic() {
+    assertTrue(ap.canPlaceFlowers(new int[]{1, 0, 0}, 1));
+    assertFalse(ap.canPlaceFlowers(new int[]{1, 0, 1}, 1));
+  }
+
+  @Test
+  void trap_empty() {
+    assertEquals(0, ap.trap(new int[]{1}));
+  }
+
+  @Test
+  void trap_basic() {
+    assertEquals(6, ap.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}));
+  }
+
+  @Test
+  void longestCommonPrefix_single() {
+    assertEquals("abc", ap.longestCommonPrefix(new String[]{"abc"}));
+  }
+
+  @Test
+  void longestCommonPrefix_noMatch() {
+    assertEquals("", ap.longestCommonPrefix(new String[]{"abc", "def"}));
+  }
+
+  @Test
+  void longestCommonPrefix_identical() {
+    assertEquals("test", ap.longestCommonPrefix(new String[]{"test", "test", "test"}));
+  }
+
+  @Test
+  void wordPattern_complex() {
+    assertTrue(ap.wordPattern("abba", "dog cat cat dog"));
+    assertFalse(ap.wordPattern("abba", "dog cat dog cat"));
+  }
+
+  @Test
+  void moveElementToEnd_basic() {
+    int[] arr = new int[]{1, 2, 3, 1};
+    ap.moveElementToEnd(arr, 1);
+    assertEquals(1, arr[3]);
+  }
+
+  @Test
+  void moveElementToEnd_allSame() {
+    int[] arr = new int[]{1, 1, 1};
+    ap.moveElementToEnd(arr, 1);
+    assertArrayEquals(new int[]{1, 1, 1}, arr);
+  }
+
+  @Test
+  void isMonotonic_single() {
+    assertTrue(ap.isMonotonic(new int[]{1}));
+    assertTrue(ap.isMonotonic(new int[]{5}));
+  }
+
+  @Test
+  void isMonotonic_allEqual() {
+    assertTrue(ap.isMonotonic(new int[]{3, 3, 3, 3}));
+  }
+
+  @Test
+  void replaceElements_single() {
+    int[] arr = new int[]{1};
+    assertArrayEquals(new int[]{-1}, ap.replaceElements(arr));
+  }
+
+  @Test
+  void replaceElements_alreadyMax() {
+    int[] arr = new int[]{17, 18, 5, 4, 6, 1};
+    ap.replaceElements(arr);
+    assertEquals(-1, arr[arr.length - 1]);
+  }
+
+  @Test
+  void smallestDifference_equalArrays() {
+    assertEquals(0, ap.smallestDifference(new int[]{1, 2, 3}, new int[]{1, 2, 3}));
+  }
+
+  @Test
+  void smallestDifference_singleElements() {
+    assertEquals(1, ap.smallestDifference(new int[]{2}, new int[]{3}));
+    assertEquals(1, ap.smallestDifference(new int[]{3}, new int[]{2}));
+  }
+
+  @Test
+  void firstDuplicateValue_noDuplicate() {
+    assertEquals(0, ap.firstDuplicateValue(new int[]{1, 2, 3, 4, 5}));
+  }
+
+  @Test
+  void firstDuplicateValue_outOfRange() {
+    assertEquals(0, ap.firstDuplicateValue(new int[]{10, 11, 12}));
+  }
+
+  @Test
+  void numRescueBoats_empty() {
+    assertEquals(0, ap.numRescueBoats(new int[]{}, 3));
+  }
+
+  @Test
+  void numRescueBoats_single() {
+    assertEquals(1, ap.numRescueBoats(new int[]{1}, 3));
+  }
+
+  @Test
+  void longestSubarrayWithSumK_zero() {
+    assertEquals(0, ap.longestSubarrayWithSumK(new int[]{1, 2, 3}, 100));
+  }
+
+  @Test
+  void longestSubarrayWithSumK_exact() {
+    assertEquals(3, ap.longestSubarrayWithSumK(new int[]{1, 1, 1}, 3));
+  }
+
+  @Test
+  void isValidSubsequence_emptySequence() {
+    assertTrue(ap.isValidSubsequence(new int[]{1, 2, 3}, new int[]{}));
+  }
+
+  @Test
+  void isValidSubsequence_emptyNums() {
+    assertFalse(ap.isValidSubsequence(new int[]{}, new int[]{1}));
+  }
+
   private static List<String> normalizeGroups(List<List<String>> groups) {
     return groups.stream()
       .map(group -> group.stream().sorted().collect(Collectors.joining(",")))

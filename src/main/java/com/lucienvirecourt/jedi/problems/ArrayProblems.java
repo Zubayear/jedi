@@ -57,10 +57,12 @@ public class ArrayProblems {
   }
 
   public boolean canPlaceFlowers(int[] flowerbed, int n) {
-    int count = 0;
-    for (int i = 0; i < flowerbed.length; ++i) {
+    int count = 0, len = flowerbed.length;
+    for (int i = 0; i < len; ++i) {
       if (flowerbed[i] == 0) {
-        if (i == 0 || flowerbed[i - 1] == 0 && i == flowerbed.length - 1 || flowerbed[i + 1] == 0) {
+        boolean leftEmpty = i == 0 || flowerbed[i - 1] == 0;
+        boolean rightEmpty = i == len - 1 || flowerbed[i + 1] == 0;
+        if (leftEmpty && rightEmpty) {
           flowerbed[i] = 1;
           count++;
         }
@@ -217,13 +219,12 @@ public class ArrayProblems {
 
   // LC287
   public int firstDuplicateValue(int[] A) {
-    // since we have 1.n numbers in A,
-    // we can apply an A[i]-1 trick to make the value of an index to negative,
-    // then, if we find that already seen negative, we found the ans
     int n = A.length;
     for (int i = 0; i < n; ++i) {
-      int idx = Math.abs(A[i]) - 1;
-      if (A[idx] < 0) return Math.abs(A[i]);
+      int val = Math.abs(A[i]);
+      if (val < 1 || val > n) continue;
+      int idx = val - 1;
+      if (A[idx] < 0) return val;
       A[idx] *= -1;
     }
     return 0;
@@ -491,13 +492,20 @@ public class ArrayProblems {
 
   public int trap(int[] height) {
     int n = height.length;
-    int[] leftMax = new int[n], rightMax = new int[n];
-    for (int i = 1; i < n; ++i)
+    if (n == 0) return 0;
+    int[] leftMax = new int[n];
+    int[] rightMax = new int[n];
+    for (int i = 1; i < n; ++i) {
       leftMax[i] = Math.max(leftMax[i - 1], height[i - 1]);
-    for (int i = n - 2; i >= 0; --i)
-      rightMax[i] = Math.max(height[i+1], rightMax[i+1]);
-    System.out.println(Arrays.toString(leftMax) + " " + Arrays.toString(rightMax));
-    return 1;
+    }
+    for (int i = n - 2; i >= 0; --i) {
+      rightMax[i] = Math.max(height[i + 1], rightMax[i + 1]);
+    }
+    int water = 0;
+    for (int i = 0; i < n; ++i) {
+      water += Math.max(0, Math.min(leftMax[i], rightMax[i]) - height[i]);
+    }
+    return water;
   }
 
   private boolean isVowel(char ch) {
